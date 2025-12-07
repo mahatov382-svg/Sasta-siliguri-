@@ -1,12 +1,3 @@
-// ===== FORCE HIDE ADMIN FOR ALL CUSTOMERS =====
-
-// By default sabke liye admin HIDE
-document.addEventListener("DOMContentLoaded", () => {
-  const adminWrapper = document.querySelector(".admin-login-wrapper");
-  if (adminWrapper) {
-    adminWrapper.style.display = "none"; // ✅ customer ko kabhi nahi dikhega
-  }
-});
 // ========== WhatsApp number ==========
 // 91 + number (without + sign)
 const phoneNumber = "917602884208";
@@ -28,25 +19,6 @@ const db = firebase.firestore();
 
 // ========== Global products list (from Firebase) ==========
 let products = []; // { id, Name, Weight, Price, Mrp, MinQty, Unit, Image, InStock }
-
-// ========== OWNER MODE (Admin button hide for customers) ==========
-
-function setupOwnerMode() {
-  const params = new URLSearchParams(window.location.search);
-
-  // agar URL me ?owner=1513 aata hai to owner mode ON kar do
-  if (params.get("owner") === "1513") {
-    localStorage.setItem("sasta_owner", "yes");
-  }
-
-  const isOwner = localStorage.getItem("sasta_owner") === "yes";
-  const adminWrapper = document.querySelector(".admin-login-wrapper");
-
-  if (adminWrapper) {
-    // sirf owner ko dikhana, baaki sab ke liye hide
-    adminWrapper.style.display = isOwner ? "block" : "none";
-  }
-}
 
 // ========== Helper: read customer details ==========
 
@@ -226,22 +198,51 @@ function subscribeProducts() {
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
-  const btn = document.getElementById("admin-login-btn");
   const panel = document.getElementById("admin-panel");
-  if (!btn || !panel) return;
+  const logo = document.querySelector(".logo");
+  const loginWrapper = document.querySelector(".admin-login-wrapper");
+  const btn = document.getElementById("admin-login-btn");
 
+  if (!panel || !logo) return;
+
+  // ✅ Admin button ko sab ke liye hide kar do
+  if (loginWrapper) {
+    loginWrapper.style.display = "none";
+  }
+  if (btn) {
+    btn.style.display = "none";
+  }
+
+  // Agar pehle se unlock hai to panel direct show
   const unlocked = localStorage.getItem("sasta_admin_unlocked") === "yes";
   if (unlocked) {
     panel.style.display = "block";
   }
 
-  btn.addEventListener("click", () => {
-    const pwd = prompt("Enter admin password:");
-    if (pwd === ADMIN_PASSWORD) {
-      panel.style.display = "block";
-      localStorage.setItem("sasta_admin_unlocked", "yes");
-    } else {
-      alert("Wrong password");
+  // ✅ Secret: logo par 4 fast taps se password dialog
+  let tapCount = 0;
+  let tapTimer = null;
+
+  logo.addEventListener("click", () => {
+    tapCount++;
+
+    // 800ms ke andar 4 tap chahiye
+    if (tapTimer) clearTimeout(tapTimer);
+    tapTimer = setTimeout(() => {
+      tapCount = 0; // time out ho gaya, counter reset
+    }, 800);
+
+    if (tapCount >= 4) {
+      tapCount = 0;
+      clearTimeout(tapTimer);
+
+      const pwd = prompt("Enter admin password:");
+      if (pwd === ADMIN_PASSWORD) {
+        panel.style.display = "block";
+        localStorage.setItem("sasta_admin_unlocked", "yes");
+      } else {
+        alert("Wrong password");
+      }
     }
   });
 }
@@ -401,7 +402,6 @@ function setupAdminButtons() {
 // ========== Init on page load ==========
 
 document.addEventListener("DOMContentLoaded", () => {
-  setupOwnerMode();      // ✅ pehle decide karo owner hai ya nahi
   subscribeProducts();
   setupSearch();
   setupAdminLogin();
