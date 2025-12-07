@@ -194,11 +194,27 @@ body {
   margin-bottom: 6px;
 }
 
+/* OLD MRP STYLE */
 .mrp {
   text-decoration: line-through;
   margin-right: 6px;
   color: #888;
   font-size: 13px;
+}
+
+/* ✅ NEW LABELS – MARKET / OFFER PRICE */
+.mrp-label {
+  font-size: 12px;
+  color: #666;
+  margin-right: 4px;
+  font-weight: 500;
+}
+
+.price-label {
+  font-size: 12px;
+  color: #ff7a00;
+  margin-right: 4px;
+  font-weight: 700;
 }
 
 .price {
