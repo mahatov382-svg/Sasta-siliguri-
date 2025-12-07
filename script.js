@@ -1,3 +1,12 @@
+// ===== FORCE HIDE ADMIN FOR ALL CUSTOMERS =====
+
+// By default sabke liye admin HIDE
+document.addEventListener("DOMContentLoaded", () => {
+  const adminWrapper = document.querySelector(".admin-login-wrapper");
+  if (adminWrapper) {
+    adminWrapper.style.display = "none"; // ✅ customer ko kabhi nahi dikhega
+  }
+});
 // ========== WhatsApp number ==========
 // 91 + number (without + sign)
 const phoneNumber = "917602884208";
