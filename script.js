@@ -120,7 +120,7 @@ function renderProducts(list) {
     card.className = "product-card";
 
     // Market / Offer price text
-    const mrpHtml = p.Mrp
+    const mrpHtml = (p.Mrp && p.Mrp > 0)
       ? `<span class="mrp-label">Market price</span> <span class="mrp">₹${p.Mrp}</span><br>`
       : "";
 
