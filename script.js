@@ -46,7 +46,7 @@ function changeQty(id, delta, minQty) {
 }
 
 // ========== WhatsApp order ==========
-
+// 🔥 BILL WALA FINAL FUNCTION
 function orderProduct(id) {
   const product = products.find(p => p.id === id);
   if (!product) {
@@ -64,21 +64,72 @@ function orderProduct(id) {
 
   const qtyInput = document.getElementById("qty-" + id);
   let qty = parseInt(qtyInput?.value, 10) || 1;
+
   const minQty = product.MinQty || 1;
-  if (qty < minQty) qty = minQty;
+  if (qty < minQty) {
+    qty = minQty;
+    if (qtyInput) qtyInput.value = qty;
+  }
 
-  const message =
-    `New order from Sasta Siliguri\n\n` +
-    `Product: ${product.Name}\n` +
-    `Weight: ${product.Weight || ""}\n` +
-    `Price: ₹${product.Price}\n` +
-    `Minimum order: ${minQty} ${product.Unit || ""}\n` +
-    `Quantity: ${qty}\n\n` +
-    `Customer name: ${customer.name}\n` +
-    `Phone: ${customer.phone}\n` +
-    `Address: ${customer.address}`;
+  const price = product.Price || 0;
+  const mrp = product.Mrp || "-";
+  const total = price * qty;
+  const unit = product.Unit || "";
+  const weight = product.Weight || "-";
 
-  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  // =========================
+  // ✅ DELIVERY BOY FULL BILL
+  // =========================
+  const deliveryBill =
+`🧾 SASTA SILIGURI – DELIVERY BILL
+
+📦 Product: ${product.Name}
+⚖ Weight: ${weight}
+🔢 Quantity: ${qty} ${unit}
+💰 Price: ₹${price}
+🏷 MRP: ₹${mrp}
+
+-------------------------
+✅ TOTAL AMOUNT: ₹${total}
+-------------------------
+
+👤 Customer Name: ${customer.name}
+📞 Phone: ${customer.phone}
+🏠 Address: ${customer.address}
+
+🚚 Delivery: Same Day (10am – 8pm)
+💸 Payment: Cash on Delivery
+
+📍 Note: Delivery ke time customer ko call zaroor karein.
+
+🙏 Sasta Siliguri
+`;
+
+  // =========================
+  // ✅ CUSTOMER BAG SLIP (NO PHONE / ADDRESS)
+  // =========================
+  const customerSlip =
+`🛒 SASTA SILIGURI
+
+📦 Product: ${product.Name}
+⚖ Weight: ${weight}
+🔢 Qty: ${qty} ${unit}
+💰 Rate: ₹${price}
+
+✅ TOTAL: ₹${total}
+
+🚚 Same Day Free Delivery
+🙏 Thank You for Shopping
+`;
+
+  // ✅ WhatsApp pe dono ek sath jaayenge (pehle delivery bill, fir bag slip)
+  const finalMessage =
+deliveryBill +
+"\n\n----------------------\n\n" +
+"🎁 CUSTOMER BAG SLIP:\n\n" +
+customerSlip;
+
+  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(finalMessage)}`;
   window.location.href = url;
 }
 
