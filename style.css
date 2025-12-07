@@ -350,3 +350,8 @@ footer {
 .product-card {
   width: 100% !important;
 }
+
+/* ✅ CUSTOMER KE LIYE ADMIN LOGIN HIDE */
+.admin-login-wrapper {
+  display: none !important;
+}
