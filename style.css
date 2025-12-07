@@ -318,3 +318,35 @@ footer {
     height: 75px;
   }
 }
+/* ✅ FORCE MOBILE GRID FIX */
+.product-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
+}
+
+/* ✅ MARKET & OFFER PRICE CLEAR */
+.mrp-label {
+  display: inline-block;
+  font-size: 12px;
+  color: #999;
+  font-weight: 700;
+}
+
+.price-label {
+  display: inline-block;
+  font-size: 12px;
+  color: #0c7a03;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+/* ✅ PRICE SIZE BIGGER */
+.price {
+  font-size: 20px !important;
+}
+
+/* ✅ CARD WIDTH FIX */
+.product-card {
+  width: 100% !important;
+}
