@@ -195,7 +195,7 @@ function subscribeProducts() {
 
 // ========== Admin login (simple password) ==========
 
-const ADMIN_PASSWORD = "sasta123";
+const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const btn = document.getElementById("admin-login-btn");
