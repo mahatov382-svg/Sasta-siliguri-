@@ -45,8 +45,8 @@ function changeQty(id, delta, minQty) {
   input.value = value;
 }
 
-// ========== WhatsApp order ==========
-// 💰 BILL FORMAT EXACT WALA
+// ========== WhatsApp order (FINAL BILL FORMAT) ==========
+
 function orderProduct(id) {
   const product = products.find(p => p.id === id);
   if (!product) {
@@ -72,7 +72,7 @@ function orderProduct(id) {
   }
 
   const price = product.Price || 0;
-  const mrp = product.Mrp || 0;
+  const mrp = product.Mrp || "-";
   const total = price * qty;
   const unit = product.Unit || "";
   const weight = product.Weight || "-";
@@ -107,7 +107,7 @@ _______________________🚚 Same Day Free Delivery
   window.location.href = url;
 }
 
-// ========== Render products ==========
+// ========== Render products (Market / Offer text) ==========
 
 function renderProducts(list) {
   const container = document.getElementById("product-list");
@@ -119,14 +119,18 @@ function renderProducts(list) {
     const card = document.createElement("div");
     card.className = "product-card";
 
+    // Market / Offer price text
+    const mrpHtml = p.Mrp
+      ? `<span class="mrp-label">Market price</span> <span class="mrp">₹${p.Mrp}</span><br>`
+      : "";
+
+    const tagText = p.InStock ? "Available ✅" : "Currently unavailable ❌";
+    const btnClass = p.InStock ? "btn-whatsapp" : "btn-disabled";
+    const btnText = p.InStock ? "Order on WhatsApp" : "Out of stock";
+
     const minQty = p.MinQty || 1;
     const unit = p.Unit || "";
     const imgSrc = p.Image || "placeholder.jpg";
-    const mrpValue = p.Mrp || p.Price || 0;
-
-    const tagText = p.InStock ? "Available ✅" : "Currently unavailable ❌";
-    const btnDisabled = !p.InStock ? "btn-disabled" : "btn-whatsapp";
-    const btnText = p.InStock ? "Order on WhatsApp" : "Out of stock";
 
     card.innerHTML = `
       <img src="${imgSrc}" alt="${p.Name}">
@@ -134,10 +138,8 @@ function renderProducts(list) {
       <p class="weight">${p.Weight || ""}</p>
 
       <p class="price-line">
-        <span class="mrp">Market price ₹${mrpValue}</span>
-      </p>
-      <p class="price-line">
-        <span class="price">Offer price ₹${p.Price || 0}</span>
+        ${mrpHtml}
+        <span class="price-label">Offer price</span> <span class="price">₹${p.Price}</span>
       </p>
 
       <p class="tag">${tagText}</p>
@@ -152,7 +154,7 @@ function renderProducts(list) {
         <button class="qty-btn" onclick="changeQty('${p.id}', 1, ${minQty})">+</button>
       </div>
 
-      <button class="btn ${btnDisabled}" onclick="orderProduct('${p.id}')">${btnText}</button>
+      <button class="btn ${btnClass}" onclick="orderProduct('${p.id}')">${btnText}</button>
     `;
 
     container.appendChild(card);
@@ -200,7 +202,6 @@ function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
   if (!btn || !panel) return;
 
-  // Auto-open if already unlocked in this browser
   const unlocked = localStorage.getItem("sasta_admin_unlocked") === "yes";
   if (unlocked) {
     panel.style.display = "block";
