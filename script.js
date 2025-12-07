@@ -20,6 +20,25 @@ const db = firebase.firestore();
 // ========== Global products list (from Firebase) ==========
 let products = []; // { id, Name, Weight, Price, Mrp, MinQty, Unit, Image, InStock }
 
+// ========== OWNER MODE (Admin button hide for customers) ==========
+
+function setupOwnerMode() {
+  const params = new URLSearchParams(window.location.search);
+
+  // agar URL me ?owner=1513 aata hai to owner mode ON kar do
+  if (params.get("owner") === "1513") {
+    localStorage.setItem("sasta_owner", "yes");
+  }
+
+  const isOwner = localStorage.getItem("sasta_owner") === "yes";
+  const adminWrapper = document.querySelector(".admin-login-wrapper");
+
+  if (adminWrapper) {
+    // sirf owner ko dikhana, baaki sab ke liye hide
+    adminWrapper.style.display = isOwner ? "block" : "none";
+  }
+}
+
 // ========== Helper: read customer details ==========
 
 function getCustomerDetails() {
@@ -373,6 +392,7 @@ function setupAdminButtons() {
 // ========== Init on page load ==========
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupOwnerMode();      // ✅ pehle decide karo owner hai ya nahi
   subscribeProducts();
   setupSearch();
   setupAdminLogin();
