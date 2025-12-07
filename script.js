@@ -205,44 +205,24 @@ function setupAdminLogin() {
 
   if (!panel || !logo) return;
 
-  // ✅ Admin button ko sab ke liye hide kar do
-  if (loginWrapper) {
-    loginWrapper.style.display = "none";
-  }
-  if (btn) {
-    btn.style.display = "none";
-  }
+  // ✅ Admin login button ko hide kar do (customer ko dikhega hi nahi)
+  if (loginWrapper) loginWrapper.style.display = "none";
+  if (btn) btn.style.display = "none";
 
-  // Agar pehle se unlock hai to panel direct show
+  // Agar pehle unlock kiya tha to direct panel show
   const unlocked = localStorage.getItem("sasta_admin_unlocked") === "yes";
   if (unlocked) {
     panel.style.display = "block";
   }
 
-  // ✅ Secret: logo par 4 fast taps se password dialog
-  let tapCount = 0;
-  let tapTimer = null;
-
+  // ✅ Simple shortcut: logo pe tap -> password
   logo.addEventListener("click", () => {
-    tapCount++;
-
-    // 800ms ke andar 4 tap chahiye
-    if (tapTimer) clearTimeout(tapTimer);
-    tapTimer = setTimeout(() => {
-      tapCount = 0; // time out ho gaya, counter reset
-    }, 800);
-
-    if (tapCount >= 4) {
-      tapCount = 0;
-      clearTimeout(tapTimer);
-
-      const pwd = prompt("Enter admin password:");
-      if (pwd === ADMIN_PASSWORD) {
-        panel.style.display = "block";
-        localStorage.setItem("sasta_admin_unlocked", "yes");
-      } else {
-        alert("Wrong password");
-      }
+    const pwd = prompt("Enter admin password:");
+    if (pwd === ADMIN_PASSWORD) {
+      panel.style.display = "block";
+      localStorage.setItem("sasta_admin_unlocked", "yes");
+    } else if (pwd !== null) {
+      alert("Wrong password");
     }
   });
 }
