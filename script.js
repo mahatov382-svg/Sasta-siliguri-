@@ -46,7 +46,7 @@ function changeQty(id, delta, minQty) {
 }
 
 // ========== WhatsApp order ==========
-// 🔥 BILL WALA FINAL FUNCTION
+// 💰 BILL FORMAT EXACT WALA
 function orderProduct(id) {
   const product = products.find(p => p.id === id);
   if (!product) {
@@ -72,15 +72,12 @@ function orderProduct(id) {
   }
 
   const price = product.Price || 0;
-  const mrp = product.Mrp || "-";
+  const mrp = product.Mrp || 0;
   const total = price * qty;
   const unit = product.Unit || "";
   const weight = product.Weight || "-";
 
-  // =========================
-  // ✅ DELIVERY BOY FULL BILL
-  // =========================
-  const deliveryBill =
+  const billMessage =
 `🧾 SASTA SILIGURI – DELIVERY BILL
 
 📦 Product: ${product.Name}
@@ -94,42 +91,19 @@ function orderProduct(id) {
 -------------------------
 
 👤 Customer Name: ${customer.name}
+
 📞 Phone: ${customer.phone}
 🏠 Address: ${customer.address}
 
 🚚 Delivery: Same Day (10am – 8pm)
-💸 Payment: Cash on Delivery
 
-📍 Note: Delivery ke time customer ko call zaroor karein.
+💸 Payment: Cash on Delivery.
 
-🙏 Sasta Siliguri
-`;
+_______________________🚚 Same Day Free Delivery
 
-  // =========================
-  // ✅ CUSTOMER BAG SLIP (NO PHONE / ADDRESS)
-  // =========================
-  const customerSlip =
-`🛒 SASTA SILIGURI
+🙏 THANK YOU FOR SHOPPING SASTA SILIGURI`;
 
-📦 Product: ${product.Name}
-⚖ Weight: ${weight}
-🔢 Qty: ${qty} ${unit}
-💰 Rate: ₹${price}
-
-✅ TOTAL: ₹${total}
-
-🚚 Same Day Free Delivery
-🙏 Thank You for Shopping
-`;
-
-  // ✅ WhatsApp pe dono ek sath jaayenge (pehle delivery bill, fir bag slip)
-  const finalMessage =
-deliveryBill +
-"\n\n----------------------\n\n" +
-"🎁 CUSTOMER BAG SLIP:\n\n" +
-customerSlip;
-
-  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(finalMessage)}`;
+  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(billMessage)}`;
   window.location.href = url;
 }
 
@@ -145,28 +119,27 @@ function renderProducts(list) {
     const card = document.createElement("div");
     card.className = "product-card";
 
-    const mrpHtml =
-      p.Mrp && p.Mrp > p.Price
-        ? `<span class="mrp">₹${p.Mrp}</span>`
-        : "";
+    const minQty = p.MinQty || 1;
+    const unit = p.Unit || "";
+    const imgSrc = p.Image || "placeholder.jpg";
+    const mrpValue = p.Mrp || p.Price || 0;
 
     const tagText = p.InStock ? "Available ✅" : "Currently unavailable ❌";
     const btnDisabled = !p.InStock ? "btn-disabled" : "btn-whatsapp";
     const btnText = p.InStock ? "Order on WhatsApp" : "Out of stock";
 
-    const minQty = p.MinQty || 1;
-    const unit = p.Unit || "";
-
-    const imgSrc = p.Image || "placeholder.jpg";
-
     card.innerHTML = `
       <img src="${imgSrc}" alt="${p.Name}">
       <h2>${p.Name}</h2>
       <p class="weight">${p.Weight || ""}</p>
+
       <p class="price-line">
-        ${mrpHtml}
-        <span class="price">₹${p.Price}</span>
+        <span class="mrp">Market price ₹${mrpValue}</span>
       </p>
+      <p class="price-line">
+        <span class="price">Offer price ₹${p.Price || 0}</span>
+      </p>
+
       <p class="tag">${tagText}</p>
 
       <p class="min-order">
