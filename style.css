@@ -40,7 +40,7 @@ body {
 
 /* ✅ LOGO SIZE MID */
 .logo {
-  width: 85px;
+  width: 85ppx;
   height: 85px;
   border-radius: 14px;
   object-fit: contain;
@@ -350,7 +350,6 @@ footer {
 .product-card {
   width: 100% !important;
 }
-
 /* ✅ CUSTOMER KE LIYE ADMIN LOGIN HIDE */
 .admin-login-wrapper {
   display: none !important;
