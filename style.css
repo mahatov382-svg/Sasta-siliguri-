@@ -11,7 +11,7 @@ body {
   padding: 10px;
 }
 
-/* ===== TOP BAR ===== */
+/* ================= TOP BAR ================= */
 .announce-bar {
   background: #ffd84a;
   color: #3a2800;
@@ -23,7 +23,7 @@ body {
   font-weight: 700;
 }
 
-/* ===== HEADER ===== */
+/* ================= HEADER ================= */
 .header {
   background: #ffffff;
   border-radius: 16px;
@@ -38,7 +38,6 @@ body {
   gap: 14px;
 }
 
-/* ✅ LOGO SIZE */
 .logo {
   width: 85px;
   height: 85px;
@@ -51,27 +50,28 @@ body {
 
 .brand-text h1 {
   font-size: 23px;
-  margin-bottom: 2px;
   font-weight: 800;
+  margin-bottom: 2px;
 }
 
-.brand-text p {
+/* ✅ ORANGE DELIVERY TEXT */
+.delivery-text {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: #ff7a00;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
-/* ✅ CASH ON DELIVERY – SMALL & TRUSTED LOOK */
+/* ✅ CASH ON DELIVERY – SMALL & TRUSTED */
 .cod-text {
-  font-size: 11px;          /* 👈 chhota */
-  color: #ff7a00;           /* same orange */
-  margin-top: 2px;
+  font-size: 11px;
+  color: #444;
   font-weight: 600;
+  margin-top: 2px;
   letter-spacing: 0.3px;
 }
 
-/* ===== CUSTOMER BOX ===== */
+/* ================= CUSTOMER BOX ================= */
 .customer-box {
   background: #ffffff;
   border-radius: 14px;
@@ -100,53 +100,30 @@ body {
   color: #777;
 }
 
-/* ===== ADMIN PANEL ===== */
+/* ================= ADMIN PANEL ================= */
 .admin-box {
   background: #fff7e6;
   border-radius: 14px;
   padding: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-bottom: 12px;
   border: 2px dashed #ff8a3c;
-}
-
-.admin-box h2 {
-  font-size: 17px;
-  margin-bottom: 6px;
-}
-
-.admin-note {
-  font-size: 12px;
-  margin-bottom: 8px;
-  color: #444;
+  margin-bottom: 12px;
 }
 
 .admin-box input {
   width: 100%;
-  padding: 9px 10px;
+  padding: 9px;
   border-radius: 9px;
   border: 1px solid #ccc;
-  font-size: 14px;
   margin-bottom: 7px;
 }
 
-.admin-checkbox {
-  font-size: 13px;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin: 6px 0 10px;
-}
-
-/* ===== ADMIN BUTTONS ===== */
 .admin-buttons {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  margin-top: 8px;
 }
 
-/* ===== SEARCH ===== */
+/* ================= SEARCH ================= */
 .controls {
   margin-bottom: 10px;
 }
@@ -159,27 +136,25 @@ body {
   font-size: 14px;
 }
 
-/* ===== PRODUCTS ===== */
+/* ================= PRODUCTS ================= */
 .section-title {
   font-size: 20px;
-  margin: 6px 0 10px;
+  margin: 10px 0;
   font-weight: 800;
 }
 
 .product-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px !important;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
-/* ===== PRODUCT CARD ===== */
 .product-card {
   background: #ffffff;
   border-radius: 16px;
   padding: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
-  width: 100% !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .product-card img {
@@ -188,56 +163,17 @@ body {
   margin-bottom: 8px;
 }
 
-.product-card h2 {
-  font-size: 16px;
-  margin-bottom: 4px;
-  font-weight: 800;
-}
-
-.weight {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 6px;
-}
-
-.mrp {
-  text-decoration: line-through;
-  margin-right: 6px;
-  color: #888;
-  font-size: 13px;
-}
-
-.mrp-label {
-  font-size: 12px;
-  color: #999;
-  font-weight: 700;
-}
-
-.price-label {
-  font-size: 12px;
-  color: #0c7a03;
-  font-weight: 800;
-}
-
 .price {
-  font-weight: bold;
-  font-size: 20px !important;
+  font-size: 20px;
+  font-weight: 800;
 }
 
-.min-order {
-  font-size: 12px;
-  margin-bottom: 8px;
-  color: #444;
-  font-weight: 600;
-}
-
-/* ===== BUTTONS ===== */
+/* ================= BUTTONS ================= */
 .btn {
-  border: none;
   padding: 10px 14px;
   border-radius: 999px;
-  font-size: 14px;
   font-weight: 800;
+  border: none;
   cursor: pointer;
 }
 
@@ -246,21 +182,7 @@ body {
   color: #fff;
 }
 
-.admin-btn {
-  background: #ff8a3c;
-  color: #fff;
-}
-
-.admin-secondary-btn {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.btn:active {
-  transform: scale(0.96);
-}
-
-/* ===== FOOTER ===== */
+/* ================= FOOTER ================= */
 footer {
   text-align: center;
   margin-top: 18px;
@@ -269,7 +191,7 @@ footer {
   line-height: 1.6;
 }
 
-/* ===== SMALL SCREEN ===== */
+/* ================= SMALL SCREEN ================= */
 @media (max-width: 400px) {
   .logo {
     width: 75px;
@@ -277,15 +199,7 @@ footer {
   }
 }
 
-/* ✅ CUSTOMER KE LIYE ADMIN LOGIN HIDE */
+/* ================= HIDE ADMIN FOR CUSTOMER ================= */
 .admin-login-wrapper {
   display: none !important;
-}
-/* ===== CASH ON DELIVERY (SMALL & CLEAN) ===== */
-.cod-text {
-  font-size: 11px;      /* chhota */
-  color: #444;          /* black-grey (trust look) */
-  font-weight: 600;
-  margin-top: 2px;
-  letter-spacing: 0.3px;
 }
