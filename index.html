@@ -27,7 +27,7 @@
 
       <div class="brand-text">
         <h1>SASTA SILIGURI</h1>
-        <p>SAME DAY FREE DELIVERY</p>
+        <p class="delivery-text">SAME DAY FREE DELIVERY</p>
         <p class="cod-text">CASH ON DELIVERY AVAILABLE</p>
       </div>
     </div>
@@ -44,20 +44,19 @@
       <p class="note">These details will be sent to WhatsApp when you tap Order.</p>
     </section>
 
-    <!-- Admin login button (sirf owner ko dikhayenge, customer ko hide) -->
+    <!-- Admin login button (owner only) -->
     <div class="admin-login-wrapper">
       <button id="admin-login-btn" class="btn admin-login-btn">
         🔒 Admin login
       </button>
     </div>
 
-    <!-- ✅ ADMIN PANEL (Owner Only) – by default hidden -->
+    <!-- ADMIN PANEL -->
     <section id="admin-panel" class="admin-box" style="display:none;">
       <h2>Admin Panel (Owner Only)</h2>
       <p class="admin-note">
         Yaha se product ka name, weight, price, MRP, minimum order qty, unit,
-        image aur stock change kar sakte ho. Ye sirf tumhe hi dikhai dega
-        (password se unlock).
+        image aur stock change kar sakte ho.
       </p>
 
       <input id="p-name" placeholder="Product name">
@@ -75,17 +74,15 @@
       </label>
 
       <div class="admin-buttons">
-        <button id="admin-save" class="btn admin-btn">Save / Update (by name)</button>
+        <button id="admin-save" class="btn admin-btn">Save / Update</button>
         <button id="admin-add" class="btn admin-secondary-btn">Add new product</button>
-        <button id="admin-delete" class="btn admin-secondary-btn">Delete product (by name)</button>
+        <button id="admin-delete" class="btn admin-secondary-btn">Delete product</button>
       </div>
     </section>
 
     <!-- Search -->
     <section class="controls">
-      <div class="search-wrapper">
-        <input id="search-input" type="text" placeholder="Search fruits & vegetables…">
-      </div>
+      <input id="search-input" type="text" placeholder="Search fruits & vegetables…">
     </section>
 
     <!-- Products -->
@@ -94,18 +91,17 @@
 
   </main>
 
+  <!-- Footer -->
   <footer>
-  <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
-  <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
-</footer>
-  <
+    <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
+    <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
   </footer>
 
-  <!-- Firebase (compat) -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- Tumhara main JS -->
+  <!-- Main JS -->
   <script src="script.js"></script>
 </body>
 </html>
