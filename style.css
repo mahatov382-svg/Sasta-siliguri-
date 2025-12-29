@@ -38,7 +38,7 @@ body {
   gap: 14px;
 }
 
-/* ✅ LOGO SIZE MID */
+/* ✅ LOGO SIZE */
 .logo {
   width: 85px;
   height: 85px;
@@ -60,6 +60,15 @@ body {
   font-weight: 700;
   color: #ff7a00;
   letter-spacing: 0.5px;
+}
+
+/* ✅ CASH ON DELIVERY – SMALL & TRUSTED LOOK */
+.cod-text {
+  font-size: 11px;          /* 👈 chhota */
+  color: #ff7a00;           /* same orange */
+  margin-top: 2px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
 }
 
 /* ===== CUSTOMER BOX ===== */
@@ -158,18 +167,19 @@ body {
 }
 
 .product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 12px;
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px !important;
 }
 
-/* ✅ PRODUCT CARD */
+/* ===== PRODUCT CARD ===== */
 .product-card {
   background: #ffffff;
   border-radius: 16px;
   padding: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   text-align: center;
+  width: 100% !important;
 }
 
 .product-card img {
@@ -190,11 +200,6 @@ body {
   margin-bottom: 6px;
 }
 
-.price-line {
-  margin-bottom: 6px;
-}
-
-/* OLD MRP STYLE */
 .mrp {
   text-decoration: line-through;
   margin-right: 6px;
@@ -202,34 +207,23 @@ body {
   font-size: 13px;
 }
 
-/* ✅ NEW LABELS – MARKET / OFFER PRICE */
 .mrp-label {
   font-size: 12px;
-  color: #666;
-  margin-right: 4px;
-  font-weight: 500;
+  color: #999;
+  font-weight: 700;
 }
 
 .price-label {
   font-size: 12px;
-  color: #ff7a00;
-  margin-right: 4px;
-  font-weight: 700;
+  color: #0c7a03;
+  font-weight: 800;
 }
 
 .price {
   font-weight: bold;
-  font-size: 17px;
+  font-size: 20px !important;
 }
 
-.tag {
-  font-size: 12px;
-  margin-bottom: 6px;
-  color: #0c7a03;
-  font-weight: 700;
-}
-
-/* ✅ MINIMUM ORDER TEXT */
 .min-order {
   font-size: 12px;
   margin-bottom: 8px;
@@ -237,54 +231,18 @@ body {
   font-weight: 600;
 }
 
-/* ===== QTY ROW ===== */
-.qty-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.qty-input {
-  width: 44px;
-  text-align: center;
-  padding: 6px 0;
-  border-radius: 9px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.qty-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #ff8a3c;
-  background: #ffffff;
-  font-size: 18px;
-  font-weight: 800;
-  line-height: 1;
-}
-
 /* ===== BUTTONS ===== */
 .btn {
-  display: inline-block;
   border: none;
   padding: 10px 14px;
   border-radius: 999px;
   font-size: 14px;
   font-weight: 800;
-  text-align: center;
   cursor: pointer;
 }
 
 .btn-whatsapp {
   background: #0c7a03;
-  color: #fff;
-}
-
-.btn-disabled {
-  background: #b3b3b3;
   color: #fff;
 }
 
@@ -311,62 +269,15 @@ footer {
   line-height: 1.6;
 }
 
-/* ===== SMALL SCREEN FIX ===== */
+/* ===== SMALL SCREEN ===== */
 @media (max-width: 400px) {
   .logo {
     width: 75px;
     height: 75px;
   }
 }
-/* ✅ FORCE MOBILE GRID FIX */
-.product-grid {
-  display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px !important;
-}
 
-/* ✅ MARKET & OFFER PRICE CLEAR */
-.mrp-label {
-  display: inline-block;
-  font-size: 12px;
-  color: #999;
-  font-weight: 700;
-}
-
-.price-label {
-  display: inline-block;
-  font-size: 12px;
-  color: #0c7a03;
-  font-weight: 800;
-  margin-top: 2px;
-}
-
-/* ✅ PRICE SIZE BIGGER */
-.price {
-  font-size: 20px !important;
-}
-
-/* ✅ CARD WIDTH FIX */
-.product-card {
-  width: 100% !important;
-}
 /* ✅ CUSTOMER KE LIYE ADMIN LOGIN HIDE */
 .admin-login-wrapper {
   display: none !important;
-
-}
-  /* CASH ON DELIVERY TEXT */ 
-.cod-text {
-  font-size: 12px;
-  color: #000;
-  margin-top: 4px;
-  font-weight: 600;
-}
-
-/* QUALITY ISSUE POLICY TEXT */
-. QUALITY -TEXT {
-  font-size: 15px;
-  color: #444;
-  text-align: center;
-  margin-bottom: 6px;
 }
