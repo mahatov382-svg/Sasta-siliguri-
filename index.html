@@ -1,26 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Sasta Siliguri - Fruits & Vegetables</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png">
-  <link rel="shortcut icon" href="/favicon.png">
-
-  <!-- ✅ IMPORTANT: MOBILE VIEW FIX -->
+  <link rel="icon" type="image/png" href="/favicon.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top yellow bar -->
+  <!-- TOP BAR -->
   <div class="announce-bar">
     DELIVERY TIMING 10am to 8pm × 6 • SAME DAY FREE DELIVERY
   </div>
 
-  <!-- Header -->
+  <!-- HEADER -->
   <header class="header">
     <div class="brand">
       <img src="logo.png" alt="Sasta Siliguri" class="logo">
@@ -35,18 +31,22 @@
 
   <main>
 
-    <!-- Customer Details -->
+    <!-- CUSTOMER DETAILS -->
     <section class="customer-box">
       <h2>Your details</h2>
+
       <input id="cust-name" type="text" placeholder="Full name *">
       <input id="cust-phone" type="tel" placeholder="Phone number *">
       <textarea id="cust-address" rows="2" placeholder="Full address *"></textarea>
-      <p class="note">These details will be sent to WhatsApp when you tap Order.</p>
+
+      <p class="note">
+        These details will be sent to WhatsApp when you tap Order.
+      </p>
     </section>
 
-    <!-- Admin login button (owner only) -->
+    <!-- ADMIN LOGIN (HIDDEN FOR CUSTOMER) -->
     <div class="admin-login-wrapper">
-      <button id="admin-login-btn" class="btn admin-login-btn">
+      <button id="admin-login-btn" class="btn admin-btn">
         🔒 Admin login
       </button>
     </div>
@@ -80,28 +80,28 @@
       </div>
     </section>
 
-    <!-- Search -->
+    <!-- SEARCH -->
     <section class="controls">
       <input id="search-input" type="text" placeholder="Search fruits & vegetables…">
     </section>
 
-    <!-- Products -->
+    <!-- PRODUCTS -->
     <h2 class="section-title">Fruits & Vegetables</h2>
     <div id="product-list" class="product-grid"></div>
 
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
     <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
   </footer>
 
-  <!-- Firebase -->
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
-  <!-- Main JS -->
+  <!-- MAIN JS -->
   <script src="script.js"></script>
 </body>
 </html>
