@@ -124,7 +124,7 @@ function renderProducts(list) {
       ? `<span class="mrp-label">Market price</span> <span class="mrp">₹${p.Mrp}</span><br>`
       : "";
 
-    const tagText = p.InStock ? "Available ✅" : "Currently unavailable ❌";
+    const tagText = p.InStock ? "In stock✅" : "Out of stock ❌";
     const btnClass = p.InStock ? "btn-whatsapp" : "btn-disabled";
     const btnText = p.InStock ? "Order on WhatsApp" : "Out of stock";
 
@@ -137,16 +137,26 @@ function renderProducts(list) {
       <h2>${p.Name}</h2>
       <p class="weight">${p.Weight || ""}</p>
 
-      <p class="price-line">
-        ${mrpHtml}
-        <span class="price-label">Offer price</span> <span class="price">₹${p.Price}</span>
-      </p>
+    <div class="price-box">
 
-      <p class="tag">${tagText}</p>
+  ${p.Mrp && p.Mrp > 0 ? `
+  <div class="price-row market">
+    <span class="label">Market price</span>
+    <span class="value mrp">₹${p.Mrp}</span>
+  </div>
+  ` : ""}
 
-      <p class="min-order">
-        Minimum order: ${minQty} ${unit}
-      </p>
+  <div class="price-row offer">
+    <span class="label">Offer price</span>
+    <span class="value offer-price">₹${p.Price}</span>
+  </div>
+
+</div>
+<p class="min-order">
+  Minimum order: ${minQty} ${unit}
+</p>
+
+<p class="tag">${tagText}</p>
 
       <div class="qty-row">
         <button class="qty-btn" onclick="changeQty('${p.id}', -1, ${minQty})">-</button>
