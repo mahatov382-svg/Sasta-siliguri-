@@ -40,7 +40,7 @@ body {
 
 /* ✅ LOGO SIZE MID */
 .logo {
-  width: 85ppx;
+  width: 85px;
   height: 85px;
   border-radius: 14px;
   object-fit: contain;
@@ -353,4 +353,22 @@ footer {
 /* ✅ CUSTOMER KE LIYE ADMIN LOGIN HIDE */
 .admin-login-wrapper {
   display: none !important;
+/* ============================= */
+/* ✅ CASH ON DELIVERY TEXT */
+/* ============================= */
+.cod-text {
+  font-size: 12px;
+  color: #000;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* ✅ QUALITY ISSUE POLICY TEXT */
+/* ============================= */
+.quality-text {
+  font-size: 12px;
+  color: #444;
+  text-align: center;
+  margin-bottom: 6px;
 }
