@@ -281,3 +281,11 @@ footer {
 .admin-login-wrapper {
   display: none !important;
 }
+/* ===== CASH ON DELIVERY (SMALL & CLEAN) ===== */
+.cod-text {
+  font-size: 11px;      /* chhota */
+  color: #444;          /* black-grey (trust look) */
+  font-weight: 600;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+}
