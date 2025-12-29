@@ -11,7 +11,7 @@ body {
   padding: 10px;
 }
 
-/* ================= TOP BAR ================= */
+/* TOP BAR */
 .announce-bar {
   background: #ffd84a;
   color: #3a2800;
@@ -23,13 +23,14 @@ body {
   font-weight: 700;
 }
 
-/* ================= HEADER ================= */
+/* HEADER */
 .header {
   background: #ffffff;
   border-radius: 16px;
   padding: 12px;
   margin-bottom: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
 }
 
 .brand {
@@ -39,8 +40,8 @@ body {
 }
 
 .logo {
-  width: 85px;
-  height: 85px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
   object-fit: contain;
   border: 2px solid #ff8a3c;
@@ -49,49 +50,37 @@ body {
 }
 
 .brand-text h1 {
-  font-size: 23px;
+  font-size: 22px;
   font-weight: 800;
-  margin-bottom: 2px;
 }
 
-/* ✅ ORANGE DELIVERY TEXT */
 .delivery-text {
   font-size: 13px;
   font-weight: 800;
   color: #ff7a00;
-  letter-spacing: 0.4px;
 }
 
-/* ✅ CASH ON DELIVERY – SMALL & TRUSTED */
 .cod-text {
   font-size: 11px;
   color: #444;
   font-weight: 600;
-  margin-top: 2px;
-  letter-spacing: 0.3px;
 }
 
-/* ================= CUSTOMER BOX ================= */
+/* CUSTOMER BOX */
 .customer-box {
-  background: #ffffff;
+  background: #fff;
   border-radius: 14px;
   padding: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
   margin-bottom: 10px;
-}
-
-.customer-box h2 {
-  font-size: 17px;
-  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
 }
 
 .customer-box input,
 .customer-box textarea {
   width: 100%;
-  padding: 9px 10px;
+  padding: 9px;
   border-radius: 9px;
   border: 1px solid #ddd;
-  font-size: 14px;
   margin-bottom: 7px;
 }
 
@@ -100,46 +89,19 @@ body {
   color: #777;
 }
 
-/* ================= ADMIN PANEL ================= */
-.admin-box {
-  background: #fff7e6;
-  border-radius: 14px;
-  padding: 12px;
-  border: 2px dashed #ff8a3c;
-  margin-bottom: 12px;
-}
-
-.admin-box input {
-  width: 100%;
-  padding: 9px;
-  border-radius: 9px;
-  border: 1px solid #ccc;
-  margin-bottom: 7px;
-}
-
-.admin-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-/* ================= SEARCH ================= */
-.controls {
-  margin-bottom: 10px;
-}
-
+/* SEARCH */
 .controls input {
   width: 100%;
   padding: 10px 12px;
   border-radius: 12px;
   border: 1px solid #ddd;
-  font-size: 14px;
+  margin-bottom: 10px;
 }
 
-/* ================= PRODUCTS ================= */
+/* PRODUCTS */
 .section-title {
   font-size: 20px;
-  margin: 10px 0;
+  margin-bottom: 10px;
   font-weight: 800;
 }
 
@@ -150,7 +112,7 @@ body {
 }
 
 .product-card {
-  background: #ffffff;
+  background: #fff;
   border-radius: 16px;
   padding: 12px;
   text-align: center;
@@ -163,43 +125,217 @@ body {
   margin-bottom: 8px;
 }
 
-.price {
-  font-size: 20px;
+.product-name {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+/* PRICE ALIGN LEFT–RIGHT */
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.label {
+  color: #555;
+}
+
+.value {
+  font-weight: 700;
+}
+
+.mrp {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.offer {
+  color: #0c7a03;
+}
+
+/* QTY */
+.qty-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #ff8a3c;
+  background: #fff;
+  font-size: 18px;
   font-weight: 800;
 }
 
-/* ================= BUTTONS ================= */
-.btn {
-  padding: 10px 14px;
+.qty-box input {
+  width: 50px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* OUT OF STOCK */
+.stock-badge {
+  background: #eee;
+  color: #555;
+  padding: 8px;
   border-radius: 999px;
-  font-weight: 800;
-  border: none;
-  cursor: pointer;
+  font-weight: 700;
 }
 
-.btn-whatsapp {
-  background: #0c7a03;
-  color: #fff;
-}
-
-/* ================= FOOTER ================= */
+/* FOOTER */
 footer {
   text-align: center;
   margin-top: 18px;
   font-size: 12px;
   color: #555;
-  line-height: 1.6;
+}
+/* ================= PRODUCT CARD CLEAN ALIGN FIX ================= */
+
+/* price rows left-right */
+.price-line,
+.min-order,
+.stock-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  margin: 4px 0;
 }
 
-/* ================= SMALL SCREEN ================= */
-@media (max-width: 400px) {
-  .logo {
-    width: 75px;
-    height: 75px;
-  }
+/* labels left */
+.price-line span:first-child,
+.min-order span:first-child {
+  color: #666;
+  font-weight: 600;
 }
 
-/* ================= HIDE ADMIN FOR CUSTOMER ================= */
-.admin-login-wrapper {
-  display: none !important;
+/* amounts right */
+.price-line span:last-child {
+  font-weight: 800;
+  color: #000;
+}
+
+/* offer price highlight */
+.offer-price {
+  color: #0c7a03;
+  font-size: 18px;
+}
+
+/* qty row clean */
+.qty-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #ff8a3c;
+  background: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.qty-input {
+  width: 50px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* out of stock button */
+.btn-disabled {
+  background: #e0e0e0;
+  color: #777;
+  cursor: not-allowed;
+}
+
+/* FORCE WHATSAPP GREEN BUTTON */
+.btn-whatsapp {
+  background: #0c7a03 !important;
+  color: #fff !important;
+  border-radius: 999px;
+  padding: 12px 16px;
+  font-weight: 800;
+}
+
+/* ===== CLEAN PRODUCT CART FIX ===== */
+
+.price-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mrp-label,
+.price-label {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.mrp {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 800;
+  color: #000;
+}
+
+.min-order {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #444;
+}
+
+.qty-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 10px 0;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ff8a3c;
+  background: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.qty-input {
+  width: 55px;
+  text-align: center;
+  padding: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* ADMIN PANEL: hide weight field only */
+#p-weight {
+  display: none;
 }
