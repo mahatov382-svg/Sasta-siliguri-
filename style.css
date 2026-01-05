@@ -114,21 +114,21 @@ body {
 .product-card {
   background: #fff;
   border-radius: 16px;
-  padding: 12px;
+  padding: 8px;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
 }
 
 .product-card img {
   width: 100%;
   border-radius: 12px;
-  margin-bottom: 8px;
-}
-
-.product-name {
-  font-size: 18px;
-  font-weight: 800;
   margin-bottom: 6px;
+}
+.product-name {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.2;   /* 👈 ye add */
 }
 
 /* PRICE ALIGN LEFT–RIGHT */
@@ -338,4 +338,85 @@ footer {
 /* ADMIN PANEL: hide weight field only */
 #p-weight {
   display: none;
+}
+
+/* ===== PRICE ENTRY ANIMATION ===== */
+
+.offer-price {
+  animation: pricePop 0.6s ease-out;
+}
+
+@keyframes pricePop {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Soft premium glow */
+.offer-price {
+  text-shadow: 0 2px 8px rgba(12, 122, 3, 0.25);
+}
+
+/* Hover delight (feel only) */
+.product-card:hover .offer-price {
+  transform: scale(1.04);
+  transition: transform 0.2s ease;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2px 0;
+}
+
+.price-row .label {
+  font-size: 13px;
+  color: #666;
+}
+
+.price-row .value {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.offer-price {
+  font-size: 20px;
+  font-weight: 900;
+  color: #1a7f00;
+}
+
+.btn-whatsapp {
+  white-space: nowrap;
+
+  height: 35px;          /* 👈 aur patla */
+  line-height: 35px;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  padding: 0 16px;       /* 👈 side se slim */
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25);
+}
+
+/* In stock ko LEFT me lane ke liye */
+.tag {
+  display: flex;
+  justify-content: flex-start; /* 👈 left */
+  align-items: center;
+
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 6px;
 }
