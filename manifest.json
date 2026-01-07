@@ -1,0 +1,28 @@
+{
+  "background_color": "#f6f3ee",
+"theme_color": "#f6f3ee",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "sastasiliguri",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "sastasiliguri",
+  "start_url": "/",
+  "theme_color": "rgb(246, 243, 238)",
+  "icons": [
+    {
+      "src": "https://sastasiliguri.in/favicon.png",
+      "type": "image/png",
+      "sizes": "500x500",
+      "isSquare": true,
+      "isPng": true,
+      "isWebp": false,
+      "isJpg": false,
+      "width": 500,
+      "is512x512": false,
+      "is256x256": false,
+      "is192x192": false
+    }
+  ],
+  "description": "Fresh fruits &amp; daily essentials with same day free delivery in Siliguri."
+}
