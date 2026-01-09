@@ -752,3 +752,32 @@ body {
     transition: none !important;
   }
 }
+
+/* ===== Desktop mode fix ===== */
+@media (min-width: 768px) {
+
+  body {
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .products,
+  .product-list,
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .product,
+  .product-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
