@@ -49,26 +49,37 @@ body {
     0 6px 18px rgba(0,0,0,0.10),
     inset 0 0 0 1px rgba(0,0,0,0.04);
 }
-
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;          /* pehle zyada tha */
 }
 
 .logo {
-  width: 70px;
+  width: 75px;
   height: 70px;
-  border-radius: 14px;
-  object-fit: contain;
+  padding: 4px;
   border: 2px solid #ff8a3c;
-  background: #fff;
-  padding: 6px;
+  border-radius: 14px;
+}
+
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;   /* 👈 IMAGE CURVE YAHAN HOGA */
 }
 
 .brand-text h1 {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.brand-text p {
+  margin: 2px 0 0;
+  font-size: 13px;
 }
 
 .delivery-text {
@@ -178,7 +189,7 @@ body {
 
 .price-block .mrp {
   font-size: 13px;
-  color: #999;
+  color: #444;
   text-decoration: line-through;
   display: block;
 }
@@ -186,7 +197,7 @@ body {
 .price-block .offer-price {
   font-size: 22px;
   font-weight: 900;
-  color: #1a7f00;
+  color: #1f1f1f;
   line-height: 1.2;
 }
 
@@ -249,7 +260,7 @@ footer {
 /* labels left */
 .price-line span:first-child,
 .min-order span:first-child {
-  color: #666;
+  color: #444;
   font-weight: 600;
 }
 
@@ -261,7 +272,7 @@ footer {
 
 /* offer price highlight */
 .offer-price {
-  color: #0c7a03;
+  color: #1f1f1f;;
   font-size: 18px;
 }
 
@@ -741,5 +752,3 @@ body {
     transition: none !important;
   }
 }
-
-
