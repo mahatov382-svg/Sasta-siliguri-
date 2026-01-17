@@ -476,7 +476,7 @@ footer {
 
 /* PRODUCT CARD LOAD ANIMATION */
 .product-card {
-  animation: cardFadeUp 1s ease both;
+  animation: cardFadeUp 0.2s ease both;
 }
 
 @keyframes cardFadeUp {
@@ -493,7 +493,7 @@ footer {
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 34px rgba(0,0,0,0.15);
-  transition: all 0.25s ease;
+  transition: all 0.2s ease;
 }
 
 .offer-price {
@@ -529,7 +529,7 @@ footer {
 }
 
 .product-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .product-card:hover {
