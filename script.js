@@ -199,6 +199,7 @@ function setupAdminLogin() {
 }
 
 // ================= ADMIN BUTTONS =================
+
 function setupAdminButtons() {
   const btnAdd = document.getElementById("admin-add");
   const btnSave = document.getElementById("admin-save");
@@ -209,7 +210,13 @@ function setupAdminButtons() {
   if (btnDelete) btnDelete.onclick = handleDeleteProduct;
 }
 
+// ================= PAGE LOAD =================
+
 document.addEventListener("DOMContentLoaded", () => {
+  subscribeProducts();
+  setupSearch();
   setupAdminLogin();
   setupAdminButtons();
 });
+
+      
