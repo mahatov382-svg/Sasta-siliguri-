@@ -1,206 +1,399 @@
-// ================= WHATSAPP NUMBER =================
+// ========== WhatsApp number ==========
+// 91 + number (without + sign)
 const phoneNumber = "917602884208";
 
-// ================= FIREBASE =================
+// ========== Firebase setup ==========
+
 const firebaseConfig = {
   apiKey: "AIzaSyA4SQeDddwhmSjTA_g9v2yuIYP-A7kR9ZE",
   authDomain: "sasta-siliguri.firebaseapp.com",
   projectId: "sasta-siliguri",
   storageBucket: "sasta-siliguri.firebasestorage.app",
   messagingSenderId: "989707472922",
-  appId: "1:989707472922:web:576cf7c9089fa1e65e81a3"
+  appId: "1:989707472922:web:576cf7c9089fa1e65e81a3",
+  measurementId: "G-0PSHKYBLTT"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ================= GLOBAL =================
-let products = [];
-let cart = {};
-let logoTapCount = 0;
-const ADMIN_PASSWORD = "1513";
+// ========== Global products list (from Firebase) ==========
+let products = []; // { id, Name, Weight, Price, Mrp, MinQty, Unit, Image, InStock }
 
-// ================= CUSTOMER =================
+// ========== Helper: read customer details ==========
+
 function getCustomerDetails() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
   const address = document.getElementById("cust-address").value.trim();
 
   if (!name || !phone || !address) {
-    alert("Name, phone aur address bharna zaroori hai");
+    alert("Please fill your name, phone and address before ordering.");
     return null;
   }
   return { name, phone, address };
 }
 
-// ================= QTY =================
+// ========== Qty +/- ==========
+
 function changeQty(id, delta, minQty) {
   const input = document.getElementById("qty-" + id);
   if (!input) return;
-  let v = parseInt(input.value) || minQty || 1;
-  v += delta;
-  if (v < minQty) v = minQty;
-  input.value = v;
+  let value = parseInt(input.value, 10) || minQty || 1;
+  value += delta;
+  if (value < (minQty || 1)) value = minQty || 1;
+  input.value = value;
 }
 
-// ================= ADD TO CART =================
-function addToCart(id) {
+// ========== WhatsApp order (FINAL BILL FORMAT) ==========
+
+function orderProduct(id) {
   const product = products.find(p => p.id === id);
-  if (!product || !product.InStock) return;
+  if (!product) {
+    alert("Product not found.");
+    return;
+  }
 
-  const qty = parseInt(document.getElementById("qty-" + id).value) || 1;
+  if (!product.InStock) {
+    alert("This item is currently out of stock.");
+    return;
+  }
 
-  if (cart[id]) cart[id].qty += qty;
-  else cart[id] = { product, qty };
-
-  updateCartUI();
-}
-
-// ================= CART UI =================
-function updateCartUI() {
-  const cartBar = document.getElementById("cart-bar");
-  const cartCount = document.getElementById("cart-count");
-  const cartItems = document.getElementById("cart-items");
-  const cartTotal = document.getElementById("cart-total");
-
-  let count = 0, total = 0;
-  cartItems.innerHTML = "";
-
-  Object.values(cart).forEach(item => {
-    count += item.qty;
-    total += item.qty * item.product.Price;
-    const div = document.createElement("div");
-    div.innerHTML = `<b>${item.product.Name}</b> × ${item.qty}`;
-    cartItems.appendChild(div);
-  });
-
-  cartCount.innerText = count;
-  cartTotal.innerText = total;
-  cartBar.style.display = count ? "flex" : "none";
-}
-
-// ================= CART BUTTONS =================
-document.getElementById("open-cart").onclick = () => {
-  document.getElementById("cart-modal").style.display = "block";
-};
-document.getElementById("close-cart").onclick = () => {
-  document.getElementById("cart-modal").style.display = "none";
-};
-
-// ================= CART → WHATSAPP =================
-document.getElementById("cart-whatsapp").onclick = () => {
   const customer = getCustomerDetails();
   if (!customer) return;
 
-  let msg = "🧾 SASTA SILIGURI ORDER\n\n";
-  let total = 0;
+  const qtyInput = document.getElementById("qty-" + id);
+  let qty = parseInt(qtyInput?.value, 10) || 1;
 
-  Object.values(cart).forEach(i => {
-    total += i.qty * i.product.Price;
-    msg += `${i.product.Name} × ${i.qty}\n`;
-  });
+  const minQty = product.MinQty || 1;
+  if (qty < minQty) {
+    qty = minQty;
+    if (qtyInput) qtyInput.value = qty;
+  }
 
-  msg += `\nTOTAL ₹${total}\n${customer.name}\n${customer.phone}\n${customer.address}`;
+  const price = product.Price || 0;
+  const mrp = product.Mrp || "-";
+  const total = price * qty;
+  const unit = product.Unit || "";
+  const weight = product.Weight || "-";
 
-  window.location.href =
-    `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
-};
+  const billMessage =
+`🧾 SASTA SILIGURI – DELIVERY BILL
 
-// ================= RENDER PRODUCTS =================
+📦 Product: ${product.Name}
+⚖ Weight: ${weight}
+🔢 Quantity: ${qty} ${unit}
+💰 Price: ₹${price}
+🏷 MRP: ₹${mrp}
+
+-------------------------
+✅ TOTAL AMOUNT: ₹${total}
+-------------------------
+
+👤 Customer Name: ${customer.name}
+
+📞 Phone: ${customer.phone}
+🏠 Address: ${customer.address}
+
+🚚 Delivery: Same Day (10am – 8pm)
+
+💸 Payment: Cash on Delivery.
+
+_______________________🚚 Same Day Free Delivery
+
+🙏 THANK YOU FOR SHOPPING SASTA SILIGURI`;
+
+  const url = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(billMessage)}`;
+  window.location.href = url;
+}
+
+// ========== Render products (Market / Offer text) ==========
+
 function renderProducts(list) {
-  const box = document.getElementById("product-list");
-  box.innerHTML = "";
+  const container = document.getElementById("product-list");
+  if (!container) return;
+
+  container.innerHTML = "";
 
   list.forEach(p => {
-    const d = document.createElement("div");
-    d.className = "product-card";
-    d.innerHTML = `
-      <img src="${p.Image || "placeholder.jpg"}">
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    // Market / Offer price text
+    const mrpHtml = (p.Mrp && p.Mrp > 0)
+      ? `<span class="mrp-label">Market price</span> <span class="mrp">₹${p.Mrp}</span><br>`
+      : "";
+
+    const tagText = p.InStock ? "In stock✅" : "Out of stock ❌";
+    const btnClass = p.InStock ? "btn-whatsapp" : "btn-disabled";
+    const btnText = p.InStock ? "Order on WhatsApp" : "Out of stock";
+
+    const minQty = p.MinQty || 1;
+    const unit = p.Unit || "";
+    const imgSrc = p.Image || "placeholder.jpg";
+
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="${p.Name}">
       <h2>${p.Name}</h2>
-      <p>Offer ₹${p.Price}</p>
+      <p class="weight">${p.Weight || ""}</p>
+
+    <div class="price-box">
+
+  ${p.Mrp && p.Mrp > 0 ? `
+  <div class="price-row market">
+    <span class="label">Market price</span>
+    <span class="value mrp">₹${p.Mrp}</span>
+  </div>
+  ` : ""}
+
+  <div class="price-row offer">
+    <span class="label">Offer price</span>
+    <span class="value offer-price">₹${p.Price}</span>
+  </div>
+
+</div>
+<p class="min-order">
+  Minimum order: ${minQty} ${unit}
+</p>
+
+<p class="tag">${tagText}</p>
+
       <div class="qty-row">
-        <button onclick="changeQty('${p.id}',-1,${p.MinQty||1})">-</button>
-        <input id="qty-${p.id}" value="${p.MinQty||1}">
-        <button onclick="changeQty('${p.id}',1,${p.MinQty||1})">+</button>
+        <button class="qty-btn" onclick="changeQty('${p.id}', -1, ${minQty})">-</button>
+        <input id="qty-${p.id}" class="qty-input" type="number" min="${minQty}" value="${minQty}">
+        <button class="qty-btn" onclick="changeQty('${p.id}', 1, ${minQty})">+</button>
       </div>
-      <button onclick="addToCart('${p.id}')">Add to Cart</button>
+
+      <button class="btn ${btnClass}" onclick="orderProduct('${p.id}')">${btnText}</button>
     `;
-    box.appendChild(d);
+
+    container.appendChild(card);
   });
 }
 
-// ================= SEARCH =================
-document.getElementById("search-input").addEventListener("input", e => {
-  const q = e.target.value.toLowerCase();
-  renderProducts(products.filter(p => p.Name.toLowerCase().includes(q)));
-});
+// ========== Search ==========
 
-// ================= FIREBASE =================
-db.collection("products").onSnapshot(snap => {
-  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  renderProducts(products);
-});
+function setupSearch() {
+  const searchInput = document.getElementById("search-input");
+  if (!searchInput) return;
 
-// ================= ADMIN LOGIN (3 TAP) =================
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase();
+    const filtered = products.filter(p =>
+      p.Name.toLowerCase().includes(q)
+    );
+    renderProducts(filtered);
+  });
+}
+
+// ========== Firebase: subscribe to products collection ==========
+
+function subscribeProducts() {
+  db.collection("products")
+    .orderBy("Name")
+    .onSnapshot(snapshot => {
+      products = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      renderProducts(products);
+    }, err => {
+      console.error("Firestore error:", err);
+      alert("Error loading products from server. Check Firestore rules & config.");
+    });
+}
+
+// ========== Admin login (simple password) ==========
+
+const ADMIN_PASSWORD = "1513";
+
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
   const logo = document.querySelector(".logo");
+  const loginWrapper = document.querySelector(".admin-login-wrapper");
+  const btn = document.getElementById("admin-login-btn");
 
-  panel.style.display = "none";
+  if (!panel || !logo) return;
 
+  // ✅ Admin login button ko hide kar do (customer ko dikhega hi nahi)
+  if (loginWrapper) loginWrapper.style.display = "none";
+  if (btn) btn.style.display = "none";
+
+  // Agar pehle unlock kiya tha to direct panel show
+  const unlocked = localStorage.getItem("sasta_admin_unlocked") === "yes";
+  if (unlocked) {
+    panel.style.display = "block";
+  }
+
+  // ✅ Simple shortcut: logo pe tap -> password
   logo.addEventListener("click", () => {
-    logoTapCount++;
-
-    if (logoTapCount === 3) {
-      logoTapCount = 0;
-      const pwd = prompt("Admin password:");
-      if (pwd === ADMIN_PASSWORD) {
-        panel.style.display = "block";
-      } else {
-        alert("Galat password");
-      }
+    const pwd = prompt("Enter admin password:");
+    if (pwd === ADMIN_PASSWORD) {
+      panel.style.display = "block";
+      localStorage.setItem("sasta_admin_unlocked", "yes");
+    } else if (pwd !== null) {
+      alert("Wrong password");
     }
   });
 }
 
-// ================= ADMIN ACTIONS =================
-async function handleAddProduct() {
-  await db.collection("products").add({
-    Name: p("p-name"),
-    Price: +p("p-price"),
-    Mrp: +p("p-mrp"),
-    MinQty: +p("p-min") || 1,
-    Unit: p("p-unit"),
-    Image: p("p-image"),
-    InStock: document.getElementById("p-stock").checked
+// ========== Admin helpers (Firestore) ==========
+
+async function readImageFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = e => reject(e);
+    reader.readAsDataURL(file);
   });
-  alert("Product added");
+}
+
+function getAdminFormValues() {
+  const name = document.getElementById("p-name").value.trim();
+  const weight = document.getElementById("p-weight").value.trim();
+  const price = Number(document.getElementById("p-price").value);
+  const mrp = Number(document.getElementById("p-mrp").value);
+  const minQty = Number(document.getElementById("p-min").value) || 1;
+  const unit = document.getElementById("p-unit").value.trim();
+  const imageUrl = document.getElementById("p-image").value.trim();
+  const fileInput = document.getElementById("p-file");
+  const inStock = document.getElementById("p-stock").checked;
+
+  return { name, weight, price, mrp, minQty, unit, imageUrl, fileInput, inStock };
+}
+
+async function findDocIdByName(name) {
+  const snap = await db.collection("products")
+    .where("Name", "==", name)
+    .limit(1)
+    .get();
+
+  if (snap.empty) return null;
+  return snap.docs[0].id;
+}
+
+// ========== Admin actions ==========
+
+async function handleAddProduct() {
+  try {
+    const {
+      name, weight, price, mrp, minQty,
+      unit, imageUrl, fileInput, inStock
+    } = getAdminFormValues();
+
+    if (!name || !price) {
+      alert("Name aur Price required hai.");
+      return;
+    }
+
+    let image = imageUrl;
+    if (fileInput.files && fileInput.files[0]) {
+      image = await readImageFileAsDataURL(fileInput.files[0]);
+    }
+
+    await db.collection("products").add({
+      Name: name,
+      Weight: weight,
+      Price: price,
+      Mrp: mrp,
+      MinQty: minQty || 1,
+      Unit: unit,
+      Image: image || "",
+      InStock: inStock
+    });
+
+    alert("Product added (Firebase).");
+  } catch (err) {
+    console.error(err);
+    alert("Error adding product. Console check karo.");
+  }
 }
 
 async function handleSaveProduct() {
-  const name = p("p-name");
-  const snap = await db.collection("products").where("Name","==",name).limit(1).get();
-  if (snap.empty) return alert("Product nahi mila");
-  await db.collection("products").doc(snap.docs[0].id).update({
-    Price:+p("p-price"), Mrp:+p("p-mrp")
-  });
-  alert("Updated");
+  try {
+    const {
+      name, weight, price, mrp, minQty,
+      unit, imageUrl, fileInput, inStock
+    } = getAdminFormValues();
+
+    if (!name) {
+      alert("Save / update ke liye Product name likho.");
+      return;
+    }
+
+    const docId = await findDocIdByName(name);
+    if (!docId) {
+      alert("Is name ka product nahi mila.");
+      return;
+    }
+
+    let image = imageUrl;
+    if (fileInput.files && fileInput.files[0]) {
+      image = await readImageFileAsDataURL(fileInput.files[0]);
+    }
+
+    const updateData = {
+      Name: name,
+      Weight: weight,
+      Price: price || 0,
+      Mrp: mrp || 0,
+      MinQty: minQty || 1,
+      Unit: unit,
+      InStock: inStock
+    };
+
+    if (image) updateData.Image = image;
+
+    await db.collection("products").doc(docId).update(updateData);
+    alert("Product updated.");
+  } catch (err) {
+    console.error(err);
+    alert("Error updating product.");
+  }
 }
 
 async function handleDeleteProduct() {
-  const name = p("p-name");
-  const snap = await db.collection("products").where("Name","==",name).limit(1).get();
-  if (snap.empty) return alert("Product nahi mila");
-  await db.collection("products").doc(snap.docs[0].id).delete();
-  alert("Deleted");
+  try {
+    const name = document.getElementById("p-name").value.trim();
+    if (!name) {
+      alert("Delete ke liye Product name likho.");
+      return;
+    }
+
+    const sure = confirm(`Delete "${name}" ?`);
+    if (!sure) return;
+
+    const docId = await findDocIdByName(name);
+    if (!docId) {
+      alert("Is name ka product nahi mila.");
+      return;
+    }
+
+    await db.collection("products").doc(docId).delete();
+    alert("Product deleted.");
+  } catch (err) {
+    console.error(err);
+    alert("Error deleting product.");
+  }
 }
 
-function p(id){ return document.getElementById(id).value.trim(); }
+// ========== Setup admin buttons ==========
 
-// ================= INIT =================
+function setupAdminButtons() {
+  const btnAdd = document.getElementById("admin-add");
+  const btnSave = document.getElementById("admin-save");
+  const btnDelete = document.getElementById("admin-delete");
+
+  if (btnAdd) btnAdd.addEventListener("click", handleAddProduct);
+  if (btnSave) btnSave.addEventListener("click", handleSaveProduct);
+  if (btnDelete) btnDelete.addEventListener("click", handleDeleteProduct);
+}
+
+// ========== Init on page load ==========
+
 document.addEventListener("DOMContentLoaded", () => {
+  subscribeProducts();
+  setupSearch();
   setupAdminLogin();
-  document.getElementById("admin-add").onclick = handleAddProduct;
-  document.getElementById("admin-save").onclick = handleSaveProduct;
-  document.getElementById("admin-delete").onclick = handleDeleteProduct;
+  setupAdminButtons();
 });
