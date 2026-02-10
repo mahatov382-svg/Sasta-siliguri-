@@ -209,3 +209,7 @@ function setupAdminButtons() {
   if (btnDelete) btnDelete.onclick = handleDeleteProduct;
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  setupAdminLogin();
+  setupAdminButtons();
+});
