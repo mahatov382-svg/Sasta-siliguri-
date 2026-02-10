@@ -83,6 +83,37 @@
       <input id="search-input" type="text" placeholder="Search fruits">
     </section>
 
+    <!-- ===== CART BAR ===== -->
+<div id="cart-bar" style="display:none;">
+  <div class="cart-left">
+    🛒 <span id="cart-count">0</span> item added
+  </div>
+  <button id="open-cart" class="btn btn-whatsapp">
+    View Cart
+  </button>
+</div>
+
+<!-- ===== CART MODAL ===== -->
+<div id="cart-modal" style="display:none;">
+  <div class="cart-box">
+    <h2>Your Cart</h2>
+
+    <div id="cart-items"></div>
+
+    <p class="cart-total">
+      Total: ₹<span id="cart-total">0</span>
+    </p>
+
+    <button id="cart-whatsapp" class="btn btn-whatsapp">
+      Order on WhatsApp
+    </button>
+
+    <button id="close-cart" class="btn btn-disabled">
+      Close
+    </button>
+  </div>
+</div>
+
     <!-- PRODUCTS -->
     <h2 class="section-title">Fruits</h2>
     <div id="product-list" class="product-grid"></div>
