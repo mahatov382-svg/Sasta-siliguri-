@@ -401,19 +401,9 @@ itemsBox.appendChild(div);
 // ========== CART → WHATSAPP ==========
 
 
-async function handleSaveProduct() {
-  try {
-    const {
-      name, weight, price, mrp, minQty,
-      unit, imageUrl, fileInput, inStock
-    } = getAdminFormValues();
-
-    if (!name) {
-      alert("Save / update ke liye Product name likho.");
-      return;function orderCartOnWhatsApp() {
+function orderCartOnWhatsApp() {
   const customer = getCustomerDetails();
   if (!customer) return;
-      }
 
   let msg = "🧾 SASTA SILIGURI - ORDER\n\n";
   let grandTotal = 0;
@@ -429,39 +419,9 @@ async function handleSaveProduct() {
 
   window.location.href =
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
-      }
-    }
-
-    const docId = await findDocIdByName(name);
-    if (!docId) {
-      alert("Is name ka product nahi mila.");
-      return;
-    }
-
-    let image = imageUrl;
-    if (fileInput.files && fileInput.files[0]) {
-      image = await readImageFileAsDataURL(fileInput.files[0]);
-    }
-
-    const updateData = {
-      Name: name,
-      Weight: weight,
-      Price: price || 0,
-      Mrp: mrp || 0,
-      MinQty: minQty || 1,
-      Unit: unit,
-      InStock: inStock
-    };
-
-    if (image) updateData.Image = image;
-
-    await db.collection("products").doc(docId).update(updateData);
-    alert("Product updated.");
-  } catch (err) {
-    console.error(err);
-    alert("Error updating product.");
-  }
 }
+
+  
 
 async function handleDeleteProduct() {
   try {
