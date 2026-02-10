@@ -171,7 +171,7 @@ const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const logo = document.querySelector(".logo");
+  const logo = document.querySelector(".brand");
   const loginWrapper = document.querySelector(".admin-login-wrapper");
   const btn = document.getElementById("admin-login-btn");
 
