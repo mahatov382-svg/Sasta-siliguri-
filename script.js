@@ -472,3 +472,28 @@ renderCartItems();
 });
 
 
+// ========== CART FIX FUNCTIONS (FINAL) ==========
+
+function changeCartQty(id, delta) {
+  if (!cart[id]) return;
+
+  cart[id].qty += delta;
+
+  if (cart[id].qty < 1) {
+    delete cart[id];
+  }
+
+  saveCart();
+  updateCartUI();
+  renderCartItems();
+}
+
+function removeFromCart(id) {
+  if (!cart[id]) return;
+
+  delete cart[id];
+
+  saveCart();
+  updateCartUI();
+  renderCartItems();
+}
