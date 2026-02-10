@@ -1,6 +1,7 @@
-window.ADMIN_FORCE = false; // test ke liye
 // ================= WHATSAPP NUMBER =================
 const phoneNumber = "917602884208";
+
+window.ADMIN_FORCE = false; // test ke liye
 
 // ================= FIREBASE =================
 const firebaseConfig = {
