@@ -309,6 +309,98 @@ async function handleAddProduct() {
   }
 }
 
+// ========== CART ==========
+let cart = JSON.parse(localStorage.getItem("sasta_cart")) || {};
+// cart = { productId: { product, qty } }
+
+function saveCart() {
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+}
+
+
+
+
+// ========== ADD TO CART ==========
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  if (!product || !product.InStock) return;
+
+  const qtyInput = document.getElementById("qty-" + id);
+  const qty = parseInt(qtyInput?.value, 10) || product.MinQty || 1;
+
+  if (cart[id]) {
+    cart[id].qty += qty;
+  } else {
+    cart[id] = { product, qty };
+  }
+
+  updateCartUI();
+}
+saveCart();
+
+// ========== CART UI ==========
+function updateCartUI() {
+  const bar = document.getElementById("cart-bar");
+  const countEl = document.getElementById("cart-count");
+
+  let totalQty = 0;
+  Object.values(cart).forEach(i => totalQty += i.qty);
+
+  if (totalQty > 0) {
+    bar.style.display = "flex";
+    countEl.innerText = totalQty;
+  } else {
+    bar.style.display = "none";
+  }
+}
+saveCart();
+
+
+// ========== OPEN / CLOSE CART ==========
+function openCart() {
+  document.getElementById("cart-modal").style.display = "block";
+  renderCartItems();
+}
+
+function closeCart() {
+  document.getElementById("cart-modal").style.display = "none";
+}
+
+// ========== RENDER CART ==========
+function renderCartItems() {
+  const itemsBox = document.getElementById("cart-items");
+  const totalBox = document.getElementById("cart-total");
+
+  itemsBox.innerHTML = "";
+  let total = 0;
+
+  Object.values(cart).forEach(item => {
+    const lineTotal = item.qty * item.product.Price;
+    total += lineTotal;
+
+    const div = document.createElement("div");
+div.className = "cart-item";
+
+div.innerHTML = `
+  <strong>${item.product.Name}</strong><br>
+
+  <button onclick="changeCartQty('${item.product.id}', -1)">−</button>
+  <span> ${item.qty} </span>
+  <button onclick="changeCartQty('${item.product.id}', 1)">+</button>
+
+  × ₹${item.product.Price}
+
+  <button onclick="removeFromCart('${item.product.id}')">❌</button>
+`;
+
+itemsBox.appendChild(div);
+
+  totalBox.innerText = total;
+}
+
+// ========== CART → WHATSAPP ==========
+
+
 async function handleSaveProduct() {
   try {
     const {
@@ -318,7 +410,26 @@ async function handleSaveProduct() {
 
     if (!name) {
       alert("Save / update ke liye Product name likho.");
-      return;
+      return;function orderCartOnWhatsApp() {
+  const customer = getCustomerDetails();
+  if (!customer) return;
+      }
+
+  let msg = "🧾 SASTA SILIGURI - ORDER\n\n";
+  let grandTotal = 0;
+
+  Object.values(cart).forEach(item => {
+    const t = item.qty * item.product.Price;
+    grandTotal += t;
+    msg += `📦 ${item.product.Name}\nQty: ${item.qty}\nPrice: ₹${t}\n\n`;
+  });
+
+  msg += `TOTAL: ₹${grandTotal}\n\n`;
+  msg += `👤 ${customer.name}\n📞 ${customer.phone}\n🏠 ${customer.address}`;
+
+  window.location.href =
+    `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
+      }
     }
 
     const docId = await findDocIdByName(name);
@@ -392,6 +503,8 @@ function setupAdminButtons() {
 // ========== Init on page load ==========
 
 document.addEventListener("DOMContentLoaded", () => {
+  updateCartUI();
+renderCartItems();
   subscribeProducts();
   setupSearch();
   setupAdminLogin();
