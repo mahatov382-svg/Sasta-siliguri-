@@ -165,3 +165,47 @@ db.collection("products").orderBy("Name").onSnapshot(snap => {
   products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   renderProducts(products);
 });
+
+// ================= ADMIN LOGIN =================
+const ADMIN_PASSWORD = "1513";
+
+function setupAdminLogin() {
+  const panel = document.getElementById("admin-panel");
+  const logo = document.querySelector(".logo");
+  const loginWrapper = document.querySelector(".admin-login-wrapper");
+  const btn = document.getElementById("admin-login-btn");
+
+  if (!panel || !logo) return;
+
+  // customer se hide
+  if (loginWrapper) loginWrapper.style.display = "none";
+  if (btn) btn.style.display = "none";
+
+  // already unlocked
+  if (localStorage.getItem("sasta_admin_unlocked") === "yes") {
+    panel.style.display = "block";
+  }
+
+  // logo tap = login
+  logo.addEventListener("click", () => {
+    const pwd = prompt("Enter admin password:");
+    if (pwd === ADMIN_PASSWORD) {
+      panel.style.display = "block";
+      localStorage.setItem("sasta_admin_unlocked", "yes");
+    } else if (pwd !== null) {
+      alert("Wrong password");
+    }
+  });
+}
+
+// ================= ADMIN BUTTONS =================
+function setupAdminButtons() {
+  const btnAdd = document.getElementById("admin-add");
+  const btnSave = document.getElementById("admin-save");
+  const btnDelete = document.getElementById("admin-delete");
+
+  if (btnAdd) btnAdd.onclick = handleAddProduct;
+  if (btnSave) btnSave.onclick = handleSaveProduct;
+  if (btnDelete) btnDelete.onclick = handleDeleteProduct;
+}
+
