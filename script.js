@@ -228,7 +228,8 @@ function subscribeProducts() {
     });
 }
 
-/* ================= ADMIN LOGIN (LOGO TAP FINAL) ================= */
+/* ================= ADMIN FULL SYSTEM ================= */
+
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
@@ -239,22 +240,119 @@ function setupAdminLogin() {
 
   logo.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
-
     if (pwd === ADMIN_PASSWORD) {
-    panel.removeAttribute("style");
-panel.style.display = "block";
-panel.scrollIntoView({ behavior: "smooth" });
-alert("Admin panel unlocked");
-    } 
-    else if (pwd !== null) {
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth" });
+      alert("Admin panel unlocked");
+    } else if (pwd !== null) {
       alert("Wrong password");
     }
   });
 }
 
-/* ================= INIT ================= */
+/* ================= IMAGE UPLOAD ================= */
+
+async function uploadImage(file) {
+  const ref = storage.ref("products/" + Date.now() + "_" + file.name);
+  await ref.put(file);
+  return await ref.getDownloadURL();
+}
+
+/* ================= ADMIN SAVE / UPDATE ================= */
+
+async function saveOrUpdateProduct() {
+  const name = document.getElementById("p-name").value.trim();
+  const weight = document.getElementById("p-weight").value.trim();
+  const price = Number(document.getElementById("p-price").value);
+  const mrp = Number(document.getElementById("p-mrp").value);
+  const min = Number(document.getElementById("p-min").value) || 1;
+  const unit = document.getElementById("p-unit").value.trim();
+  const stock = document.getElementById("p-stock").checked;
+  const file = document.getElementById("p-file").files[0];
+  const imageUrlInput = document.getElementById("p-image").value.trim();
+
+  if (!name || !price) {
+    alert("Name & Price required");
+    return;
+  }
+
+  let imageUrl = imageUrlInput;
+
+  if (file) {
+    imageUrl = await uploadImage(file);
+  }
+
+  const data = {
+    Name: name,
+    Weight: weight,
+    Price: price,
+    Mrp: mrp,
+    MinQty: min,
+    Unit: unit,
+    InStock: stock,
+    Image: imageUrl || ""
+  };
+
+  if (selectedProductId) {
+    await db.collection("products").doc(selectedProductId).update(data);
+    alert("Product updated");
+  } else {
+    await db.collection("products").add(data);
+    alert("Product added");
+  }
+
+  clearAdminForm();
+}
+
+/* ================= DELETE PRODUCT ================= */
+
+async function deleteProduct() {
+  if (!selectedProductId) {
+    alert("Select product first");
+    return;
+  }
+
+  await db.collection("products").doc(selectedProductId).delete();
+  alert("Product deleted");
+  clearAdminForm();
+}
+
+/* ================= SELECT PRODUCT FOR EDIT ================= */
+
+function selectProductForEdit(product) {
+  selectedProductId = product.id;
+
+  document.getElementById("p-name").value = product.Name || "";
+  document.getElementById("p-weight").value = product.Weight || "";
+  document.getElementById("p-price").value = product.Price || "";
+  document.getElementById("p-mrp").value = product.Mrp || "";
+  document.getElementById("p-min").value = product.MinQty || 1;
+  document.getElementById("p-unit").value = product.Unit || "";
+  document.getElementById("p-image").value = product.Image || "";
+  document.getElementById("p-stock").checked = product.InStock !== false;
+}
+
+/* ================= CLEAR FORM ================= */
+
+function clearAdminForm() {
+  selectedProductId = null;
+  document.querySelectorAll("#admin-panel input").forEach(i => i.value = "");
+  document.getElementById("p-stock").checked = true;
+}
+
+/* ================= ADMIN BUTTON EVENTS ================= */
+
 document.addEventListener("DOMContentLoaded", () => {
-  updateCartUI();
-  subscribeProducts();
   setupAdminLogin();
+
+  const saveBtn = document.getElementById("admin-save");
+  const addBtn = document.getElementById("admin-add");
+  const deleteBtn = document.getElementById("admin-delete");
+
+  if (saveBtn) saveBtn.addEventListener("click", saveOrUpdateProduct);
+  if (addBtn) addBtn.addEventListener("click", () => {
+    selectedProductId = null;
+    saveOrUpdateProduct();
+  });
+  if (deleteBtn) deleteBtn.addEventListener("click", deleteProduct);
 });
