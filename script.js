@@ -1,7 +1,7 @@
-// ================= WHATSAPP NUMBER =================
+/* ================= WHATSAPP NUMBER ================= */
 const phoneNumber = "917602884208";
 
-// ================= FIREBASE =================
+/* ================= FIREBASE ================= */
 const firebaseConfig = {
   apiKey: "AIzaSyA4SQeDddwhmSjTA_g9v2yuIYP-A7kR9ZE",
   authDomain: "sasta-siliguri.firebaseapp.com",
@@ -14,7 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ================= GLOBAL =================
+/* ================= GLOBAL ================= */
 let products = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || {};
 
@@ -22,7 +22,7 @@ function saveCart() {
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
 }
 
-// ================= CUSTOMER =================
+/* ================= CUSTOMER ================= */
 function getCustomerDetails() {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
@@ -35,7 +35,7 @@ function getCustomerDetails() {
   return { name, phone, address };
 }
 
-// ================= ADD TO CART =================
+/* ================= ADD TO CART ================= */
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   if (!product || !product.InStock) return;
@@ -53,7 +53,7 @@ function addToCart(id) {
   updateCartUI();
 }
 
-// ================= CART UI =================
+/* ================= CART UI ================= */
 function updateCartUI() {
   const bar = document.getElementById("cart-bar");
   const count = document.getElementById("cart-count");
@@ -67,7 +67,7 @@ function updateCartUI() {
   count.innerText = totalQty;
 }
 
-// ================= CART MODAL =================
+/* ================= CART MODAL ================= */
 function openCart() {
   renderCartItems();
   document.getElementById("cart-modal").style.display = "block";
@@ -92,9 +92,16 @@ function renderCartItems() {
     div.className = "cart-item";
 
     div.innerHTML = `
-      <strong>${item.product.Name}</strong><br>
-      ${item.qty} × ₹${item.product.Price}
-      <button onclick="removeFromCart('${id}')">❌</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div>
+          <strong>${item.product.Name}</strong><br>
+          ${item.qty} × ₹${item.product.Price}
+        </div>
+        <button onclick="removeFromCart('${id}')" 
+          style="background:#ff3b3b;border:none;color:#fff;border-radius:50%;width:28px;height:28px;font-weight:bold;">
+          ×
+        </button>
+      </div>
       <hr>
     `;
 
@@ -111,7 +118,7 @@ function removeFromCart(id) {
   renderCartItems();
 }
 
-// ================= WHATSAPP ORDER =================
+/* ================= WHATSAPP ORDER ================= */
 function orderCartOnWhatsApp() {
   const customer = getCustomerDetails();
   if (!customer) return;
@@ -132,7 +139,7 @@ function orderCartOnWhatsApp() {
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
 }
 
-// ================= QTY +/- =================
+/* ================= QTY +/- FIX ================= */
 function changeQty(id, delta, minQty) {
   const input = document.getElementById("qty-" + id);
   let v = parseInt(input.value) || minQty || 1;
@@ -141,7 +148,7 @@ function changeQty(id, delta, minQty) {
   input.value = v;
 }
 
-// ================= RENDER PRODUCTS (PREMIUM) =================
+/* ================= RENDER PRODUCTS (FIXED UI) ================= */
 function renderProducts(list) {
   const container = document.getElementById("product-list");
   container.innerHTML = "";
@@ -180,7 +187,7 @@ function renderProducts(list) {
 
       <div class="qty-row">
         <button class="qty-btn" onclick="changeQty('${p.id}',-1,${minQty})">−</button>
-        <input id="qty-${p.id}" class="qty-input" value="${minQty}">
+        <input id="qty-${p.id}" class="qty-input" value="${minQty}" type="number">
         <button class="qty-btn" onclick="changeQty('${p.id}',1,${minQty})">+</button>
       </div>
 
@@ -195,7 +202,7 @@ function renderProducts(list) {
   });
 }
 
-// ================= FIREBASE LOAD =================
+/* ================= FIREBASE LOAD ================= */
 function subscribeProducts() {
   db.collection("products")
     .orderBy("Name")
@@ -208,26 +215,28 @@ function subscribeProducts() {
     });
 }
 
-// ================= ADMIN LOGIN =================
+/* ================= ADMIN LOGIN FIXED ================= */
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const loginWrapper = document.querySelector(".admin-login-wrapper");
-  const logo = document.querySelector(".logo");
+  const loginBtn = document.getElementById("admin-login-btn");
 
-  // hide admin button for customers
-  if (loginWrapper) loginWrapper.style.display = "none";
+  if (!loginBtn) return;
 
-  logo.addEventListener("click", () => {
+  loginBtn.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
     if (pwd === ADMIN_PASSWORD) {
       panel.style.display = "block";
+      loginBtn.style.display = "none";
+      alert("Admin panel unlocked");
+    } else {
+      alert("Wrong password");
     }
   });
 }
 
-// ================= INIT =================
+/* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
   updateCartUI();
   subscribeProducts();
