@@ -20,6 +20,43 @@ const db = firebase.firestore();
 // ========== Global products list (from Firebase) ==========
 let products = []; // { id, Name, Weight, Price, Mrp, MinQty, Unit, Image, InStock }
 
+// ========== CART SYSTEM START ==========
+let cart = JSON.parse(localStorage.getItem("sasta_cart")) || {};
+
+function saveCart() {
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  if (!product || !product.InStock) return;
+
+  const qtyInput = document.getElementById("qty-" + id);
+  const qty = parseInt(qtyInput?.value, 10) || product.MinQty || 1;
+
+  if (cart[id]) {
+    cart[id].qty += qty;
+  } else {
+    cart[id] = { product, qty };
+  }
+
+  saveCart();
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const countEl = document.getElementById("cart-count");
+  if (!countEl) return;
+
+  let totalQty = 0;
+  Object.values(cart).forEach(item => {
+    totalQty += item.qty;
+  });
+
+  countEl.innerText = totalQty;
+}
+
+
 // ========== Helper: read customer details ==========
 
 function getCustomerDetails() {
@@ -450,8 +487,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <button class="qty-btn" onclick="changeQty('${p.id}', 1, ${minQty})">+</button>
       </div>
 
-      <button class="btn ${btnClass}" onclick="orderProduct('${p.id}')">${btnText}</button>
-    `;
+      <button class="btn btn-cart" onclick="addToCart('${p.id}')">
+  Add to Cart
+</button>
 
     container.appendChild(card);
   });
