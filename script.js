@@ -243,8 +243,11 @@ function setupAdminLogin() {
   logo.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
     if (pwd === ADMIN_PASSWORD) {
-      panel.style.display = "block";
-      panel.scrollIntoView({ behavior: "smooth" });
+panel.removeAttribute("style");
+panel.style.display = "block";
+panel.style.opacity = "1";
+panel.style.visibility = "visible";
+panel.scrollIntoView({ behavior: "smooth" });
       alert("Admin panel unlocked");
     } else if (pwd !== null) {
       alert("Wrong password");
