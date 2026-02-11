@@ -228,30 +228,26 @@ function subscribeProducts() {
     });
 }
 
-/* ================= ADMIN LOGIN FIX (LOGO TAP) ================= */
+/* ================= ADMIN LOGIN FINAL FIX ================= */
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const logo = document.querySelector(".logo");
-  const loginWrapper = document.querySelector(".admin-login-wrapper");
+  const loginBtn = document.getElementById("admin-login-btn");
 
-  if (loginWrapper) loginWrapper.style.display = "none";
+  if (!panel || !loginBtn) return;
 
-  if (logo) {
-    logo.addEventListener("click", () => {
-      const pwd = prompt("Enter admin password:");
-      if (pwd === ADMIN_PASSWORD) {
-       panel.style.display = "block";
-       panel.style.opacity = "1";
-       panel.style.visibility = "visible";
-       panel.scrollIntoView({ behavior: "smooth" });
+  loginBtn.addEventListener("click", () => {
+    const pwd = prompt("Enter admin password:");
+
+    if (pwd === ADMIN_PASSWORD) {
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth" });
       alert("Admin panel unlocked");
-      } else if (pwd !== null) {
-        alert("Wrong password");
-      }
-    });
-  }
+    } else if (pwd !== null) {
+      alert("Wrong password");
+    }
+  });
 }
 
 /* ================= INIT ================= */
