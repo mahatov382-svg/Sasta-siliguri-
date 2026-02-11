@@ -38,7 +38,7 @@ function getCustomerDetails() {
 /* ================= ADD TO CART ================= */
 function addToCart(id) {
   const product = products.find(p => p.id === id);
-  if (!product || !product.InStock) return;
+  if (!product || product.InStock === false) return;
 
   const qtyInput = document.getElementById("qty-" + id);
   const qty = parseInt(qtyInput?.value) || product.MinQty || 1;
@@ -67,7 +67,7 @@ function updateCartUI() {
   count.innerText = totalQty;
 }
 
-/* ================= CART MODAL ================= */
+/* ================= CART MODAL PREMIUM ================= */
 function openCart() {
   renderCartItems();
   document.getElementById("cart-modal").style.display = "block";
@@ -92,17 +92,26 @@ function renderCartItems() {
     div.className = "cart-item";
 
     div.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div>
-          <strong>${item.product.Name}</strong><br>
-          ${item.qty} × ₹${item.product.Price}
+          <strong style="font-size:16px;">${item.product.Name}</strong><br>
+          <span style="color:#555;">${item.qty} × ₹${item.product.Price}</span>
         </div>
-        <button onclick="removeFromCart('${id}')" 
-          style="background:#ff3b3b;border:none;color:#fff;border-radius:50%;width:28px;height:28px;font-weight:bold;">
+
+        <button onclick="removeFromCart('${id}')"
+          style="
+            background:#ff4d4d;
+            border:none;
+            color:#fff;
+            width:30px;
+            height:30px;
+            border-radius:50%;
+            font-size:16px;
+            cursor:pointer;">
           ×
         </button>
       </div>
-      <hr>
+      <hr style="opacity:0.2;">
     `;
 
     box.appendChild(div);
@@ -139,16 +148,20 @@ function orderCartOnWhatsApp() {
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
 }
 
-/* ================= QTY +/- FIX ================= */
+/* ================= QTY +/- FIXED ================= */
 function changeQty(id, delta, minQty) {
   const input = document.getElementById("qty-" + id);
-  let v = parseInt(input.value) || minQty || 1;
-  v += delta;
-  if (v < minQty) v = minQty;
-  input.value = v;
+  if (!input) return;
+
+  let value = parseInt(input.value) || minQty || 1;
+  value += delta;
+
+  if (value < minQty) value = minQty;
+
+  input.value = value;
 }
 
-/* ================= RENDER PRODUCTS (FIXED UI) ================= */
+/* ================= RENDER PRODUCTS ================= */
 function renderProducts(list) {
   const container = document.getElementById("product-list");
   container.innerHTML = "";
@@ -215,25 +228,27 @@ function subscribeProducts() {
     });
 }
 
-/* ================= ADMIN LOGIN FIXED ================= */
+/* ================= ADMIN LOGIN FIX (LOGO TAP) ================= */
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const loginBtn = document.getElementById("admin-login-btn");
+  const logo = document.querySelector(".logo");
+  const loginWrapper = document.querySelector(".admin-login-wrapper");
 
-  if (!loginBtn) return;
+  if (loginWrapper) loginWrapper.style.display = "none";
 
-  loginBtn.addEventListener("click", () => {
-    const pwd = prompt("Enter admin password:");
-    if (pwd === ADMIN_PASSWORD) {
-      panel.style.display = "block";
-      loginBtn.style.display = "none";
-      alert("Admin panel unlocked");
-    } else {
-      alert("Wrong password");
-    }
-  });
+  if (logo) {
+    logo.addEventListener("click", () => {
+      const pwd = prompt("Enter admin password:");
+      if (pwd === ADMIN_PASSWORD) {
+        panel.style.display = "block";
+        alert("Admin panel unlocked");
+      } else if (pwd !== null) {
+        alert("Wrong password");
+      }
+    });
+  }
 }
 
 /* ================= INIT ================= */
