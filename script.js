@@ -250,3 +250,10 @@ function setupAdminLogin() {
     }
   });
 }
+
+/* ================= INIT ================= */
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartUI();
+  subscribeProducts();
+  setupAdminLogin();
+});
