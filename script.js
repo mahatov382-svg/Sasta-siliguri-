@@ -13,6 +13,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const storage = firebase.storage();
+let selectedProductId = null;
 
 /* ================= GLOBAL ================= */
 let products = [];
