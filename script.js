@@ -220,7 +220,6 @@ function renderProducts(list) {
 /* ================= FIREBASE LOAD ================= */
 function subscribeProducts() {
   db.collection("products")
-    .orderBy("Name")
     .onSnapshot(snapshot => {
       products = snapshot.docs.map(doc => ({
         id: doc.id,
