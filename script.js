@@ -236,24 +236,22 @@ const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const logo = document.querySelector(".logo");
+  const btn = document.getElementById("admin-login-btn");
 
-  if (!panel || !logo) return;
+  if (!panel || !btn) return;
 
-  logo.addEventListener("click", () => {
+  btn.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
     if (pwd === ADMIN_PASSWORD) {
-panel.removeAttribute("style");
-panel.style.display = "block";
-panel.style.opacity = "1";
-panel.style.visibility = "visible";
-panel.scrollIntoView({ behavior: "smooth" });
+      panel.style.display = "block";
+      panel.scrollIntoView({ behavior: "smooth" });
       alert("Admin panel unlocked");
     } else if (pwd !== null) {
       alert("Wrong password");
     }
   });
 }
+
 
 /* ================= IMAGE UPLOAD ================= */
 
