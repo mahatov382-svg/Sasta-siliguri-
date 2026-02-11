@@ -29,7 +29,7 @@ function getCustomerDetails() {
   const address = document.getElementById("cust-address").value.trim();
 
   if (!name || !phone || !address) {
-    alert("Name, phone aur address bharna zaroori hai");
+    alert("FILL THE NAME NUMBER ADDRESS");
     return null;
   }
   return { name, phone, address };
@@ -228,31 +228,25 @@ function subscribeProducts() {
     });
 }
 
-/* ================= ADMIN LOGIN FINAL FIX ================= */
+/* ================= ADMIN LOGIN (LOGO TAP FINAL) ================= */
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
-  const loginBtn = document.getElementById("admin-login-btn");
+  const logo = document.querySelector(".logo");
 
-  if (!panel || !loginBtn) return;
+  if (!panel || !logo) return;
 
-  loginBtn.addEventListener("click", () => {
+  logo.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
 
     if (pwd === ADMIN_PASSWORD) {
       panel.style.display = "block";
       panel.scrollIntoView({ behavior: "smooth" });
       alert("Admin panel unlocked");
-    } else if (pwd !== null) {
+    } 
+    else if (pwd !== null) {
       alert("Wrong password");
     }
   });
 }
-
-/* ================= INIT ================= */
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartUI();
-  subscribeProducts();
-  setupAdminLogin();
-});
