@@ -1,7 +1,7 @@
-// ========== WhatsApp number ==========
+// ================= WHATSAPP NUMBER =================
 const phoneNumber = "917602884208";
 
-// ========== Firebase setup ==========
+// ================= FIREBASE =================
 const firebaseConfig = {
   apiKey: "AIzaSyA4SQeDddwhmSjTA_g9v2yuIYP-A7kR9ZE",
   authDomain: "sasta-siliguri.firebaseapp.com",
@@ -14,38 +14,34 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ========== GLOBAL ==========
+// ================= GLOBAL =================
 let products = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || {};
 
-// ========== SAVE CART ==========
 function saveCart() {
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
 }
 
-// ========== UPDATE CART UI ==========
-function updateCartUI() {
-  const bar = document.getElementById("cart-bar");
-  const count = document.getElementById("cart-count");
+// ================= CUSTOMER =================
+function getCustomerDetails() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
 
-  let totalQty = 0;
-  Object.values(cart).forEach(i => totalQty += i.qty);
-
-  if (totalQty > 0) {
-    bar.style.display = "flex";
-    count.innerText = totalQty;
-  } else {
-    bar.style.display = "none";
+  if (!name || !phone || !address) {
+    alert("Name, phone aur address bharna zaroori hai");
+    return null;
   }
+  return { name, phone, address };
 }
 
-// ========== ADD TO CART ==========
+// ================= ADD TO CART =================
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   if (!product || !product.InStock) return;
 
   const qtyInput = document.getElementById("qty-" + id);
-  const qty = parseInt(qtyInput?.value, 10) || product.MinQty || 1;
+  const qty = parseInt(qtyInput?.value) || product.MinQty || 1;
 
   if (cart[id]) {
     cart[id].qty += qty;
@@ -57,94 +53,88 @@ function addToCart(id) {
   updateCartUI();
 }
 
-// ========== CHANGE CART QTY ==========
-function changeCartQty(id, delta) {
-  if (!cart[id]) return;
+// ================= CART UI =================
+function updateCartUI() {
+  const bar = document.getElementById("cart-bar");
+  const count = document.getElementById("cart-count");
 
-  cart[id].qty += delta;
-  if (cart[id].qty <= 0) delete cart[id];
+  let totalQty = 0;
+  Object.values(cart).forEach(item => {
+    totalQty += item.qty;
+  });
 
-  saveCart();
-  renderCartItems();
-  updateCartUI();
+  if (totalQty > 0) {
+    bar.style.display = "flex";
+  } else {
+    bar.style.display = "none";
+  }
+
+  count.innerText = totalQty;
 }
 
-// ========== REMOVE ITEM ==========
-function removeFromCart(id) {
-  delete cart[id];
-  saveCart();
-  renderCartItems();
-  updateCartUI();
-}
-
-// ========== OPEN / CLOSE CART ==========
+// ================= CART MODAL =================
 function openCart() {
-  document.getElementById("cart-modal").style.display = "block";
   renderCartItems();
+  document.getElementById("cart-modal").style.display = "block";
 }
 
 function closeCart() {
   document.getElementById("cart-modal").style.display = "none";
 }
 
-// ========== RENDER CART ==========
 function renderCartItems() {
-  const itemsBox = document.getElementById("cart-items");
+  const box = document.getElementById("cart-items");
   const totalBox = document.getElementById("cart-total");
 
-  itemsBox.innerHTML = "";
+  box.innerHTML = "";
   let total = 0;
 
-  Object.values(cart).forEach(item => {
-    const lineTotal = item.qty * item.product.Price;
-    total += lineTotal;
+  Object.entries(cart).forEach(([id, item]) => {
+    const line = item.qty * item.product.Price;
+    total += line;
 
     const div = document.createElement("div");
-    div.className = "cart-item";
-
     div.innerHTML = `
       <strong>${item.product.Name}</strong><br>
-      <button onclick="changeCartQty('${item.product.id}', -1)">−</button>
-      <span> ${item.qty} </span>
-      <button onclick="changeCartQty('${item.product.id}', 1)">+</button>
-      × ₹${item.product.Price}
-      <button onclick="removeFromCart('${item.product.id}')">❌</button>
+      ${item.qty} × ₹${item.product.Price}
+      <button onclick="removeFromCart('${id}')">❌</button>
+      <hr>
     `;
-
-    itemsBox.appendChild(div);
+    box.appendChild(div);
   });
 
   totalBox.innerText = total;
 }
 
-// ========== CART → WHATSAPP ==========
-function orderCartOnWhatsApp() {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
+function removeFromCart(id) {
+  delete cart[id];
+  saveCart();
+  updateCartUI();
+  renderCartItems();
+}
 
-  if (!name || !phone || !address) {
-    alert("Fill name, phone and address.");
-    return;
-  }
+// ================= WHATSAPP ORDER =================
+function orderCartOnWhatsApp() {
+  const customer = getCustomerDetails();
+  if (!customer) return;
 
   let msg = "🧾 SASTA SILIGURI ORDER\n\n";
-  let grandTotal = 0;
+  let total = 0;
 
   Object.values(cart).forEach(item => {
     const t = item.qty * item.product.Price;
-    grandTotal += t;
-    msg += `📦 ${item.product.Name}\nQty: ${item.qty}\n₹${t}\n\n`;
+    total += t;
+    msg += `${item.product.Name}\nQty: ${item.qty}\n₹${t}\n\n`;
   });
 
-  msg += `TOTAL: ₹${grandTotal}\n\n`;
-  msg += `👤 ${name}\n📞 ${phone}\n🏠 ${address}`;
+  msg += `TOTAL: ₹${total}\n\n`;
+  msg += `Name: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}`;
 
   window.location.href =
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
 }
 
-// ========== RENDER PRODUCTS ==========
+// ================= RENDER PRODUCTS =================
 function renderProducts(list) {
   const container = document.getElementById("product-list");
   container.innerHTML = "";
@@ -153,15 +143,17 @@ function renderProducts(list) {
     const card = document.createElement("div");
     card.className = "product-card";
 
+    const minQty = p.MinQty || 1;
+
     card.innerHTML = `
-      <img src="${p.Image || 'placeholder.jpg'}">
-      <h2>${p.Name}</h2>
+      <img src="${p.Image || "placeholder.jpg"}">
+      <h3>${p.Name}</h3>
       <p>₹${p.Price}</p>
 
       <div>
-        <button onclick="changeQty('${p.id}', -1, ${p.MinQty || 1})">-</button>
-        <input id="qty-${p.id}" type="number" value="${p.MinQty || 1}">
-        <button onclick="changeQty('${p.id}', 1, ${p.MinQty || 1})">+</button>
+        <button onclick="changeQty('${p.id}',-1,${minQty})">-</button>
+        <input id="qty-${p.id}" value="${minQty}">
+        <button onclick="changeQty('${p.id}',1,${minQty})">+</button>
       </div>
 
       <button onclick="addToCart('${p.id}')">Add to Cart</button>
@@ -171,19 +163,18 @@ function renderProducts(list) {
   });
 }
 
-// ========== QTY +/- ==========
+// ================= QTY +/- =================
 function changeQty(id, delta, minQty) {
   const input = document.getElementById("qty-" + id);
-  let value = parseInt(input.value) || minQty || 1;
-  value += delta;
-  if (value < minQty) value = minQty;
-  input.value = value;
+  let v = parseInt(input.value) || minQty || 1;
+  v += delta;
+  if (v < minQty) v = minQty;
+  input.value = v;
 }
 
-// ========== FIREBASE ==========
+// ================= FIREBASE LOAD =================
 function subscribeProducts() {
-  db.collection("products")
-    .orderBy("Name")
+  db.collection("products").orderBy("Name")
     .onSnapshot(snapshot => {
       products = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -193,7 +184,7 @@ function subscribeProducts() {
     });
 }
 
-// ========== ADMIN LOGIN ==========
+// ================= ADMIN LOGIN =================
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
@@ -204,15 +195,36 @@ function setupAdminLogin() {
     const pwd = prompt("Enter admin password:");
     if (pwd === ADMIN_PASSWORD) {
       panel.style.display = "block";
-    } else {
-      alert("Wrong password");
     }
   });
 }
 
-// ========== INIT ==========
+// ================= ADMIN BUTTONS =================
+function setupAdminButtons() {
+  document.getElementById("admin-add")
+    .addEventListener("click", async () => {
+      const name = document.getElementById("p-name").value.trim();
+      const price = Number(document.getElementById("p-price").value);
+
+      if (!name || !price) {
+        alert("Name & Price required");
+        return;
+      }
+
+      await db.collection("products").add({
+        Name: name,
+        Price: price,
+        InStock: true
+      });
+
+      alert("Product added");
+    });
+}
+
+// ================= INIT =================
 document.addEventListener("DOMContentLoaded", () => {
+  updateCartUI();
   subscribeProducts();
   setupAdminLogin();
-  updateCartUI();
+  setupAdminButtons();
 });
