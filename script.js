@@ -63,12 +63,7 @@ function updateCartUI() {
     totalQty += item.qty;
   });
 
-  if (totalQty > 0) {
-    bar.style.display = "flex";
-  } else {
-    bar.style.display = "none";
-  }
-
+  bar.style.display = totalQty > 0 ? "flex" : "none";
   count.innerText = totalQty;
 }
 
@@ -94,12 +89,15 @@ function renderCartItems() {
     total += line;
 
     const div = document.createElement("div");
+    div.className = "cart-item";
+
     div.innerHTML = `
       <strong>${item.product.Name}</strong><br>
       ${item.qty} × ₹${item.product.Price}
       <button onclick="removeFromCart('${id}')">❌</button>
       <hr>
     `;
+
     box.appendChild(div);
   });
 
@@ -124,7 +122,7 @@ function orderCartOnWhatsApp() {
   Object.values(cart).forEach(item => {
     const t = item.qty * item.product.Price;
     total += t;
-    msg += `${item.product.Name}\nQty: ${item.qty}\n₹${t}\n\n`;
+    msg += `📦 ${item.product.Name}\nQty: ${item.qty}\n₹${t}\n\n`;
   });
 
   msg += `TOTAL: ₹${total}\n\n`;
@@ -132,35 +130,6 @@ function orderCartOnWhatsApp() {
 
   window.location.href =
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
-}
-
-// ================= RENDER PRODUCTS =================
-function renderProducts(list) {
-  const container = document.getElementById("product-list");
-  container.innerHTML = "";
-
-  list.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "product-card";
-
-    const minQty = p.MinQty || 1;
-
-    card.innerHTML = `
-      <img src="${p.Image || "placeholder.jpg"}">
-      <h3>${p.Name}</h3>
-      <p>₹${p.Price}</p>
-
-      <div>
-        <button onclick="changeQty('${p.id}',-1,${minQty})">-</button>
-        <input id="qty-${p.id}" value="${minQty}">
-        <button onclick="changeQty('${p.id}',1,${minQty})">+</button>
-      </div>
-
-      <button onclick="addToCart('${p.id}')">Add to Cart</button>
-    `;
-
-    container.appendChild(card);
-  });
 }
 
 // ================= QTY +/- =================
@@ -172,9 +141,64 @@ function changeQty(id, delta, minQty) {
   input.value = v;
 }
 
+// ================= RENDER PRODUCTS (PREMIUM) =================
+function renderProducts(list) {
+  const container = document.getElementById("product-list");
+  container.innerHTML = "";
+
+  list.forEach(p => {
+    const minQty = p.MinQty || 1;
+    const inStock = p.InStock !== false;
+
+    const card = document.createElement("div");
+    card.className = "product-card";
+
+    card.innerHTML = `
+      <img src="${p.Image || "placeholder.jpg"}">
+      <h2>${p.Name}</h2>
+
+      ${p.Mrp ? `
+        <div class="price-row">
+          <span class="label">Market price</span>
+          <span class="mrp">₹${p.Mrp}</span>
+        </div>
+      ` : ""}
+
+      <div class="price-row">
+        <span class="label">Offer price</span>
+        <span class="offer-price">₹${p.Price}</span>
+      </div>
+
+      <div class="min-order">
+        <span>Minimum order:</span>
+        <span>${minQty}</span>
+      </div>
+
+      <div class="tag">
+        ${inStock ? "In stock ✅" : "Out of stock ❌"}
+      </div>
+
+      <div class="qty-row">
+        <button class="qty-btn" onclick="changeQty('${p.id}',-1,${minQty})">−</button>
+        <input id="qty-${p.id}" class="qty-input" value="${minQty}">
+        <button class="qty-btn" onclick="changeQty('${p.id}',1,${minQty})">+</button>
+      </div>
+
+      <button 
+        class="${inStock ? "btn-whatsapp" : "btn-disabled"}" 
+        onclick="addToCart('${p.id}')">
+        Add to Cart
+      </button>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
 // ================= FIREBASE LOAD =================
 function subscribeProducts() {
-  db.collection("products").orderBy("Name")
+  db.collection("products")
+    .orderBy("Name")
     .onSnapshot(snapshot => {
       products = snapshot.docs.map(doc => ({
         id: doc.id,
@@ -189,7 +213,11 @@ const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
+  const loginWrapper = document.querySelector(".admin-login-wrapper");
   const logo = document.querySelector(".logo");
+
+  // hide admin button for customers
+  if (loginWrapper) loginWrapper.style.display = "none";
 
   logo.addEventListener("click", () => {
     const pwd = prompt("Enter admin password:");
@@ -199,32 +227,9 @@ function setupAdminLogin() {
   });
 }
 
-// ================= ADMIN BUTTONS =================
-function setupAdminButtons() {
-  document.getElementById("admin-add")
-    .addEventListener("click", async () => {
-      const name = document.getElementById("p-name").value.trim();
-      const price = Number(document.getElementById("p-price").value);
-
-      if (!name || !price) {
-        alert("Name & Price required");
-        return;
-      }
-
-      await db.collection("products").add({
-        Name: name,
-        Price: price,
-        InStock: true
-      });
-
-      alert("Product added");
-    });
-}
-
 // ================= INIT =================
 document.addEventListener("DOMContentLoaded", () => {
   updateCartUI();
   subscribeProducts();
   setupAdminLogin();
-  setupAdminButtons();
 });
