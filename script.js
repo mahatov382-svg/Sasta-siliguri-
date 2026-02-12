@@ -2,6 +2,7 @@
 const phone = "917602884208";
 const ADMIN_PASS = "1513";
 
+/**************** ELEMENTS ****************/
 const logo = document.getElementById("logo");
 const adminPanel = document.getElementById("admin-panel");
 const productList = document.getElementById("product-list");
@@ -12,25 +13,37 @@ const cartModal = document.getElementById("cart-modal");
 const cartItems = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 
+/**************** ADMIN INPUTS ****************/
+const pName = document.getElementById("p-name");
+const pPrice = document.getElementById("p-price");
+const pMrp = document.getElementById("p-mrp");
+const pMin = document.getElementById("p-min");
+const pUnit = document.getElementById("p-unit");
+const pImage = document.getElementById("p-image");
+const pFile = document.getElementById("p-file");
+const pStock = document.getElementById("p-stock");
+
 /**************** FIREBASE ****************/
 firebase.initializeApp({
   apiKey: "AIzaSyA4SQeDddwhmSjTA_g9v2yuIYP-A7kR9ZE",
   authDomain: "sasta-siliguri.firebaseapp.com",
-  projectId: "sasta-siliguri"
+  projectId: "sasta-siliguri",
+  storageBucket: "sasta-siliguri.appspot.com"
 });
 
 const db = firebase.firestore();
+const storage = firebase.storage();
 
 /**************** GLOBAL ****************/
 let products = [];
 let cart = {};
-let adminTap = 0;
 let editId = null;
+let adminTap = 0;
 
 /**************** ADMIN 3 TAP ****************/
 logo.addEventListener("click", () => {
   adminTap++;
-  setTimeout(() => adminTap = 0, 600);
+  setTimeout(() => (adminTap = 0), 700);
 
   if (adminTap === 3) {
     const p = prompt("Enter admin password");
@@ -49,29 +62,38 @@ db.collection("products").onSnapshot(snap => {
   renderProducts(products);
 });
 
+/**************** SEARCH ****************/
+function searchProduct(q) {
+  const v = q.toLowerCase();
+  const f = products.filter(p =>
+    p.Name.toLowerCase().includes(v)
+  );
+  renderProducts(f);
+}
+
 /**************** RENDER PRODUCTS ****************/
 function renderProducts(list) {
   productList.innerHTML = "";
 
   list.forEach(p => {
+    const min = p.MinQty || 1;
+
     productList.innerHTML += `
-      <div class="product-card">
-        <img src="${p.Image || 'https://via.placeholder.com/300'}">
+      <div class="product">
+        <img src="${p.Image || "https://via.placeholder.com/300"}">
+
         <h3>${p.Name}</h3>
 
-        <div class="price">
-          ${p.Mrp ? `<del>₹${p.Mrp}</del>` : ""}
-          <span>₹${p.Price}</span>
-        </div>
+        ${p.Mrp ? `<del>₹${p.Mrp}</del>` : ""}
+        <b style="font-size:18px;">₹${p.Price}</b>
 
-        <div class="stock">
-          ${p.InStock ? "In stock ✅" : "Out of stock ❌"}
-        </div>
+        <p>Minimum order: ${min} ${p.Unit || ""}</p>
+        <p>${p.InStock ? "In stock ✅" : "Out of stock ❌"}</p>
 
         <div class="qty">
-          <button onclick="changeQty('${p.id}',-1)">−</button>
-          <span id="qty-${p.id}">1</span>
-          <button onclick="changeQty('${p.id}',1)">+</button>
+          <button onclick="changeQty('${p.id}',-1,${min})">−</button>
+          <span id="qty-${p.id}">${min}</span>
+          <button onclick="changeQty('${p.id}',1,${min})">+</button>
         </div>
 
         <button class="add" onclick="addToCart('${p.id}')">
@@ -83,10 +105,10 @@ function renderProducts(list) {
 }
 
 /**************** QTY ****************/
-function changeQty(id, d) {
+function changeQty(id, d, min) {
   const el = document.getElementById("qty-" + id);
   let v = parseInt(el.innerText) + d;
-  if (v < 1) v = 1;
+  if (v < min) v = min;
   el.innerText = v;
 }
 
@@ -98,10 +120,10 @@ function addToCart(id) {
 }
 
 function updateCart() {
-  const totalQty = Object.values(cart).reduce((a,b)=>a+b,0);
-  if (totalQty > 0) {
+  const total = Object.values(cart).reduce((a, b) => a + b, 0);
+  if (total > 0) {
     cartBar.style.display = "flex";
-    cartCount.innerText = totalQty;
+    cartCount.innerText = total;
   }
 }
 
@@ -155,25 +177,69 @@ function orderWhatsApp() {
     `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 }
 
-/**************** ADMIN ****************/
-function saveProduct() {
-  const d = {
+/**************** IMAGE UPLOAD ****************/
+async function uploadImage(file) {
+  const ref = storage.ref("products/" + Date.now() + "_" + file.name);
+  await ref.put(file);
+  return await ref.getDownloadURL();
+}
+
+/**************** ADMIN SAVE ****************/
+async function saveProduct() {
+  if (!pName.value || !pPrice.value) {
+    alert("Name & Price required");
+    return;
+  }
+
+  let imageUrl = pImage.value;
+
+  if (pFile.files.length > 0) {
+    imageUrl = await uploadImage(pFile.files[0]);
+  }
+
+  const data = {
     Name: pName.value,
     Price: +pPrice.value,
-    Mrp: +pMrp.value,
-    Image: pImage.value,
+    Mrp: +pMrp.value || 0,
+    MinQty: +pMin.value || 1,
+    Unit: pUnit.value || "",
+    Image: imageUrl,
     InStock: pStock.checked
   };
 
-  editId
-    ? db.collection("products").doc(editId).update(d)
-    : db.collection("products").add(d);
+  if (editId) {
+    await db.collection("products").doc(editId).update(data);
+    alert("Product updated");
+  } else {
+    await db.collection("products").add(data);
+    alert("Product added");
+  }
+
+  clearAdmin();
 }
 
 function newProduct() {
   editId = null;
+  clearAdmin();
 }
 
 function deleteProduct() {
-  if (editId) db.collection("products").doc(editId).delete();
+  if (!editId) {
+    alert("Select product first");
+    return;
+  }
+  db.collection("products").doc(editId).delete();
+  clearAdmin();
+}
+
+function clearAdmin() {
+  pName.value = "";
+  pPrice.value = "";
+  pMrp.value = "";
+  pMin.value = "";
+  pUnit.value = "";
+  pImage.value = "";
+  pFile.value = "";
+  pStock.checked = true;
+  editId = null;
 }
