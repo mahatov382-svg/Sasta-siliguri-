@@ -103,3 +103,9 @@ function newProduct(){editId=null;}
 function deleteProduct(){
   if(editId) db.collection("products").doc(editId).delete();
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  subscribeProducts();
+  updateCartUI();
+  setupAdminLogin();
+});
