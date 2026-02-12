@@ -1,5 +1,3 @@
-alert("JS LOADED");
-
 const phone = "917602884208";
 const ADMIN_PASS = "1513";
 
