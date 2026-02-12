@@ -1,79 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sasta Siliguri</title>
-<link rel="stylesheet" href="style.css">
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sasta Siliguri - Fruits </title>
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
 
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
-<div class="top-bar">
-  DELIVERY 10am–8pm • SAME DAY • FREE DELIVERY
-</div>
-
-<div class="header">
-  <div class="logo-box" id="logo">
-    <img src="logo.png">
+  <!-- TOP BAR -->
+  <div class="announce-bar">
+    DELIVERY TIMING 10am to 8pm × 6 • SAME DAY FREE DELIVERY
   </div>
-  <div>
-    <h1>SASTA SILIGURI</h1>
-    <p>Same Day Free Delivery • COD Available</p>
-  </div>
-</div>
 
-<div class="card">
-  <h2>Your details</h2>
-  <input id="cust-name" placeholder="Full name *">
-  <input id="cust-phone" placeholder="Phone number *">
-  <textarea id="cust-address" placeholder="Full address *"></textarea>
-</div>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">
+      <img src="logo.png" alt="Sasta Siliguri" class="logo">
 
-<input class="search" placeholder="Search products" oninput="searchProduct(this.value)">
+      <div class="brand-text">
+        <h1>SASTA SILIGURI</h1>
+        <p class="delivery-text">SAME DAY FREE DELIVERY</p>
+        <p class="cod-text">CASH ON DELIVERY AVAILABLE</p>
+      </div>
+    </div>
+  </header>
 
-<!-- ADMIN PANEL -->
-<div id="admin-panel" class="admin">
-  <h2>Admin Panel</h2>
+  <main>
 
-  <input id="p-name" placeholder="Product name">
-  <input id="p-price" type="number" placeholder="Price ₹">
-  <input id="p-mrp" type="number" placeholder="MRP ₹">
-  <input id="p-min" type="number" placeholder="Minimum order">
-  <input id="p-unit" placeholder="Unit (kg / pcs / gram)">
-  <input id="p-file" type="file" accept="image/*">
-  <label><input type="checkbox" id="p-stock" checked> In stock</label>
+    <!-- CUSTOMER DETAILS -->
+    <section class="customer-box">
+      <h2>Your details</h2>
 
-  <div class="admin-btns">
-    <button onclick="saveProduct()">Save / Update</button>
-    <button onclick="resetForm()">New</button>
-    <button onclick="deleteProduct()">Delete</button>
-  </div>
-</div>
+      <input id="cust-name" type="text" placeholder="Full name *">
+      <input id="cust-phone" type="tel" placeholder="Phone number *">
+      <textarea id="cust-address" rows="2" placeholder="Full address *"></textarea>
 
-<h2 class="section">Products</h2>
-<div id="product-list" class="grid"></div>
+      <p class="note">
+        These details will be sent to WhatsApp when you tap Order.
+      </p>
+    </section>
 
-<div id="cart-bar" onclick="openCart()">
-  🛒 <span id="cart-count">0</span> item added
-  <button>View Cart</button>
-</div>
+    <!-- ADMIN LOGIN (HIDDEN FOR CUSTOMER) -->
+    <div class="admin-login-wrapper">
+      <button id="admin-login-btn" class="btn admin-btn">
+        🔒 Admin login
+      </button>
+    </div>
 
-<div id="cart-modal">
-  <div class="cart-box">
-    <h3>Your Cart</h3>
-    <div id="cart-items"></div>
-    <h2>Total ₹<span id="cart-total">0</span></h2>
-    <button class="green" onclick="orderWhatsApp()">Order on WhatsApp</button>
-    <button onclick="closeCart()">Close</button>
-  </div>
-</div>
+    <!-- ADMIN PANEL -->
+    <section id="admin-panel" class="admin-box" style="display:none;">
+      <h2>Admin Panel (Owner Only)</h2>
+      <p class="admin-note">
+      
+      </p>
 
-<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+      <input id="p-name" placeholder="Product name">
+      <input id="p-weight" placeholder="Weight (1 Kg, 500g etc)">
+      <input id="p-price" type="number" placeholder="Price ₹">
+      <input id="p-mrp" type="number" placeholder="MRP ₹">
+      <input id="p-min" type="number" placeholder="Minimum order quantity">
+      <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
+      <input id="p-image" placeholder="Image URL (optional)">
+      <input id="p-file" type="file" accept="image/*">
 
-<script src="./script.js"></script>
+      <label class="admin-checkbox">
+        <input type="checkbox" id="p-stock" checked>
+        In stock
+      </label>
+
+      <div class="admin-buttons">
+        <button id="admin-save" class="btn admin-btn">Save / Update</button>
+        <button id="admin-add" class="btn admin-secondary-btn">Add new product</button>
+        <button id="admin-delete" class="btn admin-secondary-btn">Delete product</button>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="controls">
+      <input id="search-input" type="text" placeholder="Search fruits">
+    </section>
+
+    <!-- PRODUCTS -->
+    <h2 class="section-title">Fruits</h2>
+    <div id="product-list" class="product-grid"></div>
+
+    <!-- CART -->
+<section class="cart-box">
+  <h2>Your Cart</h2>
+  <div id="cart-items"></div>
+  <p id="cart-total">Total: ₹0</p>
+  <button id="order-btn" class="btn">Order on WhatsApp</button>
+</section>
+    
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
+    <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
+  </footer>
+
+  <!-- FIREBASE -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+  <!-- MAIN JS -->
+  <script src="script.js"></script>
 </body>
 </html>
+
+<!-- force deploy -->
