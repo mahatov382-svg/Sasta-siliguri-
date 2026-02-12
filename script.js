@@ -1,4 +1,4 @@
-/* ================= WHATSAPP NUMBER ================= */
+/* ================= BASIC CONFIG ================= */
 const phoneNumber = "917602884208";
 
 /* ================= FIREBASE ================= */
@@ -11,16 +11,16 @@ const firebaseConfig = {
   appId: "1:989707472922:web:576cf7c9089fa1e65e81a3"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const storage = firebase.storage();
-let selectedProductId = null;
 
 /* ================= GLOBAL ================= */
 let products = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || {};
+let selectedProductId = null;
 
+/* ================= CART STORAGE ================= */
 function saveCart() {
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
 }
@@ -32,7 +32,7 @@ function getCustomerDetails() {
   const address = document.getElementById("cust-address").value.trim();
 
   if (!name || !phone || !address) {
-    alert("FILL THE NAME NUMBER ADDRESS");
+    alert("Name, Phone, Address required");
     return null;
   }
   return { name, phone, address };
@@ -44,33 +44,28 @@ function addToCart(id) {
   if (!product || product.InStock === false) return;
 
   const qtyInput = document.getElementById("qty-" + id);
-  const qty = parseInt(qtyInput?.value) || product.MinQty || 1;
+  const qty = parseInt(qtyInput.value) || product.MinQty || 1;
 
-  if (cart[id]) {
-    cart[id].qty += qty;
-  } else {
-    cart[id] = { product, qty };
-  }
+  if (cart[id]) cart[id].qty += qty;
+  else cart[id] = { product, qty };
 
   saveCart();
   updateCartUI();
 }
 
-/* ================= CART UI ================= */
+/* ================= CART BAR ================= */
 function updateCartUI() {
   const bar = document.getElementById("cart-bar");
   const count = document.getElementById("cart-count");
 
   let totalQty = 0;
-  Object.values(cart).forEach(item => {
-    totalQty += item.qty;
-  });
+  Object.values(cart).forEach(i => totalQty += i.qty);
 
   bar.style.display = totalQty > 0 ? "flex" : "none";
   count.innerText = totalQty;
 }
 
-/* ================= CART MODAL PREMIUM ================= */
+/* ================= CART MODAL ================= */
 function openCart() {
   renderCartItems();
   document.getElementById("cart-modal").style.display = "block";
@@ -91,33 +86,16 @@ function renderCartItems() {
     const line = item.qty * item.product.Price;
     total += line;
 
-    const div = document.createElement("div");
-    div.className = "cart-item";
-
-    div.innerHTML = `
+    box.innerHTML += `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <div>
-          <strong style="font-size:16px;">${item.product.Name}</strong><br>
-          <span style="color:#555;">${item.qty} × ₹${item.product.Price}</span>
+          <b>${item.product.Name}</b><br>
+          ${item.qty} × ₹${item.product.Price}
         </div>
-
-        <button onclick="removeFromCart('${id}')"
-          style="
-            background:#ff4d4d;
-            border:none;
-            color:#fff;
-            width:30px;
-            height:30px;
-            border-radius:50%;
-            font-size:16px;
-            cursor:pointer;">
-          ×
-        </button>
+        <button onclick="removeFromCart('${id}')" style="background:red;color:#fff;border:none;border-radius:50%;width:28px;height:28px;">×</button>
       </div>
-      <hr style="opacity:0.2;">
+      <hr>
     `;
-
-    box.appendChild(div);
   });
 
   totalBox.innerText = total;
@@ -141,26 +119,22 @@ function orderCartOnWhatsApp() {
   Object.values(cart).forEach(item => {
     const t = item.qty * item.product.Price;
     total += t;
-    msg += `📦 ${item.product.Name}\nQty: ${item.qty}\n₹${t}\n\n`;
+    msg += `${item.product.Name} - ${item.qty} × ₹${item.product.Price} = ₹${t}\n`;
   });
 
-  msg += `TOTAL: ₹${total}\n\n`;
+  msg += `\nTOTAL: ₹${total}\n\n`;
   msg += `Name: ${customer.name}\nPhone: ${customer.phone}\nAddress: ${customer.address}`;
 
   window.location.href =
     `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(msg)}`;
 }
 
-/* ================= QTY +/- FIXED ================= */
+/* ================= QTY +/- ================= */
 function changeQty(id, delta, minQty) {
   const input = document.getElementById("qty-" + id);
-  if (!input) return;
-
-  let value = parseInt(input.value) || minQty || 1;
+  let value = parseInt(input.value) || minQty;
   value += delta;
-
   if (value < minQty) value = minQty;
-
   input.value = value;
 }
 
@@ -173,87 +147,58 @@ function renderProducts(list) {
     const minQty = p.MinQty || 1;
     const inStock = p.InStock !== false;
 
-    const card = document.createElement("div");
-    card.className = "product-card";
+    container.innerHTML += `
+      <div class="product-card">
+        <img src="${p.Image || "placeholder.jpg"}">
+        <h2>${p.Name}</h2>
 
-    card.innerHTML = `
-      <img src="${p.Image || "placeholder.jpg"}">
-      <h2>${p.Name}</h2>
+        ${p.Mrp ? `<div>MRP: <del>₹${p.Mrp}</del></div>` : ""}
+        <div><b>₹${p.Price}</b></div>
 
-      ${p.Mrp ? `
-        <div class="price-row">
-          <span class="label">Market price</span>
-          <span class="mrp">₹${p.Mrp}</span>
+        <div>Min: ${minQty}</div>
+        <div>${inStock ? "In stock ✅" : "Out ❌"}</div>
+
+        <div class="qty-row">
+          <button onclick="changeQty('${p.id}',-1,${minQty})">−</button>
+          <input id="qty-${p.id}" value="${minQty}" type="number">
+          <button onclick="changeQty('${p.id}',1,${minQty})">+</button>
         </div>
-      ` : ""}
 
-      <div class="price-row">
-        <span class="label">Offer price</span>
-        <span class="offer-price">₹${p.Price}</span>
+        <button onclick="addToCart('${p.id}')" ${!inStock ? "disabled" : ""}>
+          Add to Cart
+        </button>
       </div>
-
-      <div class="min-order">
-        <span>Minimum order:</span>
-        <span>${minQty}</span>
-      </div>
-
-      <div class="tag">
-        ${inStock ? "In stock ✅" : "Out of stock ❌"}
-      </div>
-
-      <div class="qty-row">
-        <button class="qty-btn" onclick="changeQty('${p.id}',-1,${minQty})">−</button>
-        <input id="qty-${p.id}" class="qty-input" value="${minQty}" type="number">
-        <button class="qty-btn" onclick="changeQty('${p.id}',1,${minQty})">+</button>
-      </div>
-
-      <button 
-        class="${inStock ? "btn-whatsapp" : "btn-disabled"}" 
-        onclick="addToCart('${p.id}')">
-        Add to Cart
-      </button>
     `;
-
-    container.appendChild(card);
   });
 }
 
 /* ================= FIREBASE LOAD ================= */
 function subscribeProducts() {
-  db.collection("products")
-    .onSnapshot(snapshot => {
-      products = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      renderProducts(products);
-    });
+  db.collection("products").onSnapshot(snapshot => {
+    products = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    renderProducts(products);
+  });
 }
 
-/* ================= ADMIN FULL SYSTEM ================= */
-
+/* ================= ADMIN ================= */
 const ADMIN_PASSWORD = "1513";
 
 function setupAdminLogin() {
   const panel = document.getElementById("admin-panel");
   const btn = document.getElementById("admin-login-btn");
-
   if (!panel || !btn) return;
 
-  btn.addEventListener("click", () => {
-    const pwd = prompt("Enter admin password:");
+  btn.onclick = () => {
+    const pwd = prompt("Admin password");
     if (pwd === ADMIN_PASSWORD) {
       panel.style.display = "block";
       panel.scrollIntoView({ behavior: "smooth" });
-      alert("Admin panel unlocked");
-    } else if (pwd !== null) {
-      alert("Wrong password");
-    }
-  });
+    } else alert("Wrong password");
+  };
 }
-
-
-/* ================= IMAGE UPLOAD ================= */
 
 async function uploadImage(file) {
   const ref = storage.ref("products/" + Date.now() + "_" + file.name);
@@ -261,101 +206,51 @@ async function uploadImage(file) {
   return await ref.getDownloadURL();
 }
 
-/* ================= ADMIN SAVE / UPDATE ================= */
-
 async function saveOrUpdateProduct() {
-  const name = document.getElementById("p-name").value.trim();
-  const weight = document.getElementById("p-weight").value.trim();
-  const price = Number(document.getElementById("p-price").value);
-  const mrp = Number(document.getElementById("p-mrp").value);
-  const min = Number(document.getElementById("p-min").value) || 1;
-  const unit = document.getElementById("p-unit").value.trim();
-  const stock = document.getElementById("p-stock").checked;
-  const file = document.getElementById("p-file").files[0];
-  const imageUrlInput = document.getElementById("p-image").value.trim();
+  const name = pName.value.trim();
+  const price = Number(pPrice.value);
+  if (!name || !price) return alert("Name & Price required");
 
-  if (!name || !price) {
-    alert("Name & Price required");
-    return;
-  }
-
-  let imageUrl = imageUrlInput;
-
-  if (file) {
-    imageUrl = await uploadImage(file);
-  }
+  let imageUrl = pImage.value;
+  if (pFile.files[0]) imageUrl = await uploadImage(pFile.files[0]);
 
   const data = {
     Name: name,
-    Weight: weight,
+    Weight: pWeight.value,
     Price: price,
-    Mrp: mrp,
-    MinQty: min,
-    Unit: unit,
-    InStock: stock,
-    Image: imageUrl || ""
+    Mrp: Number(pMrp.value),
+    MinQty: Number(pMin.value) || 1,
+    Unit: pUnit.value,
+    InStock: pStock.checked,
+    Image: imageUrl
   };
 
-  if (selectedProductId) {
-    await db.collection("products").doc(selectedProductId).update(data);
-    alert("Product updated");
-  } else {
-    await db.collection("products").add(data);
-    alert("Product added");
-  }
+  selectedProductId
+    ? await db.collection("products").doc(selectedProductId).update(data)
+    : await db.collection("products").add(data);
 
   clearAdminForm();
 }
-
-/* ================= DELETE PRODUCT ================= */
 
 async function deleteProduct() {
-  if (!selectedProductId) {
-    alert("Select product first");
-    return;
-  }
-
+  if (!selectedProductId) return alert("Select product first");
   await db.collection("products").doc(selectedProductId).delete();
-  alert("Product deleted");
   clearAdminForm();
 }
-
-/* ================= SELECT PRODUCT FOR EDIT ================= */
-
-function selectProductForEdit(product) {
-  selectedProductId = product.id;
-
-  document.getElementById("p-name").value = product.Name || "";
-  document.getElementById("p-weight").value = product.Weight || "";
-  document.getElementById("p-price").value = product.Price || "";
-  document.getElementById("p-mrp").value = product.Mrp || "";
-  document.getElementById("p-min").value = product.MinQty || 1;
-  document.getElementById("p-unit").value = product.Unit || "";
-  document.getElementById("p-image").value = product.Image || "";
-  document.getElementById("p-stock").checked = product.InStock !== false;
-}
-
-/* ================= CLEAR FORM ================= */
 
 function clearAdminForm() {
   selectedProductId = null;
   document.querySelectorAll("#admin-panel input").forEach(i => i.value = "");
-  document.getElementById("p-stock").checked = true;
+  pStock.checked = true;
 }
 
-/* ================= ADMIN BUTTON EVENTS ================= */
-
+/* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", () => {
   setupAdminLogin();
+  subscribeProducts();
+  updateCartUI();
 
-  const saveBtn = document.getElementById("admin-save");
-  const addBtn = document.getElementById("admin-add");
-  const deleteBtn = document.getElementById("admin-delete");
-
-  if (saveBtn) saveBtn.addEventListener("click", saveOrUpdateProduct);
-  if (addBtn) addBtn.addEventListener("click", () => {
-    selectedProductId = null;
-    saveOrUpdateProduct();
-  });
-  if (deleteBtn) deleteBtn.addEventListener("click", deleteProduct);
+  adminSave.onclick = saveOrUpdateProduct;
+  adminAdd.onclick = () => { selectedProductId = null; saveOrUpdateProduct(); };
+  adminDelete.onclick = deleteProduct;
 });
