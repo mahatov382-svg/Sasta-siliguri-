@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sasta Siliguri</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sasta Siliguri</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header class="top-banner">
+<!-- TOP BAR -->
+<div class="top-bar">
   DELIVERY 10am–8pm • SAME DAY • FREE DELIVERY
-</header>
+</div>
 
-<!-- BRAND -->
-<section class="brand">
-  <img src="logo.png" class="logo">
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-box" id="logo">
+    <img src="logo.png">
+  </div>
   <div>
     <h1>SASTA SILIGURI</h1>
     <p>Same Day Free Delivery • COD Available</p>
   </div>
-</section>
+</div>
+
+<!-- CUSTOMER DETAILS -->
+<div class="card">
+  <h2>Your details</h2>
+  <input id="cust-name" placeholder="Full name *">
+  <input id="cust-phone" placeholder="Phone number *">
+  <textarea id="cust-address" placeholder="Full address *"></textarea>
+  <small>Details will be sent to WhatsApp</small>
+</div>
 
 <!-- SEARCH -->
-<div class="search-box">
-  <input type="text" placeholder="Search fruits">
+<input class="search" placeholder="Search fruits" oninput="searchProduct(this.value)">
+
+<!-- ADMIN PANEL (HIDDEN) -->
+<div id="admin-panel" class="admin">
+  <h2>Admin Panel (Owner Only)</h2>
+
+  <input id="p-name" placeholder="Product name">
+  <input id="p-price" type="number" placeholder="Price ₹">
+  <input id="p-mrp" type="number" placeholder="MRP ₹">
+  <input id="p-min" type="number" placeholder="Minimum order">
+  <input id="p-unit" placeholder="Unit (kg / pcs / gram)">
+  <input id="p-image" placeholder="Image URL">
+  <input id="p-file" type="file">
+  <label><input type="checkbox" id="p-stock" checked> In stock</label>
+
+  <div class="admin-btns">
+    <button onclick="saveProduct()">Save / Update</button>
+    <button onclick="newProduct()">Add new</button>
+    <button onclick="deleteProduct()">Delete</button>
+  </div>
 </div>
 
 <!-- PRODUCTS -->
-<section class="products">
-
-  <!-- PRODUCT CARD -->
-  <div class="product-card">
-    <div class="img-wrap">
-      <img src="https://picsum.photos/400/400">
-    </div>
-
-    <h3>APPLE</h3>
-
-    <div class="price">
-      <span class="mrp">₹500</span>
-      <span class="offer">₹100</span>
-    </div>
-
-    <p class="min">Minimum order: 1</p>
-    <p class="stock in">In stock ✔</p>
-
-    <div class="qty">
-      <button class="qty-btn">−</button>
-      <span>1</span>
-      <button class="qty-btn">+</button>
-    </div>
-
-    <button class="add-cart">Add to Cart</button>
-  </div>
-
-  <!-- COPY SAME CARD FOR MORE PRODUCTS -->
-
-</section>
+<h2 class="section">Fruits</h2>
+<div id="product-list" class="grid"></div>
 
 <!-- CART BAR -->
-<footer class="cart-bar">
-  <span>1 item added</span>
-  <button class="view-cart">View Cart</button>
-</footer>
+<div id="cart-bar" onclick="openCart()">
+  🛒 <span id="cart-count">0</span> item added
+  <button>View Cart</button>
+</div>
 
-<!-- ADMIN PANEL -->
-<section class="admin-panel">
-  <h2>Admin Panel</h2>
+<!-- CART MODAL -->
+<div id="cart-modal">
+  <div class="cart-box">
+    <h3>Your Cart</h3>
+    <div id="cart-items"></div>
+    <h2>Total ₹<span id="cart-total">0</span></h2>
+    <button class="green" onclick="orderWhatsApp()">Order on WhatsApp</button>
+    <button onclick="closeCart()">Close</button>
+  </div>
+</div>
 
-  <input placeholder="Product name">
-  <input placeholder="Price">
-  <input type="file">
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
-  <button class="admin-save">Save Product</button>
-</section>
-
+<script src="script.js"></script>
 </body>
 </html>
