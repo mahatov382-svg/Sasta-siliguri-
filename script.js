@@ -13,7 +13,7 @@ const db = firebase.firestore();
 const storage = firebase.storage();
 
 let products = [];
-let cart = {};
+let cart = JSON.parse(localStorage.getItem("sasta_cart")) || [];
 let editId = null;
 let tap = 0;
 
@@ -50,7 +50,7 @@ function render(list){
         <span id="q${p.id}">1</span>
         <button onclick="qty('${p.id}',1)">+</button>
       </div>
-      <button class="add" onclick="add('${p.id}')">Add to Cart</button>
+      <button class="add" onclick="addToCart('${p.id}')">Add to Cart</button>
     </div>`;
   });
 }
@@ -62,41 +62,59 @@ function qty(id,d){
   if(v<1)v=1;
   e.innerText=v;
 }
+/* ========== CART FUNCTIONS ========== */
 
-/* CART */
-function add(id){
-  cart[id]=(cart[id]||0)+Number(document.getElementById("q"+id).innerText);
-  updateCart();
-}
-function updateCart(){
-  cartBar.style.display="flex";
-  cartCount.innerText=Object.values(cart).reduce((a,b)=>a+b,0);
-}
-function openCart(){
-  cartModal.style.display="block";
-  cartItems.innerHTML="";
-  let t=0;
-  for(let id in cart){
-    let p=products.find(x=>x.id===id);
-    let s=cart[id]*p.Price;
-    t+=s;
-    cartItems.innerHTML+=`${p.Name} × ${cart[id]} = ₹${s}<br>`;
-  }
-  cartTotal.innerText=t;
-}
-function closeCart(){cartModal.style.display="none";}
+function addToCart(id){
+  const p = products.find(x => x.id === id);
+  if(!p || !p.InStock) return;
 
-/* ORDER */
-function orderWhatsApp(){
-  let n=custName.value,p=custPhone.value,a=custAddress.value;
-  if(!n||!p||!a){alert("Fill details");return;}
-  let msg="SASTA SILIGURI ORDER\n\n";
-  for(let id in cart){
-    let pr=products.find(x=>x.id===id);
-    msg+=`${pr.Name} × ${cart[id]}\n`;
+  const q = document.getElementById("q"+id);
+  let qty = Number(q?.innerText || p.Min || 1);
+
+  const found = cart.find(i => i.id === id);
+  if(found){
+    found.qty += qty;
+  }else{
+    cart.push({
+      id: p.id,
+      name: p.Name,
+      price: p.Price,
+      unit: p.Unit || "",
+      qty: qty
+    });
   }
-  location.href=`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+  renderCart();
 }
+
+function renderCart(){
+  const box = document.getElementById("cart-items");
+  const totalBox = document.getElementById("cart-total");
+  if(!box || !totalBox) return;
+
+  box.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(i=>{
+    total += i.price * i.qty;
+    box.innerHTML += `
+      <div>
+        ${i.name} (${i.qty} ${i.unit}) = ₹${i.price*i.qty}
+        <button onclick="removeFromCart('${i.id}')">❌</button>
+      </div>
+    `;
+  });
+
+  totalBox.innerText = "Total: ₹"+total;
+}
+
+function removeFromCart(id){
+  cart = cart.filter(i=>i.id!==id);
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+  renderCart();
+}
+
 
 /* IMAGE UPLOAD */
 async function uploadImage(file){
@@ -126,3 +144,6 @@ function resetForm(){editId=null;}
 function deleteProduct(){
   if(editId) db.collection("products").doc(editId).delete();
 }
+
+renderCart();
+document.getElementById("order-btn")?.addEventListener("click", orderFullCart);
