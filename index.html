@@ -1,139 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sasta Siliguri - Fruits </title>
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sasta Siliguri</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- TOP BAR -->
-  <div class="announce-bar">
-    DELIVERY TIMING 10am to 8pm × 6 • SAME DAY FREE DELIVERY
-  </div>
+<!-- HEADER -->
+<header class="top-banner">
+  DELIVERY 10am–8pm • SAME DAY • FREE DELIVERY
+</header>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="brand">
-      <img src="logo.png" alt="Sasta Siliguri" class="logo">
-
-      <div class="brand-text">
-        <h1>SASTA SILIGURI</h1>
-        <p class="delivery-text">SAME DAY FREE DELIVERY</p>
-        <p class="cod-text">CASH ON DELIVERY AVAILABLE</p>
-      </div>
-    </div>
-  </header>
-
-  <main>
-
-    <!-- CUSTOMER DETAILS -->
-    <section class="customer-box">
-      <h2>Your details</h2>
-
-      <input id="cust-name" type="text" placeholder="Full name *">
-      <input id="cust-phone" type="tel" placeholder="Phone number *">
-      <textarea id="cust-address" rows="2" placeholder="Full address *"></textarea>
-
-      <p class="note">
-        These details will be sent to WhatsApp when you tap Order.
-      </p>
-    </section>
-
-    <!-- ADMIN LOGIN (HIDDEN FOR CUSTOMER) -->
-    <div class="admin-login-wrapper">
-      <button id="admin-login-btn" class="btn admin-btn">
-        🔒 Admin login
-      </button>
-    </div>
-
-    <!-- ADMIN PANEL -->
-    <section id="admin-panel" class="admin-box" style="display:none;">
-      <h2>Admin Panel (Owner Only)</h2>
-      <p class="admin-note">
-      
-      </p>
-
-      <input id="p-name" placeholder="Product name">
-      <input id="p-weight" placeholder="Weight (1 Kg, 500g etc)">
-      <input id="p-price" type="number" placeholder="Price ₹">
-      <input id="p-mrp" type="number" placeholder="MRP ₹">
-      <input id="p-min" type="number" placeholder="Minimum order quantity">
-      <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
-      <input id="p-image" placeholder="Image URL (optional)">
-      <input id="p-file" type="file" accept="image/*">
-
-      <label class="admin-checkbox">
-        <input type="checkbox" id="p-stock" checked>
-        In stock
-      </label>
-
-      <div class="admin-buttons">
-        <button id="admin-save" class="btn admin-btn">Save / Update</button>
-        <button id="admin-add" class="btn admin-secondary-btn">Add new product</button>
-        <button id="admin-delete" class="btn admin-secondary-btn">Delete product</button>
-      </div>
-    </section>
-
-    <!-- SEARCH -->
-    <section class="controls">
-      <input id="search-input" type="text" placeholder="Search fruits">
-    </section>
-
-    <!-- PRODUCTS -->
-    <h2 class="section-title">Fruits</h2>
-    <div id="product-list" class="product-grid"></div>
-    <!-- ===== CART BAR ===== -->
-<div id="cart-bar" style="display:none; position:fixed; bottom:0; left:0; right:0; background:#111; color:#fff; padding:12px; display:flex; justify-content:space-between; align-items:center; z-index:999;">
+<!-- BRAND -->
+<section class="brand">
+  <img src="logo.png" class="logo">
   <div>
-    🛒 <span id="cart-count">0</span> item added
+    <h1>SASTA SILIGURI</h1>
+    <p>Same Day Free Delivery • COD Available</p>
   </div>
-  <button onclick="openCart()" style="background:#0c7a03; color:#fff; border:none; padding:8px 14px; border-radius:20px;">
-    View Cart
-  </button>
+</section>
+
+<!-- SEARCH -->
+<div class="search-box">
+  <input type="text" placeholder="Search fruits">
 </div>
 
-<!-- ===== CART MODAL ===== -->
-<div id="cart-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000;">
-  <div style="background:#fff; margin:60px auto; padding:20px; width:90%; max-width:400px; border-radius:16px;">
-    <h3>Your Cart</h3>
+<!-- PRODUCTS -->
+<section class="products">
 
-    <div id="cart-items"></div>
+  <!-- PRODUCT CARD -->
+  <div class="product-card">
+    <div class="img-wrap">
+      <img src="https://picsum.photos/400/400">
+    </div>
 
-    <p style="margin-top:10px;">
-      Total: ₹<span id="cart-total">0</span>
-    </p>
+    <h3>APPLE</h3>
 
-    <button onclick="orderCartOnWhatsApp()" style="background:#0c7a03; color:#fff; border:none; padding:10px; width:100%; border-radius:20px;">
-      Order on WhatsApp
-    </button>
+    <div class="price">
+      <span class="mrp">₹500</span>
+      <span class="offer">₹100</span>
+    </div>
 
-    <button onclick="closeCart()" style="margin-top:8px; width:100%;">
-      Close
-    </button>
+    <p class="min">Minimum order: 1</p>
+    <p class="stock in">In stock ✔</p>
+
+    <div class="qty">
+      <button class="qty-btn">−</button>
+      <span>1</span>
+      <button class="qty-btn">+</button>
+    </div>
+
+    <button class="add-cart">Add to Cart</button>
   </div>
-</div>
 
-  </main>
+  <!-- COPY SAME CARD FOR MORE PRODUCTS -->
 
-  <!-- FOOTER -->
-  <footer>
-    <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
-    <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
-  </footer>
+</section>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+<!-- CART BAR -->
+<footer class="cart-bar">
+  <span>1 item added</span>
+  <button class="view-cart">View Cart</button>
+</footer>
 
-  <!-- MAIN JS -->
-  <script src="script.js"></script>
+<!-- ADMIN PANEL -->
+<section class="admin-panel">
+  <h2>Admin Panel</h2>
+
+  <input placeholder="Product name">
+  <input placeholder="Price">
+  <input type="file">
+
+  <button class="admin-save">Save Product</button>
+</section>
+
 </body>
 </html>
-
-<!-- force deploy -->
