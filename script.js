@@ -19,6 +19,10 @@ let cart = JSON.parse(localStorage.getItem("sasta_cart")) || [];
 let editId = null;
 let tap = 0;
 
+const logo = document.querySelector(".logo");
+const adminPanel = document.getElementById("admin-panel");
+const productList = document.getElementById("product-list");
+
 /* ADMIN 3 TAP */
 logo.onclick = () => {
   tap++;
