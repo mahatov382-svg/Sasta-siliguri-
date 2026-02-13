@@ -173,6 +173,7 @@ document.getElementById("order-btn")?.addEventListener("click", () => {
   const name = document.getElementById("cust-name").value.trim();
   const phone = document.getElementById("cust-phone").value.trim();
   const address = document.getElementById("cust-address").value.trim();
+  const addressLines = address.split("\n");
 
   if (!name || !phone || !address) {
     alert("Please fill name, phone and address first");
