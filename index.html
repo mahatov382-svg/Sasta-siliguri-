@@ -95,11 +95,13 @@
     <div id="product-list" class="product-grid"></div>
 
     <!-- CART -->
-<section class="cart-box">
+<section class="cart-box" style="display:none">
   <h2>Your Cart</h2>
   <div id="cart-items"></div>
   <p id="cart-total">Total: ₹0</p>
-  <button id="order-btn" class="btn" disabled>Order on WhatsApp</button>
+  <button id="order-btn" class="btn" disabled>
+    Order on WhatsApp
+  </button>
 </section>
     
 
@@ -119,6 +121,33 @@
 <button id="view-cart-btn">
   🛒 View Cart
 </button>
+
+<!-- CART POPUP OVERLAY -->
+<div id="cart-popup">
+
+  <div class="cart-popup-box">
+
+    <div class="cart-popup-header">
+      <h3>🛒 Your Cart</h3>
+      <button id="cart-close">✖</button>
+    </div>
+
+    <!-- CART ITEMS -->
+    <div id="cart-items"></div>
+
+    <!-- SUMMARY -->
+    <div class="cart-summary">
+      <p>Delivery: <b>FREE</b></p>
+      <h4 id="cart-total">Total: ₹0</h4>
+
+      <button id="order-btn" class="btn-whatsapp">
+        Order on WhatsApp
+      </button>
+    </div>
+
+  </div>
+
+</div>
 
 <!-- MAIN JS -->
 <script src="script.js"></script>
