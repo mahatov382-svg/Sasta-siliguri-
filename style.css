@@ -787,3 +787,24 @@ html, body {
   padding-right: 12px;
   text-align: center;
 }
+
+/* PRODUCT CARD FIX */
+.product,
+.product-card,
+.item {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 20px auto;
+  box-sizing: border-box;
+}
+
+/* PRODUCT IMAGE FIX */
+.product img,
+.product-card img,
+.item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
