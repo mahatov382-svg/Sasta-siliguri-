@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sasta Siliguri - Fruits </title>
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sasta Siliguri - Fruits</title>
 
-  
-  <!-- FIREBASE CORE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<!-- FIRESTORE -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<!-- STORAGE (VERY IMPORTANT) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
-<link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- FIREBASE (LOAD ONLY ONCE) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
-  <body>
+
+<body>
 
   <!-- TOP BAR -->
   <div class="announce-bar">
@@ -40,7 +41,7 @@
     <!-- CUSTOMER DETAILS -->
     <section class="customer-box">
       <h2>Your details</h2>
-      
+
       <input id="cust-name" type="text" placeholder="Full name *">
       <input id="cust-phone" type="tel" placeholder="Phone number *">
       <textarea id="cust-address" rows="2" placeholder="Full address *"></textarea>
@@ -50,7 +51,7 @@
       </p>
     </section>
 
-    <!-- ADMIN LOGIN (HIDDEN FOR CUSTOMER) -->
+    <!-- ADMIN LOGIN -->
     <div class="admin-login-wrapper">
       <button id="admin-login-btn" class="btn admin-btn">
         🔒 Admin login
@@ -60,9 +61,6 @@
     <!-- ADMIN PANEL -->
     <section id="admin-panel" class="admin-box" style="display:none;">
       <h2>Admin Panel (Owner Only)</h2>
-      <p class="admin-note">
-      
-      </p>
 
       <input id="p-name" placeholder="Product name">
       <input id="p-weight" placeholder="Weight (1 Kg, 500g etc)">
@@ -99,47 +97,42 @@
   <!-- FOOTER -->
   <footer>
     <p><strong>SUPPORT / CONTACT US / QUALITY ISSUE</strong></p>
-    <p>WhatsApp: 7602884208 / 9932103580 • Email: siligurisasta@gmail.com</p>
+    <p>
+      WhatsApp: 7602884208 / 9932103580 •
+      Email: siligurisasta@gmail.com
+    </p>
   </footer>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <!-- VIEW CART BUTTON -->
+  <button id="view-cart-btn">
+    🛒 View Cart
+  </button>
 
-<!-- VIEW CART BUTTON -->
-<button id="view-cart-btn">
-  🛒 View Cart
-</button>
+  <!-- CART POPUP -->
+  <div id="cart-popup">
+    <div class="cart-popup-box">
 
-<!-- CART POPUP OVERLAY -->
-<div id="cart-popup">
+      <div class="cart-popup-header">
+        <h3>🛒 Your Cart</h3>
+        <button id="cart-close">✖</button>
+      </div>
 
-  <div class="cart-popup-box">
+      <div id="cart-items"></div>
 
-    <div class="cart-popup-header">
-      <h3>🛒 Your Cart</h3>
-      <button id="cart-close">✖</button>
+      <div class="cart-summary">
+        <p>Delivery: <b>FREE</b></p>
+        <h4 id="cart-total">Total: ₹0</h4>
+
+        <button id="order-btn" class="btn-whatsapp">
+          Order on WhatsApp
+        </button>
+      </div>
+
     </div>
-
-    <!-- CART ITEMS -->
-    <div id="cart-items"></div>
-
-    <!-- SUMMARY -->
-    <div class="cart-summary">
-      <p>Delivery: <b>FREE</b></p>
-      <h4 id="cart-total">Total: ₹0</h4>
-
-      <button id="order-btn" class="btn-whatsapp">
-        Order on WhatsApp
-      </button>
-    </div>
-
   </div>
 
-</div>
-
-<!-- MAIN JS -->
-<script src="script.js"></script>
+  <!-- MAIN JS -->
+  <script src="script.js"></script>
 
 </body>
 </html>
