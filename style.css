@@ -937,3 +937,63 @@ button.add-to-cart {
   transform: translateY(-2px);
   box-shadow: 0 8px 18px rgba(0,0,0,0.35);
 }
+
+/* ================= CART PAGE BUTTON FIX ================= */
+
+/* CART QTY ROW */
+#cart,
+.your-cart,
+.cart,
+.cart-item {
+  font-family: inherit;
+}
+
+/* - and + buttons in cart */
+#cart button,
+.cart button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ff8c2b;
+  background: #fff;
+  color: #ff8c2b;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* hover */
+#cart button:hover,
+.cart button:hover {
+  background: #ff8c2b;
+  color: #fff;
+}
+
+/* middle quantity number */
+#cart input,
+.cart input {
+  width: 42px;
+  height: 34px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  font-weight: bold;
+  margin: 0 6px;
+}
+
+/* ORDER ON WHATSAPP */
+#cart a,
+#cart .order-btn,
+.cart a {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px 0;
+  text-align: center;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #34c759, #1e9f3f);
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
