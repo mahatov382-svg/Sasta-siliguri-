@@ -1,24 +1,4 @@
-function orderFullCart() {
-  let msg = "🛒 Order Details:\n\n";
-  let total = 0;
 
-  document.querySelectorAll(".cart-item").forEach(item => {
-    let name = item.dataset.name;
-    let price = parseInt(item.dataset.price);
-    let qty = parseInt(item.dataset.qty);
-
-    msg += `${name} (${qty}) = ₹${price * qty}\n`;
-    total += price * qty;
-  });
-
-  msg += `\nTotal = ₹${total}`;
-  let phone = "917602884208"; // apna number
-
-  window.open(
-    `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,
-    "_blank"
-  );
-}
 
 const phone = "917602884208";
 const ADMIN_PASS = "1513";
@@ -187,8 +167,30 @@ function deleteProduct(){
 }
 
 renderCart();
-document.getElementById("order-btn")?.addEventListener("click", orderFullCart);
+document.getElementById("order-btn")?.addEventListener("click", () => {
 
+  // 1️⃣ name phone address
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("Please fill name, phone and address first");
+    return;
+  }
+
+  // 2️⃣ cart empty
+  if (cart.length === 0) {
+    alert("Your cart is empty");
+    return;
+  }
+
+  // 3️⃣ sab thik to WhatsApp bhejo
+  orderFullCart();
+
+});
+
+  
 // ===== VIEW CART POPUP ACTION =====
 const viewCartBtn = document.getElementById("view-cart-btn");
 const cartPopup = document.getElementById("cart-popup");
