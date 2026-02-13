@@ -423,3 +423,29 @@ button.add:active,
   font-size: 16px;
   font-weight: 700;
 }
+
+/* ===== VIEW CART STICKY BUTTON ===== */
+#view-cart-btn{
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: none;
+
+  background: linear-gradient(135deg,#34c759,#1e9f3f);
+  color: #fff;
+  font-weight: 800;
+  font-size: 14px;
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.3);
+  animation: pulseCart 2s infinite;
+}
+
+@keyframes pulseCart{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(1.05); }
+  100%{ transform: scale(1); }
+}
