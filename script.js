@@ -194,14 +194,16 @@ const viewCartBtn = document.getElementById("view-cart-btn");
 const cartPopup = document.getElementById("cart-popup");
 const cartClose = document.getElementById("cart-close");
 
-if(viewCartBtn){
+if (viewCartBtn && cartPopup) {
   viewCartBtn.addEventListener("click", () => {
     cartPopup.classList.add("show");
+    document.body.style.overflow = "hidden";
   });
 }
 
-if(cartClose){
+if (cartClose && cartPopup) {
   cartClose.addEventListener("click", () => {
     cartPopup.classList.remove("show");
+    document.body.style.overflow = "";
   });
 }
