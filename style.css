@@ -84,16 +84,15 @@ body {
   border:none;
   background:linear-gradient(135deg,#fffdf7,#f2f4f1);
   box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
-  margin-bottom:8px;
+  margin-bottom:14px;
   font-size:14px;
 }
 
 /* ================= GRID ================= */
 .product-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px;
-  width:100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 26px;
 }
 
 /* ================= PRODUCT CARD ================= */
@@ -102,7 +101,7 @@ body {
 .item{
   background:#f7f8f4;
   border-radius:18px;
-  padding:14px;
+  padding:18px;
   display:flex;
   flex-direction:column;
   position:relative;
@@ -129,6 +128,7 @@ overflow:hidden;
   object-fit:cover;
   border-radius:14px;
   display:block;
+  margin-bottom:10px;   /* ← YE LINE ADD KAR */
   transition:transform .35s ease;
 }
 
@@ -147,7 +147,7 @@ overflow:hidden;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:4px 0;
+  margin:14px 0 16px;
 }
 
 .price-row .label{
