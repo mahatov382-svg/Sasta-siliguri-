@@ -449,3 +449,10 @@ button.add:active,
   50%{ transform: scale(1.05); }
   100%{ transform: scale(1); }
 }
+
+/* CART HIGHLIGHT ON VIEW CART CLICK */
+.cart-highlight{
+  box-shadow: 0 0 0 3px rgba(52,199,89,0.6);
+  border-radius: 16px;
+  transition: box-shadow 0.3s ease;
+}
