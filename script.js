@@ -185,8 +185,27 @@ document.getElementById("order-btn")?.addEventListener("click", () => {
     return;
   }
 
-  // 3️⃣ sab thik to WhatsApp bhejo
-  orderFullCart();
+// 3 sab thik to WhatsApp bhejo
+let msg = "🛒 Order Details:\n\n";
+let total = 0;
+
+cart.forEach(i => {
+  msg += `${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
+  total += i.price * i.qty;
+});
+
+msg += `\nTotal = ₹${total}\n\n`;
+msg += `Name: ${name}\n`;
+msg += `Phone: ${phone}\n`;
+msg += `Address: ${address}`;
+
+const waNumber = "917602884208"; // apna WhatsApp number
+
+window.open(
+  `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
+  "_blank"
+);
+  
 
 });
 
