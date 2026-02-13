@@ -1,40 +1,28 @@
 /* ================= RESET ================= */
-* {
+*{
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
 }
 
-html, body {
-  width: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  background: #f6f3ec; /* reference color */
-  color: #222;
-  padding: 0;
-  animation: bodyFade 0.45s ease-out;
-}
-
-@keyframes bodyFade {
-  from {opacity:0}
-  to {opacity:1}
+html,body{
+  width:100%;
+  overflow-x:hidden;
+  font-family: system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  background:#f6f3ec;
+  color:#222;
 }
 
 /* ================= TOP BAR ================= */
 .announce-bar{
-  background:#ffd84a;
+  background:#ffde59;
   color:#3a2800;
   text-align:center;
   padding:8px 10px;
   font-size:14px;
   font-weight:700;
   border-radius:12px;
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 /* ================= HEADER ================= */
@@ -42,7 +30,7 @@ body {
   background:linear-gradient(135deg,#fffdf7,#f1efe8);
   border-radius:16px;
   padding:12px;
-  margin-bottom:10px;
+  margin-bottom:12px;
   box-shadow:0 6px 18px rgba(0,0,0,.1);
 }
 
@@ -53,93 +41,94 @@ body {
 }
 
 .logo{
-  width:75px;
-  height:70px;
-  border:2px solid #ff8a3c;
+  width:72px;
+  height:68px;
   border-radius:14px;
   padding:4px;
+  border:2px solid #ff8a3c;
 }
 
 .logo img{
   width:100%;
   height:100%;
   object-fit:cover;
-  border-radius:12px;
+  border-radius:10px;
 }
 
 .brand-text h1{
   font-size:20px;
-  line-height:1.2;
+  font-weight:900;
 }
+
 .brand-text p{
   font-size:13px;
+  font-weight:700;
+  color:#ff8a3c;
 }
 
-/* ================= FORM ================= */
-.customer-box input,
-.customer-box textarea{
+/* ================= SEARCH BAR ================= */
+.search-box input{
   width:100%;
-  padding:10px 12px;
-  border-radius:10px;
-  border:none;
-  background:linear-gradient(135deg,#fffdf7,#f2f4f1);
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);
-  margin-bottom:14px;
-  font-size:14px;
+  height:46px;
+  padding:0 18px;
+  border-radius:999px;
+  border:1.5px solid #ddd;
+  background:#fff;
+  font-size:15px;
+  font-weight:600;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.9);
+  outline:none;
+  transition:.25s;
 }
 
-/* ================= GRID ================= */
+.search-box input::placeholder{
+  color:#aaa;
+}
+
+.search-box input:focus{
+  border-color:#34c759;
+  box-shadow:
+    0 0 0 3px rgba(52,199,89,.18),
+    0 6px 16px rgba(0,0,0,.12);
+}
+
+/* ================= PRODUCT GRID ================= */
 .product-grid{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 26px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:18px;
 }
 
 /* ================= PRODUCT CARD ================= */
-.product,
-.product-card,
-.item{
+.product-card{
   background:#f7f8f4;
   border-radius:18px;
   padding:18px;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  max-width:100%;
-overflow:hidden;
   box-shadow:
-    0 6px 12px rgba(0,0,0,.08),
+    0 6px 14px rgba(0,0,0,.08),
     0 20px 40px rgba(0,0,0,.12);
-  transition:transform .25s ease, box-shadow .25s ease;
+  transition:.25s;
 }
 
-.product:hover,
-.product-card:hover,
-.item:hover{
+.product-card:hover{
   transform:translateY(-3px);
 }
 
-/* ================= IMAGE (SIZE LOCK) ================= */
-.product img,
-.product-card img,
-.item img{
+.product-card img{
   width:100%;
-  height:auto;              /* 🔒 FINAL HEIGHT */
+  height:160px;
   object-fit:cover;
   border-radius:14px;
-  display:block;
-  margin-bottom:10px;   /* ← YE LINE ADD KAR */
-  transition:transform .35s ease;
+  margin-bottom:10px;
 }
 
-/* ================= TITLE ================= */
-.product h3,
 .product-card h3{
-  margin:10px 0 4px;
   text-align:center;
   font-size:18px;
-  font-weight:800;
-  letter-spacing:.3px;
+  font-weight:900;
+  margin:8px 0;
 }
 
 /* ================= PRICE ================= */
@@ -147,13 +136,12 @@ overflow:hidden;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin:14px 0 16px;
+  margin:12px 0;
 }
 
 .price-row .label{
   font-size:12px;
   color:#666;
-  text-transform:uppercase;
 }
 
 .mrp{
@@ -165,465 +153,170 @@ overflow:hidden;
   font-size:18px;
   font-weight:900;
   color:#1a7f00;
-  animation:pricePop .6s ease-out;
-  text-shadow:0 2px 8px rgba(12,122,3,.25);
-}
-
-@keyframes pricePop{
-  from{opacity:0;transform:translateY(6px) scale(.95)}
-  to{opacity:1;transform:none}
 }
 
 /* ================= STOCK ================= */
 .tag{
   display:flex;
-  justify-content:flex-start;
-  font-size:14px;
+  align-items:center;
+  gap:6px;
   font-weight:700;
   margin-top:6px;
 }
 
 /* ================= QTY ================= */
-.qty-wrap,
 .quantity{
   display:flex;
-  justify-content:center;
   align-items:center;
+  justify-content:center;
   gap:12px;
-  margin:10px 0;
+  margin:12px 0;
 }
 
-.qty-wrap button,
 .quantity button{
   width:42px;
   height:42px;
   border-radius:50%;
-  border:2px solid #ff8c2b;
+  border:2px solid #ff8a3c;
   background:#fff;
-  color:#ff8c2b;
+  color:#ff8a3c;
   font-size:22px;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
-  transition:.2s;
 }
 
-.qty-wrap button:hover{
-  background:#ff8c2b;
-  color:#fff;
-}
-
-.qty-wrap input,
 .quantity input{
   width:48px;
   height:38px;
-  text-align:center;
   border-radius:10px;
   border:2px solid #ddd;
+  text-align:center;
   font-size:16px;
   font-weight:700;
 }
 
-/* ================= ADD TO CART (PREMIUM) ================= */
-.add-to-cart,
-button.add-to-cart,
-.product .btn,
-.product-card .btn{
+/* ================= ADD TO CART ================= */
+.add-to-cart{
   width:100%;
-  margin-top:auto;
-  padding:14px 0;
-  border-radius:30px;
+  height:46px;
+  border-radius:999px;
   border:none;
   background:linear-gradient(180deg,#34c759,#1e9f3f);
   color:#fff;
   font-size:16px;
-  font-weight:800;
+  font-weight:900;
+  box-shadow:
+    0 4px 0 #166d2c,
+    0 10px 20px rgba(0,0,0,.25);
   cursor:pointer;
-  box-shadow:0 6px 14px rgba(0,0,0,.25);
-  transition:.25s;
-}
-
-.add-to-cart:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 18px rgba(0,0,0,.35);
 }
 
 .add-to-cart:active{
-  transform:scale(.97);
-}
-
-/* ================= WHATSAPP ================= */
-.btn-whatsapp{
-  background:#0c7a03;
-  color:#fff;
-  border-radius:999px;
-  padding:12px 16px;
-  font-weight:800;
-  transition:.25s;
-}
-
-.btn-whatsapp:active{
-  transform:scale(.96);
-}
-
-/* ================= FOOTER ================= */
-footer{
-  text-align:center;
-  margin-top:18px;
-  font-size:12px;
-  color:#555;
-}
-
-/* ================= REDUCE MOTION ================= */
-@media (prefers-reduced-motion: reduce){
-  *{
-    animation:none !important;
-    transition:none !important;
-  }
-}
-
-/* HIDE ADMIN LOGIN BUTTON (CUSTOMERS) */
-button[onclick*="admin"],
-button[onclick*="Admin"] {
-  display: none !important;
-}
-
-/* HIDE ADMIN LOGIN FOR CUSTOMERS */
-#admin-login-btn {
-  display: none !important;
-}
-
-/* ===============================
-   MOBILE FIX (FINAL)
-   Phone me card niche na jaye
-================================ */
-
-@media (max-width: 768px) {
-
-  .product-grid {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 12px;
-  }
-
-  .product,
-  .product-card,
-  .item {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-  }
-
-  .product img,
-  .product-card img,
-  .item img {
-    height: 160px !important;
-  }
-
-  .add-to-cart,
-  .btn,
-  button.add-to-cart {
-    width: 100% !important;
-  }
-}
-
-/* ===============================
-   FINAL BUTTON + QTY LOCK
-   (MATCHES 3rd CARD EXACT)
-================================ */
-
-/* ADD TO CART – ONE STYLE FOR ALL */
-button.add,
-.add-to-cart,
-.product button.add,
-.product-card button.add,
-.product .add-to-cart,
-.product-card .add-to-cart {
-  width: 100% !important;
-  height: 46px !important;
-  margin-top: 12px;
-  border-radius: 999px !important;
-  border: none !important;
-
-  background: linear-gradient(
-    180deg,
-    #34c759,
-    #1e9f3f
-  ) !important;
-
-  color: #fff !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0.3px;
-
-  box-shadow:
-    0 4px 0 #166d2c,
-    0 10px 20px rgba(0,0,0,0.25) !important;
-
-  cursor: pointer;
-}
-
-/* PRESS EFFECT */
-button.add:active,
-.add-to-cart:active {
-  transform: translateY(2px) scale(0.98);
+  transform:translateY(2px) scale(.98);
   box-shadow:
     0 2px 0 #166d2c,
-    0 6px 12px rgba(0,0,0,0.25) !important;
+    0 6px 12px rgba(0,0,0,.25);
 }
 
-/* ===============================
-   QTY ROW – PERFECT CENTER
-================================ */
-
-.qty,
-.qty-row,
-.quantity {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  gap: 14px;
-  margin: 12px 0;
-}
-
-/* + / − BUTTONS */
-.qty button,
-.quantity button {
-  width: 42px !important;
-  height: 42px !important;
-  border-radius: 50% !important;
-
-  border: 2px solid #ff8a3c !important;
-  background: #fff !important;
-  color: #ff8a3c !important;
-
-  font-size: 22px !important;
-  font-weight: 900 !important;
-  line-height: 1;
-
-  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-}
-
-/* CENTER NUMBER */
-.qty span,
-.qty input,
-.quantity span,
-.quantity input {
-  min-width: 48px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 10px;
-  border: 2px solid #ddd;
-
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* ===== VIEW CART STICKY BUTTON ===== */
-#view-cart-btn{
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 9999;
-
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: none;
-
-  background: linear-gradient(135deg,#34c759,#1e9f3f);
-  color: #fff;
-  font-weight: 800;
-  font-size: 14px;
-
-  box-shadow: 0 10px 22px rgba(0,0,0,0.3);
-  animation: pulseCart 2s infinite;
-}
-
-
-/* ================= CART POPUP OVERLAY ================= */
-
+/* ================= CART POPUP ================= */
 #cart-popup{
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99999;
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .3s ease;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  backdrop-filter:blur(4px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:99999;
 }
 
 #cart-popup.show{
-  opacity: 1;
-  pointer-events: auto;
+  opacity:1;
+  pointer-events:auto;
 }
-
-/* ================= POPUP BOX ================= */
 
 .cart-popup-box{
-  width: 92%;
-  max-width: 380px;
-  background: #ffffff;
-  border-radius: 22px;
-  padding: 18px 18px 20px;
-  box-shadow: 0 18px 40px rgba(0,0,0,.25);
+  width:92%;
+  max-width:380px;
+  background:#fff;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 
-
-#cart-popup.show .cart-popup-box{
-  transform: translateY(0) scale(1);
-}
-
-/* ================= HEADER ================= */
-
+/* ================= CART HEADER ================= */
 .cart-popup-header{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:12px;
 }
 
 .cart-popup-header h3{
   font-size:18px;
-  font-weight:800;
+  font-weight:900;
 }
 
 #cart-close{
   width:36px;
   height:36px;
   border-radius:50%;
-  background:#eee;
   border:none;
+  background:#eee;
   font-size:18px;
   cursor:pointer;
 }
 
-/* ================= SUMMARY ================= */
-
+/* ================= CART SUMMARY ================= */
 .cart-summary{
-  margin-top: 16px;
-  border-top: 1px dashed #ddd;
-  padding-top: 16px;
+  margin-top:18px;
+  border-top:1px dashed #ddd;
+  padding-top:18px;
 }
 
 .cart-summary p{
-  margin: 8px 0;
-  font-size: 14px;
+  margin:10px 0;
+  font-size:15px;
 }
 
 .cart-summary h4{
-  margin: 14px 0 16px;
-  font-size: 20px;
-  font-weight: 900;
+  margin:16px 0 18px;
+  font-size:20px;
+  font-weight:900;
 }
 
 /* ================= WHATSAPP BUTTON ================= */
-
 .btn-whatsapp{
-  width: 100%;
-  padding: 16px;
-  font-size: 17px;
-  border-radius: 999px;
-  ...
+  width:100%;
+  padding:18px;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(135deg,#34c759,#1e9f3f);
+  color:#fff;
+  font-size:17px;
+  font-weight:900;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
+  cursor:pointer;
 }
 
 .btn-whatsapp:active{
-  transform: scale(.97);
+  transform:scale(.97);
 }
 
-@media (min-width: 768px){
+/* ================= FOOTER ================= */
+footer{
+  text-align:center;
+  margin:18px 0;
+  font-size:12px;
+  color:#555;
+}
+
+/* ================= DESKTOP ================= */
+@media (min-width:768px){
   .product-grid{
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-
-
-
-/* ===== FINAL CART FORCE FIX ===== */
-
-#cart-popup .cart-popup-box{
-  max-width: 380px !important;
-  padding: 20px 20px 22px !important;
-}
-
-#cart-popup .cart-summary{
-  margin-top: 18px !important;
-  padding-top: 18px !important;
-}
-
-#cart-popup .cart-summary p{
-  margin: 10px 0 !important;
-  font-size: 15px !important;
-}
-
-#cart-popup .cart-summary h4{
-  margin: 16px 0 18px !important;
-  font-size: 20px !important;
-  font-weight: 900 !important;
-}
-
-#cart-popup .btn-whatsapp{
-  padding: 18px !important;
-  font-size: 17px !important;
-}
-
-/* =========================
-   PREMIUM SEARCH BAR (FINAL)
-   ========================= */
-
-.search-box,
-.search-box input,
-.search input,
-input[type="search"]{
-  width: 100%;
-  height: 46px;
-  padding: 0 18px;
-  border-radius: 999px;
-  border: 1.5px solid #ddd;
-  background: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
-  color: #333;
-  outline: none;
-
-  box-shadow:
-    0 4px 12px rgba(0,0,0,.08),
-    inset 0 1px 0 rgba(255,255,255,.9);
-
-  transition: all .25s ease;
-}
-
-/* Placeholder look */
-.search-box input::placeholder,
-input[type="search"]::placeholder{
-  color: #aaa;
-  font-weight: 500;
-}
-
-/* Focus premium effect */
-.search-box input:focus,
-input[type="search"]:focus{
-  border-color: #34c759;
-  box-shadow:
-    0 0 0 3px rgba(52,199,89,.18),
-    0 6px 16px rgba(0,0,0,.12);
-  background: #fff;
-}
-
-/* Mobile spacing fix */
-@media (max-width: 768px){
-  .search-box,
-  .search-box input,
-  input[type="search"]{
-    height: 44px;
-    font-size: 14.5px;
+    grid-template-columns:repeat(4,1fr);
   }
 }
