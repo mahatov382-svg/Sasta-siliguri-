@@ -14,7 +14,7 @@ html, body {
 
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  background: linear-gradient(135deg,#fffaf2,#f6f2e8,#eef3ea);
+  background: #f6f3ec; /* reference color */
   color: #222;
   padding: 0;
   animation: bodyFade 0.45s ease-out;
