@@ -47,11 +47,17 @@ const productList = document.getElementById("product-list");
 logo.onclick = () => {
   tap++;
   setTimeout(()=>tap=0,600);
-  if(tap===3){
+
+  if(tap === 3){
     const p = prompt("Admin password");
-    if(p===ADMIN_PASS){
-      adminPanel.style.display="block";
-      adminPanel.scrollIntoView({behavior:"smooth"});
+    if(p === ADMIN_PASS){
+
+      // show admin login button
+      document.getElementById("admin-login-btn").style.display = "inline-block";
+
+      // show admin panel
+      adminPanel.style.display = "block";
+      adminPanel.scrollIntoView({ behavior:"smooth" });
     }
   }
 };
