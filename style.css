@@ -904,3 +904,73 @@ button.btn:hover {
   justify-content: center;
   gap: 10px;
 }
+
+/* ===============================
+   PRODUCT CARD BUTTONS – FINAL
+   (MATCHES 3rd IMAGE EXACTLY)
+================================ */
+
+/* TARGET ONLY PRODUCT CARD BUTTONS */
+.item button:not(.btn),
+.product button:not(.btn),
+.product-card button:not(.btn) {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #ff8c2b;
+  background: #fff;
+  color: #ff8c2b;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+}
+
+/* HOVER EFFECT (+ / −) */
+.item button:not(.btn):hover,
+.product button:not(.btn):hover,
+.product-card button:not(.btn):hover {
+  background: #ff8c2b;
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* QUANTITY INPUT (1) */
+.item input,
+.product input,
+.product-card input {
+  width: 48px;
+  height: 38px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 8px;
+}
+
+/* ADD TO CART – GREEN PREMIUM */
+.item .btn,
+.product .btn,
+.product-card .btn {
+  width: 100%;
+  padding: 14px 0;
+  margin-top: 12px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(180deg, #34c759, #1e9f3f);
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: all 0.25s ease;
+}
+
+.item .btn:hover,
+.product .btn:hover,
+.product-card .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+}
