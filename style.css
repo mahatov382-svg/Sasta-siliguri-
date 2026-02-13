@@ -808,3 +808,12 @@ html, body {
   border-radius: 8px;
   display: block;
 }
+
+/* HIDE ADMIN LOGIN BUTTON FOR CUSTOMERS */
+.admin-login,
+#admin-login,
+button[aria-label="Admin login"] {
+  display: none !important;
+}
+
+
