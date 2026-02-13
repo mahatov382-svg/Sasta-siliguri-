@@ -209,7 +209,7 @@ msg += `Address: ${address}\n\n`;
 msg += "Delivery: Same Day (10am – 8pm)\n";
 msg += "Payment: Cash on Delivery\n";
 
-msg += "-------------------------\n";
+msg += "-------------------------\n\n";
 msg += "THANK YOU FOR SHOPPING *SASTA SILIGURI*";
 
 const waNumber = "917602884208";
