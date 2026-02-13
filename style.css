@@ -771,3 +771,19 @@ body {
 .delivery-address {
   width: 100% !important;
 }
+
+/* GLOBAL OVERFLOW FIX */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ADDRESS TEXT ALIGN + PADDING FIX */
+.delivery-address,
+.address-bar,
+.order-status {
+  padding-left: 12px;
+  padding-right: 12px;
+  text-align: center;
+}
