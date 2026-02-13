@@ -469,12 +469,13 @@ button.add:active,
 
 .cart-popup-box{
   width: 92%;
-  max-width: 360px;
+  max-width: 380px;
   background: #ffffff;
   border-radius: 22px;
-  padding: 16px 16px 18px;
+  padding: 18px 18px 20px;
   box-shadow: 0 18px 40px rgba(0,0,0,.25);
 }
+
 
 #cart-popup.show .cart-popup-box{
   transform: translateY(0) scale(1);
@@ -507,36 +508,30 @@ button.add:active,
 /* ================= SUMMARY ================= */
 
 .cart-summary{
-  margin-top: 12px;
+  margin-top: 16px;
   border-top: 1px dashed #ddd;
-  padding-top: 12px;
+  padding-top: 16px;
 }
 
 .cart-summary p{
-  margin: 4px 0;
+  margin: 8px 0;
   font-size: 14px;
 }
 
 .cart-summary h4{
-  margin: 8px 0 12px;
-  font-size: 18px;
+  margin: 14px 0 16px;
+  font-size: 20px;
+  font-weight: 900;
 }
 
 /* ================= WHATSAPP BUTTON ================= */
 
 .btn-whatsapp{
   width: 100%;
-  padding: 14px;
+  padding: 16px;
+  font-size: 17px;
   border-radius: 999px;
-  border: none;
-
-  background: linear-gradient(135deg,#34c759,#1e9f3f);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 800;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,.25);
-  cursor: pointer;
+  ...
 }
 
 .btn-whatsapp:active{
