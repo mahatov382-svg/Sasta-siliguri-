@@ -838,3 +838,13 @@ button.add-to-cart {
   font-weight: 700;
   cursor: pointer;
 }
+
+  /* FIX PRODUCT IMAGE SIZE */
+.product img{
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+                            
