@@ -293,3 +293,37 @@ button[onclick*="Admin"] {
 #admin-login-btn {
   display: none !important;
 }
+
+/* ===============================
+   MOBILE FIX (FINAL)
+   Phone me card niche na jaye
+================================ */
+
+@media (max-width: 768px) {
+
+  .product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
+  }
+
+  .product,
+  .product-card,
+  .item {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .product img,
+  .product-card img,
+  .item img {
+    height: 160px !important;
+  }
+
+  .add-to-cart,
+  .btn,
+  button.add-to-cart {
+    width: 100% !important;
+  }
+}
