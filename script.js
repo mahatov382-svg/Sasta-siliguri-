@@ -151,7 +151,7 @@ function renderCart(){
 }
 
 function removeFromCart(id){
-  cart = cart.filter(i=>i.id!==id);
+  cart = cart.filter(i => i.id !== id);
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
   renderCart();
 }
