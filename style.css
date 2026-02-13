@@ -816,4 +816,8 @@ button[aria-label="Admin login"] {
   display: none !important;
 }
 
+/* HIDE ADMIN LOGIN WRAPPER (FINAL) */
+.admin-login-wrapper {
+  display: none !important;
+}
 
