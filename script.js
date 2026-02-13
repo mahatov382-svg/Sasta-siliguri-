@@ -202,9 +202,9 @@ msg += "\n-------------------------\n";
 msg += `*TOTAL AMOUNT: Rs ${total}*\n`;
 msg += "-------------------------\n\n";
 
-msg += `Customer Name: ${name}\n`;
-msg += `Phone: ${phone}\n`;
-msg += `Address: ${address}\n\n`;
+msg += `*Customer Name: ${name}*\n`;
+msg += `*Phone: ${phone}*\n`;
+msg += `*Address: ${address}*\n\n`;
 
 msg += "Delivery: Same Day (10am – 8pm)\n";
 msg += "Payment: Cash on Delivery\n";
