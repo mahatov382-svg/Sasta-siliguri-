@@ -194,48 +194,6 @@ body {
   display: block;
 }
 
-.price-block .offer-price {
-  font-size: 22px;
-  font-weight: 900;
-  color: #1f1f1f;
-  line-height: 1.2;
-}
-
-/* QTY */
-.qty-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin: 12px 0;
-}
-
-.qty-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 2px solid #ff8a3c;
-  background: #fff;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.qty-box input {
-  width: 50px;
-  text-align: center;
-  padding: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/* OUT OF STOCK */
-.stock-badge {
-  background: #eee;
-  color: #555;
-  padding: 8px;
-  border-radius: 999px;
-  font-weight: 700;
-}
 
 /* FOOTER */
 footer {
@@ -243,72 +201,6 @@ footer {
   margin-top: 18px;
   font-size: 12px;
   color: #555;
-}
-/* ================= PRODUCT CARD CLEAN ALIGN FIX ================= */
-
-/* price rows left-right */
-.price-line,
-.min-order,
-.stock-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  margin: 4px 0;
-}
-
-/* labels left */
-.price-line span:first-child,
-.min-order span:first-child {
-  color: #444;
-  font-weight: 600;
-}
-
-/* amounts right */
-.price-line span:last-child {
-  font-weight: 800;
-  color: #000;
-}
-
-/* offer price highlight */
-.offer-price {
-  color: #1f1f1f;;
-  font-size: 18px;
-}
-
-/* qty row clean */
-.qty-row {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin: 10px 0;
-}
-
-.qty-btn {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 2px solid #ff8a3c;
-  background: #fff;
-  font-size: 18px;
-  font-weight: 800;
-}
-
-.qty-input {
-  width: 50px;
-  text-align: center;
-  padding: 6px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 15px;
-}
-
-/* out of stock button */
-.btn-disabled {
-  background: #e0e0e0;
-  color: #777;
-  cursor: not-allowed;
 }
 
 /* FORCE WHATSAPP GREEN BUTTON */
@@ -430,30 +322,8 @@ footer {
   font-weight: 700;
 }
 
-.offer-price {
-  font-size: 20px;
-  font-weight: 900;
-  color: #1a7f00;
-}
 
 .btn-whatsapp {
-  white-space: nowrap;
-
-  height: 35px;          /* 👈 aur patla */
-  line-height: 35px;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  padding: 0 16px;       /* 👈 side se slim */
-  border-radius: 999px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.25);
-}
 
 /* In stock ko LEFT me lane ke liye */
 .tag {
@@ -475,77 +345,12 @@ footer {
 }
 
 /* PRODUCT CARD LOAD ANIMATION */
-.product-card {
-  animation: cardFadeUp 0.2s ease both;
-}
 
-@keyframes cardFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
   to {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 34px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-}
-
-.offer-price {
-  animation: pricePulse 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes pricePulse {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.05);
-  }
-}
-
-.btn-whatsapp:active {
-  transform: scale(0.96);
-}
-
-.product-card {
-  animation: cardFadeUp 0.45s ease-out both;
-}
-
-@keyframes cardFadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 .product-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 28px rgba(0,0,0,0.14);
-}.offer-price {
-  animation: pricePulse 2.5s ease-in-out infinite;
-}
-
-@keyframes pricePulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
 }
 
 .btn-whatsapp {
@@ -557,18 +362,6 @@ footer {
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.25);
 }
 
-.product-card {
-  transition:
-    transform 0.45s cubic-bezier(.22,.61,.36,1),
-    box-shadow 0.45s cubic-bezier(.22,.61,.36,1),
-    background 0.45s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-8px);
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.14);
-}
 
 .product-card img {
   transition: transform 0.6s cubic-bezier(.22,.61,.36,1);
@@ -969,34 +762,7 @@ button.add-to-cart {
   color: #fff;
 }
 
-/* middle quantity number */
-#cart input,
-.cart input {
-  width: 42px;
-  height: 34px;
-  text-align: center;
-  border-radius: 10px;
-  border: 2px solid #ddd;
-  font-weight: bold;
-  margin: 0 6px;
-}
 
-/* ORDER ON WHATSAPP */
-#cart a,
-#cart .order-btn,
-.cart a {
-  display: block;
-  width: 100%;
-  margin-top: 10px;
-  padding: 14px 0;
-  text-align: center;
-  border-radius: 30px;
-  background: linear-gradient(180deg, #34c759, #1e9f3f);
-  color: #fff;
-  font-weight: bold;
-  text-decoration: none;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
-}
 
 /* ===== FINAL PRODUCT GRID (LOCKED) ===== */
 .product-grid {
