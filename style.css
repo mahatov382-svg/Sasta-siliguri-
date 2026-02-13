@@ -327,3 +327,99 @@ button[onclick*="Admin"] {
     width: 100% !important;
   }
 }
+
+/* ===============================
+   FINAL BUTTON + QTY LOCK
+   (MATCHES 3rd CARD EXACT)
+================================ */
+
+/* ADD TO CART – ONE STYLE FOR ALL */
+button.add,
+.add-to-cart,
+.product button.add,
+.product-card button.add,
+.product .add-to-cart,
+.product-card .add-to-cart {
+  width: 100% !important;
+  height: 46px !important;
+  margin-top: 12px;
+  border-radius: 999px !important;
+  border: none !important;
+
+  background: linear-gradient(
+    180deg,
+    #34c759,
+    #1e9f3f
+  ) !important;
+
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 4px 0 #166d2c,
+    0 10px 20px rgba(0,0,0,0.25) !important;
+
+  cursor: pointer;
+}
+
+/* PRESS EFFECT */
+button.add:active,
+.add-to-cart:active {
+  transform: translateY(2px) scale(0.98);
+  box-shadow:
+    0 2px 0 #166d2c,
+    0 6px 12px rgba(0,0,0,0.25) !important;
+}
+
+/* ===============================
+   QTY ROW – PERFECT CENTER
+================================ */
+
+.qty,
+.qty-row,
+.quantity {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 12px 0;
+}
+
+/* + / − BUTTONS */
+.qty button,
+.quantity button {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 50% !important;
+
+  border: 2px solid #ff8a3c !important;
+  background: #fff !important;
+  color: #ff8a3c !important;
+
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+}
+
+/* CENTER NUMBER */
+.qty span,
+.qty input,
+.quantity span,
+.quantity input {
+  min-width: 48px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+  border: 2px solid #ddd;
+
+  font-size: 16px;
+  font-weight: 700;
+}
