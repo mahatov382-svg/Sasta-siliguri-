@@ -288,3 +288,8 @@ button[onclick*="admin"],
 button[onclick*="Admin"] {
   display: none !important;
 }
+
+/* HIDE ADMIN LOGIN FOR CUSTOMERS */
+#admin-login-btn {
+  display: none !important;
+}
