@@ -66,18 +66,27 @@ db.collection("products").onSnapshot(s=>{
 function render(list){
   productList.innerHTML="";
   list.forEach(p=>{
-    productList.innerHTML+=`
-    <div class="product">
-      <img src="${p.Image}">
-      <h3>${p.Name}</h3>
-      <del>₹${p.Mrp||""}</del> <b>₹${p.Price}</b>
-      <div class="qty">
-        <button onclick="qty('${p.id}',-1)">−</button>
-        <span id="q${p.id}">1</span>
-        <button onclick="qty('${p.id}',1)">+</button>
-      </div>
-      <button class="add" onclick="addToCart('${p.id}')">Add to Cart</button>
-    </div>`;
+    const name  = p.Name  || p.name  || "Item";
+const price = p.Price || p.price || 0;
+const mrp   = p.Mrp   || p.mrp   || "";
+const img   = p.Image || p.image || "https://via.placeholder.com/300";
+
+productList.innerHTML += `
+<div class="product">
+  <img src="${img}">
+  <h3>${name}</h3>
+  <del>₹${mrp}</del> <b>₹${price}</b>
+
+  <div class="qty">
+    <button onclick="qty('${p.id}',-1)">−</button>
+    <span id="q${p.id}">1</span>
+    <button onclick="qty('${p.id}',1)">+</button>
+  </div>
+
+  <button class="add" onclick="addToCart('${p.id}')">
+    Add to Cart
+  </button>
+</div>`;
   });
 }
 
