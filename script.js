@@ -1,3 +1,25 @@
+function orderFullCart() {
+  let msg = "🛒 Order Details:\n\n";
+  let total = 0;
+
+  document.querySelectorAll(".cart-item").forEach(item => {
+    let name = item.dataset.name;
+    let price = parseInt(item.dataset.price);
+    let qty = parseInt(item.dataset.qty);
+
+    msg += `${name} (${qty}) = ₹${price * qty}\n`;
+    total += price * qty;
+  });
+
+  msg += `\nTotal = ₹${total}`;
+  let phone = "917602884208"; // apna number
+
+  window.open(
+    `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`,
+    "_blank"
+  );
+}
+
 const phone = "917602884208";
 const ADMIN_PASS = "1513";
 
