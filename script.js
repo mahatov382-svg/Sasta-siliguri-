@@ -188,3 +188,18 @@ function deleteProduct(){
 
 renderCart();
 document.getElementById("order-btn")?.addEventListener("click", orderFullCart);
+
+// ===== VIEW CART BUTTON ACTION =====
+const viewCartBtn = document.getElementById("view-cart-btn");
+const cartBox = document.querySelector(".cart-box");
+
+if(viewCartBtn && cartBox){
+  viewCartBtn.addEventListener("click", () => {
+    cartBox.scrollIntoView({ behavior: "smooth" });
+    cartBox.classList.add("cart-highlight");
+
+    setTimeout(() => {
+      cartBox.classList.remove("cart-highlight");
+    }, 1500);
+  });
+}
