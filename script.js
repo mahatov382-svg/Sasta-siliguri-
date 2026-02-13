@@ -10,7 +10,7 @@ firebase.initializeApp({
 });
 
 const db = firebase.firestore();
-const storage = firebase.storage();
+const storage = firebase.storage;
 
 let products = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || [];
