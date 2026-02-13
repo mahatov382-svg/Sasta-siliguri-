@@ -574,3 +574,56 @@ button.add:active,
   padding: 18px !important;
   font-size: 17px !important;
 }
+
+/* =========================
+   PREMIUM SEARCH BAR (FINAL)
+   ========================= */
+
+.search-box,
+.search-box input,
+.search input,
+input[type="search"]{
+  width: 100%;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1.5px solid #ddd;
+  background: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  outline: none;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.08),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  transition: all .25s ease;
+}
+
+/* Placeholder look */
+.search-box input::placeholder,
+input[type="search"]::placeholder{
+  color: #aaa;
+  font-weight: 500;
+}
+
+/* Focus premium effect */
+.search-box input:focus,
+input[type="search"]:focus{
+  border-color: #34c759;
+  box-shadow:
+    0 0 0 3px rgba(52,199,89,.18),
+    0 6px 16px rgba(0,0,0,.12);
+  background: #fff;
+}
+
+/* Mobile spacing fix */
+@media (max-width: 768px){
+  .search-box,
+  .search-box input,
+  input[type="search"]{
+    height: 44px;
+    font-size: 14.5px;
+  }
+}
