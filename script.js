@@ -204,7 +204,11 @@ msg += "-------------------------\n\n";
 
 msg += `*Customer Name: ${name}*\n`;
 msg += `*Phone: ${phone}*\n`;
-msg += `*Address: ${address}*\n\n`;
+msg += "*Address:*\n";
+addressLines.forEach(l => {
+  msg += `*${l}*\n`;
+});
+msg += "\n";
 
 msg += "Delivery: Same Day (10am – 8pm)\n";
 msg += "Payment: Cash on Delivery\n";
