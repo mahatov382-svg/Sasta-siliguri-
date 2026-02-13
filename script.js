@@ -186,25 +186,34 @@ document.getElementById("order-btn")?.addEventListener("click", () => {
   }
 
 // 3 sab thik to WhatsApp bhejo
-let msg = "🛒 Order Details:\n\n";
+let msg = "🧾 *SASTA SILIGURI – DELIVERY BILL*\n\n";
+
+msg += "📦 *Products:*\n";
 let total = 0;
+let qtyCount = 0;
 
 cart.forEach(i => {
-  msg += `${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
+  msg += ` ${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
   total += i.price * i.qty;
+  qtyCount++;
 });
 
-msg += `\nTotal = ₹${total}\n\n`;
-msg += `Name: ${name}\n`;
-msg += `Phone: ${phone}\n`;
-msg += `Address: ${address}`;
+msg += "\n-------------------------\n";
+msg += `✅ *TOTAL AMOUNT: ₹${total}*\n`;
+msg += "-------------------------\n\n";
 
-const waNumber = "917602884208"; // apna WhatsApp number
+msg += `👤 Customer Name: ${name}\n`;
+msg += `📞 Phone: ${phone}\n`;
+msg += `🏠 Address: ${address}\n\n`;
 
-window.open(
-  `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`,
-  "_blank"
-);
+msg += "🚚 Delivery: Same Day (10am – 8pm)\n";
+msg += "💸 Payment: Cash on Delivery\n\n";
+msg += "🙏 THANK YOU FOR SHOPPING *SASTA SILIGURI*";
+
+const waNumber = "917602884208";
+
+window.location.href =
+  `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
   
 
 });
