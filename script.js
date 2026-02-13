@@ -189,17 +189,19 @@ function deleteProduct(){
 renderCart();
 document.getElementById("order-btn")?.addEventListener("click", orderFullCart);
 
-// ===== VIEW CART BUTTON ACTION =====
+// ===== VIEW CART POPUP ACTION =====
 const viewCartBtn = document.getElementById("view-cart-btn");
-const cartBox = document.querySelector(".cart-box");
+const cartPopup = document.getElementById("cart-popup");
+const cartClose = document.getElementById("cart-close");
 
-if(viewCartBtn && cartBox){
+if(viewCartBtn){
   viewCartBtn.addEventListener("click", () => {
-    cartBox.scrollIntoView({ behavior: "smooth" });
-    cartBox.classList.add("cart-highlight");
+    cartPopup.classList.add("show");
+  });
+}
 
-    setTimeout(() => {
-      cartBox.classList.remove("cart-highlight");
-    }, 1500);
+if(cartClose){
+  cartClose.addEventListener("click", () => {
+    cartPopup.classList.remove("show");
   });
 }
