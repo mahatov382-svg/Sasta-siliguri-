@@ -283,11 +283,8 @@ footer{
   }
 }
 
-/* HIDE ADMIN LOGIN FOR CUSTOMERS */
-.admin-login,
-#admin-login,
-button[aria-label="Admin login"],
-button:has-text("Admin login"),
-button:contains("Admin login") {
+/* HIDE ADMIN LOGIN BUTTON (CUSTOMERS) */
+button[onclick*="admin"],
+button[onclick*="Admin"] {
   display: none !important;
 }
