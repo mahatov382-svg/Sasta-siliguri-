@@ -752,3 +752,22 @@ body {
     transition: none !important;
   }
 }
+
+/* FIX ADDRESS / STATUS BAR OVERFLOW */
+.address-bar,
+.order-status,
+.delivery-address,
+.purple-bar {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Agar 100vw use hua hai kahin */
+.address-bar,
+.order-status,
+.delivery-address {
+  width: 100% !important;
+}
