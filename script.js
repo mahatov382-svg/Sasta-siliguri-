@@ -39,9 +39,22 @@ logo.onclick = () => {
 };
 
 /* ================= LOAD PRODUCTS ================= */
-db.collection("products").get().then(s=>{
-  products = s.docs.map(d=>({ id:d.id, ...d.data() }));
-  render(products);
+let firstLoad = true;
+
+db.collection("products").onSnapshot(snapshot=>{
+  products = [];
+
+  snapshot.forEach(doc=>{
+    products.push({
+      id: doc.id,
+      ...doc.data()
+    });
+  });
+
+  if(firstLoad){
+    render(products);
+    firstLoad = false;
+  }
 });
 
 
@@ -54,7 +67,7 @@ function render(list){
     const name = p.Name || p.name || "Item";
     const price = p.Price || p.price || 0;
     const mrp = p.Mrp || p.mrp || "";
-    const img = p.Image || p.image;
+    const img = p.Image || p.image || "https://via.placeholder.com/300";;
     const unit = p.Unit || "";
     const min = p.Min || 1;
     const stock = p.InStock !== false;
