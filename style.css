@@ -265,7 +265,6 @@ html,body{
 /* 🔥 SMALL & PERFECT ADD TO CART BUTTON */
 button.add-to-cart{
   width:100%;
-
   padding:6px 0 !important;   /* 👈 YAHI SE HEIGHT CONTROL */
   font-size:14px !important;  /* 👈 text chota */
   line-height:1.2 !important; /* 👈 upar-neeche dab gaya */
@@ -612,18 +611,20 @@ main{
   line-height: 1.3;
 }
 
-/* ================= VIEW CART PREMIUM BUTTON ================= */
+/* ================= VIEW CART FIXED BUTTON ================= */
+
 #view-cart-btn{
-  position:static;
-  margin:8px 12px 14px;
+  position: fixed;              /* scroll ke sath hilega nahi */
+  top: 120px;                   /* search bar ke niche */
+  left: 12px;                   /* left side */
 
-  padding:8px 14px;
-  font-size:13px;
-  border-radius:999px;
+  padding: 6px 12px;            /* chota size */
+  font-size: 12px;
+  border-radius: 999px;
 
-  display:flex;
-  align-items:center;
-  gap:6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 
   background: linear-gradient(
     to bottom,
@@ -632,17 +633,30 @@ main{
     #157a2f
   );
 
-  color:#fff;
+  color: #fff;
+  box-shadow:
+    0 3px 0 #0f5f24,
+    0 6px 12px rgba(0,0,0,.25);
+
+  z-index: 9999;
 }
 
+/* 🛒 icon */
 #view-cart-btn::before{
   content: "🛒";
   font-size: 14px;
 }
 
-/* FORCE HIDE ADMIN LOGIN */
+/* press effect */
+#view-cart-btn:active{
+  transform: scale(.95);
+}
+
+
+/* ================= ADMIN LOGIN FULL HIDE ================= */
+
 #admin-login-btn,
 .admin-login-wrapper,
 .admin-btn{
-  display:none !important;
+  display: none !important;
 }
