@@ -66,6 +66,10 @@ html,body{
   color:#ff8a3c;
 }
 
+.controls{
+  position: relative;
+}
+
 /* ================= SEARCH BAR ================= */
 .search-box input{
   width:100%;
@@ -625,87 +629,19 @@ button.add-to-cart{
 
 /* ================= VIEW CART PREMIUM BUTTON ================= */
 
-#view-cart-btn{
-  position: fixed;
-  top: 182px;              /* 🔥 Search bar ke upar set */
-  right: 14px;             /* 🔥 Right side */
-  z-index: 9999;
 
-  background: linear-gradient(180deg,#28c76f,#1f9d57);
-  color: #fff;
+  #view-cart-btn{
+  position: absolute;   /* ❗ fixed nahi */
+  top: 18px;            /* admin panel wali height */
+  left: 16px;           /* search bar ke left */
 
-  border: none;
+  padding: 8px 14px;
+  font-size: 13px;
   border-radius: 999px;
-
-  padding: 12px 18px;
-  font-size: 14px;
-  font-weight: 700;
 
   display: flex;
   align-items: center;
   gap: 6px;
-
-  box-shadow:
-    0 10px 22px rgba(0,0,0,.18),
-    inset 0 -2px 0 rgba(0,0,0,.25);
-
-  cursor: pointer;
-  transition: .25s ease;
-}
-
-#view-cart-btn:active{
-  transform: scale(.95);
-}
-
-/* Mobile safe */
-@media (max-width: 380px){
-  #view-cart-btn{
-    top: 176px;
-    padding: 11px 16px;
-    font-size: 13.5px;
-  }
-}
-
-/* 🔥 FORCE SMALL ADD TO CART BUTTON */
-button.add-to-cart{
-  padding:6px 12px !important;
-  font-size:12px !important;
-  border-radius:999px !important;
-  min-height:auto !important;
-
-  background: linear-gradient(
-    to bottom,
-    #34c759,
-    #1e9e3e,
-    #157a2f
-  ) !important;
-
-  color:#fff !important;
-
-  box-shadow:
-    0 2px 0 #0f5f24,
-    0 4px 8px rgba(0,0,0,.22) !important;
-}
-
-/* HIDE ADMIN LOGIN FOR CUSTOMERS */
-#admin-login-btn{
-  display:none !important;
-}
-
-/* 🔒 FIXED VIEW CART BUTTON */
-#view-cart-btn{
-  position: fixed;
-  bottom: 20px;     /* 👈 niche se distance */
-  right: 16px;      /* 👈 right side */
-  z-index: 9999;
-
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 999px;
-
-  display: flex;
-  align-items: center;
-  gap: 8px;
 
   background: linear-gradient(
     to bottom,
@@ -716,27 +652,13 @@ button.add-to-cart{
 
   color: #fff;
   box-shadow:
-    0 4px 0 #0f5f24,
-    0 8px 16px rgba(0,0,0,.25);
-}
+    0 3px 0 #0f5f24,
+    0 6px 12px rgba(0,0,0,.22);
 
-/* 🛒 CART ICON FIX */
+  z-index: 10;
+  }
+
 #view-cart-btn::before{
   content: "🛒";
-  font-size: 16px;
-}
-
-/* 👆 Press effect */
-#view-cart-btn:active{
-  transform: translateY(2px) scale(.96);
-  box-shadow:
-    0 2px 0 #0f5f24,
-    0 4px 10px rgba(0,0,0,.25);
-}
-
-
-@media (max-width: 480px){
-  #view-cart-btn{
-    bottom: 80px;
-  }
+  font-size: 14px;
 }
