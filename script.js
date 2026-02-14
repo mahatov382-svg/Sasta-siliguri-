@@ -41,21 +41,25 @@ logo.onclick = () => {
 /* ================= LOAD PRODUCTS ================= */
 let firstLoad = true;
 
+/* 1️⃣ FAST LOAD FROM CACHE */
+db.collection("products")
+  .get({ source: "cache" })
+  .then(snap => {
+    if (!snap.empty) {
+      products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      render(products);
+      firstLoad = false;
+    }
+  })
+  .catch(()=>{});
+
+/* 2️⃣ REALTIME UPDATE FROM SERVER */
 db.collection("products").onSnapshot(snapshot=>{
-  products = [];
-
-  snapshot.forEach(doc=>{
-    products.push({
-      id: doc.id,
-      ...doc.data()
-    });
-  });
-
-  if(firstLoad){
-    render(products);
-    firstLoad = false;
-  }
+  products = snapshot.docs.map(d => ({ id:d.id, ...d.data() }));
+  render(products);
 });
+
+
 
 
 /* ================= RENDER PRODUCTS ================= */
