@@ -686,3 +686,21 @@ button.add-to-cart{
     0 2px 0 #0f5f24,
     0 4px 8px rgba(0,0,0,.22) !important;
 }
+
+/* HIDE ADMIN LOGIN FOR CUSTOMERS */
+#admin-login-btn{
+  display:none !important;
+}
+
+/* 🛒 VIEW CART ICON FIX */
+#view-cart-btn{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+#view-cart-btn::before{
+  content:"🛒";
+  font-size:16px;
+  line-height:1;
+}
