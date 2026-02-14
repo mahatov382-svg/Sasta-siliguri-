@@ -186,16 +186,17 @@ html,body{
   margin:12px 0;
 }
 
-.quantity button{
-  width:28px;
-  height:28px;
+.qty button{
+  width:32px;          /* left-right */
+  height:32px;         /* 👈 same as width = perfect circle */
+  line-height:32px;    /* 👈 yahi se vertical dabega */
+  padding:0;           /* 👈 extra height hatane ke liye */
   border-radius:50%;
-  border:2px solid #ff8a3c;
-  background:#fff;
-  color:#ff8a3c;
-  font-size:16px;
-  font-weight:900;
-  cursor:pointer;
+  font-size:18px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 /* ===== CUSTOMER DETAILS PREMIUM FIX ===== */
