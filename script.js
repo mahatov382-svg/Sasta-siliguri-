@@ -51,18 +51,17 @@ function render(list){
   let html = "";
 
   list.forEach(p=>{
-    const name  = p.Name  || p.name  || "Item";
+    const name = p.Name || p.name || "Item";
     const price = p.Price || p.price || 0;
-    const mrp   = p.Mrp   || p.mrp   || "";
-    const img   = p.Image || p.image || "https://via.placeholder.com/300";
-    const unit  = p.Unit  || "";
-    const min   = p.Min   || 1;
+    const mrp = p.Mrp || p.mrp || "";
+    const img = p.Image || p.image;
+    const unit = p.Unit || "";
+    const min = p.Min || 1;
     const stock = p.InStock !== false;
 
     html += `
       <div class="product">
         <img src="${img}" loading="lazy">
-
         <h3>${name}</h3>
 
         <div class="price-row">
@@ -75,12 +74,13 @@ function render(list){
         </div>
 
         <div class="qty">
-          <button onclick="changeQty('${p.id}',-1)">−</button>
+          <button onclick="changeQty('${p.id}',-1)">-</button>
           <span id="q${p.id}">${min}</span>
           <button onclick="changeQty('${p.id}',1)">+</button>
         </div>
 
-        <button class="add-to-cart" onclick="addToCart('${p.id}')">
+        <button class="add-to-cart"
+          onclick="addToCart('${p.id}')">
           Add to Cart
         </button>
       </div>
@@ -88,8 +88,6 @@ function render(list){
   });
 
   productList.innerHTML = html;
-}
-  });
 }
 
 /* ================= QTY ================= */
