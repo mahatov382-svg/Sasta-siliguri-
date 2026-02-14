@@ -7,7 +7,7 @@
 
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <!-- FIREBASE (LOAD ONLY ONCE) -->
+  <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
@@ -27,7 +27,6 @@
   <header class="header">
     <div class="brand">
       <img src="logo.png" alt="Sasta Siliguri" class="logo">
-
       <div class="brand-text">
         <h1>SASTA SILIGURI</h1>
         <p class="delivery-text">SAME DAY FREE DELIVERY</p>
@@ -51,24 +50,17 @@
       </p>
     </section>
 
-    <!-- ADMIN LOGIN -->
-    <div class="admin-login-wrapper">
-      <button id="admin-login-btn" class="btn admin-btn">
-        🔒 Admin login
-      </button>
-    </div>
-
-    <!-- ADMIN PANEL -->
+    <!-- ADMIN PANEL (3 TAP LOGO SE OPEN) -->
     <section id="admin-panel" class="admin-box" style="display:none;">
       <h2>Admin Panel (Owner Only)</h2>
 
       <input id="p-name" placeholder="Product name">
-      <input id="p-weight" placeholder="Weight (1 Kg, 500g etc)">
       <input id="p-price" type="number" placeholder="Price ₹">
       <input id="p-mrp" type="number" placeholder="MRP ₹">
       <input id="p-min" type="number" placeholder="Minimum order quantity">
       <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
-      <input id="p-image" placeholder="Image URL (optional)">
+
+      <!-- DIRECT GALLERY UPLOAD -->
       <input id="p-file" type="file" accept="image/*">
 
       <label class="admin-checkbox">
@@ -78,8 +70,6 @@
 
       <div class="admin-buttons">
         <button id="admin-save" class="btn admin-btn">Save / Update</button>
-        <button id="admin-add" class="btn admin-secondary-btn">Add new product</button>
-        <button id="admin-delete" class="btn admin-secondary-btn">Delete product</button>
       </div>
     </section>
 
@@ -90,7 +80,8 @@
 
     <!-- PRODUCTS -->
     <h2 class="section-title">Fruits</h2>
-   <div id="product-list" class="product-grid"></div>
+    <div id="product-list" class="product-grid"></div>
+
   </main>
 
   <!-- FOOTER -->
@@ -102,9 +93,9 @@
     </p>
   </footer>
 
-  <!-- VIEW CART BUTTON -->
+  <!-- VIEW CART BUTTON (SINGLE ICON ONLY) -->
   <button id="view-cart-btn">
-    🛒 View Cart
+    View Cart
   </button>
 
   <!-- CART POPUP -->
@@ -112,7 +103,7 @@
     <div class="cart-popup-box">
 
       <div class="cart-popup-header">
-        <h3>🛒 Your Cart</h3>
+        <h3>Your Cart</h3>
         <button id="cart-close">✖</button>
       </div>
 
