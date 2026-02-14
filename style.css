@@ -673,3 +673,56 @@ transition: transform .12s linear;
 img{
   content-visibility: auto;
 }
+
+/* ================= MOBILE PRODUCT COMPACT ================= */
+@media (max-width: 480px){
+
+  /* product card overall */
+  .product,
+  .product-card{
+    padding: 12px !important;
+    border-radius: 18px !important;
+  }
+
+  /* product image height kam */
+  .product img,
+  .product-card img{
+    height: 130px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* title thoda chota */
+  .product h3,
+  .product-card h3{
+    font-size: 14px !important;
+    margin-bottom: 4px;
+  }
+
+  /* price spacing kam */
+  .price-row{
+    margin: 4px 0 !important;
+  }
+
+  /* qty buttons compact */
+  .qty{
+    margin: 6px 0 !important;
+  }
+
+  .qty button{
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  /* add to cart button compact */
+  button.add-to-cart{
+    height: 40px !important;
+    font-size: 14px !important;
+    margin-top: 6px;
+  }
+
+  /* grid gap thoda kam */
+  .product-grid{
+    gap: 14px !important;
+  }
+}
