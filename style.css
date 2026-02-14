@@ -548,3 +548,50 @@ button.add-to-cart{
     gap:22px !important;
   }
 }
+
+/* ===== CUSTOMER DETAILS PREMIUM FIX ===== */
+
+.customer-box{
+  margin: 16px 12px 22px;
+  padding: 18px 16px;
+  background: #fdfbf6;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.06);
+}
+
+.customer-box h2{
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+/* INPUTS */
+.customer-box input,
+.customer-box textarea{
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  border: 1.5px solid #e3e3e3;
+  font-size: 15px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.customer-box input:focus,
+.customer-box textarea:focus{
+  outline: none;
+  border-color: #ff9a2f;
+  box-shadow: 0 0 0 3px rgba(255,154,47,.15);
+}
+
+.customer-box textarea{
+  resize: none;
+}
+
+/* NOTE TEXT */
+.customer-box .note{
+  font-size: 13px;
+  color: #555;
+  margin-top: 6px;
+}
