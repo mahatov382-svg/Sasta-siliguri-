@@ -259,3 +259,17 @@ cartClose.onclick = () => {
   cartPopup.classList.remove("show");
   document.body.style.overflow = "";
 };
+
+<script>
+const ADMIN_PASS = "1513";   // apna password
+
+function openAdmin(){
+  const pass = prompt("Enter Admin Password");
+  if(pass === ADMIN_PASS){
+    document.body.classList.add("admin-on");
+    alert("Admin Panel Enabled");
+  }else{
+    alert("Wrong Password");
+  }
+}
+</script>
