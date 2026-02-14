@@ -39,27 +39,30 @@ logo.onclick = () => {
 };
 
 /* ================= LOAD PRODUCTS ================= */
-db.collection("products").onSnapshot(snap => {
-  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  renderProducts(products);
+db.collection("products").get().then(s=>{
+  products = s.docs.map(d=>({ id:d.id, ...d.data() }));
+  render(products);
 });
 
-/* ================= RENDER PRODUCTS ================= */
-function renderProducts(list) {
-  productList.innerHTML = "";
 
-  list.forEach(p => {
-    const name = p.Name || p.name || "Item";
+/* ================= RENDER PRODUCTS ================= */
+
+function render(list){
+  let html = "";
+
+  list.forEach(p=>{
+    const name  = p.Name  || p.name  || "Item";
     const price = p.Price || p.price || 0;
-    const mrp = p.Mrp || p.mrp || "";
-    const img = p.Image || p.image || "https://via.placeholder.com/300";
-    const unit = p.Unit || "";
-    const min = p.Min || 1;
+    const mrp   = p.Mrp   || p.mrp   || "";
+    const img   = p.Image || p.image || "https://via.placeholder.com/300";
+    const unit  = p.Unit  || "";
+    const min   = p.Min   || 1;
     const stock = p.InStock !== false;
 
-    productList.innerHTML += `
+    html += `
       <div class="product">
-        <img src="${img}">
+        <img src="${img}" loading="lazy">
+
         <h3>${name}</h3>
 
         <div class="price-row">
@@ -67,7 +70,9 @@ function renderProducts(list) {
           <span class="offer-price">₹${price}</span>
         </div>
 
-        <div class="tag">${stock ? "In stock ✅" : "Out of stock ❌"}</div>
+        <div class="tag">
+          ${stock ? "In stock ✅" : "Out of stock ❌"}
+        </div>
 
         <div class="qty">
           <button onclick="changeQty('${p.id}',-1)">−</button>
@@ -80,6 +85,10 @@ function renderProducts(list) {
         </button>
       </div>
     `;
+  });
+
+  productList.innerHTML = html;
+}
   });
 }
 
