@@ -726,3 +726,31 @@ img{
     gap: 14px !important;
   }
 }
+
+/* ================= MOBILE QTY BOX COMPACT ================= */
+@media (max-width: 480px){
+
+  /* qty wrapper spacing */
+  .qty{
+    gap: 6px !important;
+  }
+
+  /* - and + buttons */
+  .qty button{
+    width: 26px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+  }
+
+  /* middle number box */
+  .qty input,
+  .qty span,
+  .qty-value{
+    width: 34px !important;
+    height: 26px !important;
+    font-size: 13px !important;
+    line-height: 26px !important;
+    padding: 0 !important;
+    border-radius: 8px !important;
+  }
+}
