@@ -659,3 +659,24 @@ button.add-to-cart{
     font-size: 13.5px;
   }
 }
+
+/* 🔥 FORCE SMALL ADD TO CART BUTTON */
+button.add-to-cart{
+  padding:6px 12px !important;
+  font-size:12px !important;
+  border-radius:999px !important;
+  min-height:auto !important;
+
+  background: linear-gradient(
+    to bottom,
+    #34c759,
+    #1e9e3e,
+    #157a2f
+  ) !important;
+
+  color:#fff !important;
+
+  box-shadow:
+    0 2px 0 #0f5f24,
+    0 4px 8px rgba(0,0,0,.22) !important;
+}
