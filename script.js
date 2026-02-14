@@ -184,9 +184,9 @@ document.getElementById("admin-save").onclick = async () => {
 
 /* ================= ORDER WHATSAPP ================= */
 document.getElementById("order-btn").onclick = () => {
-  const name = custName.value.trim();
-  const phone = custPhone.value.trim();
-  const address = custAddress.value.trim();
+  const name = document.getElementById("cust-name").value.trim();
+const phone = document.getElementById("cust-phone").value.trim();
+const address = document.getElementById("cust-address").value.trim();
 
   if (!name || !phone || !address) {
     alert("Please fill all details");
