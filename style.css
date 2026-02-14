@@ -131,7 +131,7 @@ html,body{
 
 .product-card img{
   width:100%;
-  height:130px;
+  height:115px;
   object-fit:cover;
   border-radius:12px;
   margin-bottom:18px;
@@ -259,9 +259,9 @@ html,body{
 /* ================= ADD TO CART ================= */
 .add-to-cart{
   width:100%;
-  padding:8px 0;          /* 👈 pehle zyada hoga, ab chota */
-  font-size:14px;          /* 👈 text thoda compact */
-  font-weight:700;
+  padding:6px 0;          /* 👈 pehle zyada hoga, ab chota */
+  font-size:8px;          /* 👈 text thoda compact */
+  font-weight:600;
   border-radius:999px;
   border:none;
   cursor:pointer;
