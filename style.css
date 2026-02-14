@@ -122,7 +122,7 @@ html,body{
   box-shadow:
     0 4px 10px rgba(0,0,0,.07),
     0 12px 24px rgba(0,0,0,.10);
-  transition:.25s;
+  transition:.1s;
 }
 
 .product-card:hover{
