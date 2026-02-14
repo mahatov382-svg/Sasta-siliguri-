@@ -562,49 +562,65 @@ button.add-to-cart{
   }
 }
 
-/* ===== CUSTOMER DETAILS PREMIUM FIX ===== */
+/* ================== YOUR DETAILS (FIX) ================== */
 
 .customer-box{
-  margin: 16px 12px 22px;
-  padding: 18px 16px;
-  background: #fdfbf6;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.06);
+  background: #fffdf7;
+  margin: 14px 12px 18px;
+  padding: 16px 16px 18px;
+  border-radius: 20px;
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
 }
 
 .customer-box h2{
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 20px;
   margin-bottom: 14px;
+  font-weight: 800;
 }
 
-/* INPUTS */
+/* INPUTS – ONE LINE EACH */
 .customer-box input,
 .customer-box textarea{
   width: 100%;
-  padding: 14px 16px;
+  height: 46px;
   margin-bottom: 12px;
-  border-radius: 14px;
-  border: 1.5px solid #e3e3e3;
-  font-size: 15px;
+  padding: 0 16px;
+
+  border-radius: 999px;
+  border: 1.5px solid #ddd;
   background: #fff;
-  box-sizing: border-box;
+
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,.06),
+    inset 0 1px 0 rgba(255,255,255,.9);
+
+  transition: .25s ease;
 }
 
+/* ADDRESS thoda lamba */
+.customer-box textarea{
+  height: 52px;
+  padding-top: 14px;
+  resize: none;
+}
+
+/* FOCUS EFFECT (premium) */
 .customer-box input:focus,
 .customer-box textarea:focus{
-  outline: none;
-  border-color: #ff9a2f;
-  box-shadow: 0 0 0 3px rgba(255,154,47,.15);
-}
-
-.customer-box textarea{
-  resize: none;
+  border-color: #34c759;
+  box-shadow:
+    0 0 0 3px rgba(52,199,89,.18),
+    0 8px 18px rgba(0,0,0,.12);
 }
 
 /* NOTE TEXT */
 .customer-box .note{
   font-size: 13px;
-  color: #555;
-  margin-top: 6px;
+  color: #666;
+  margin-top: 4px;
+  line-height: 1.4;
 }
