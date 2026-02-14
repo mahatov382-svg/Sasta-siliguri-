@@ -258,32 +258,35 @@ html,body{
 
 /* ================= ADD TO CART ================= */
 .add-to-cart{
-  width:100%;
-  padding:6px 0;          /* 👈 pehle zyada hoga, ab chota */
-  font-size:8px;          /* 👈 text thoda compact */
-  font-weight:600;
+  width:auto;                 /* 👈 full width nahi */
+  padding:10px 16px;          /* 👈 SAME as View Cart */
+  font-size:14px;             /* 👈 SAME text size */
+  font-weight:700;
+
   border-radius:999px;
   border:none;
   cursor:pointer;
+
   background: linear-gradient(
-  to bottom,
-  #34c759,
-  #1e9e3e,
-  #157a2f
-);
+    to bottom,
+    #34c759,
+    #1e9e3e,
+    #157a2f
+  );
 
-color:#fff;
+  color:#fff;
 
-box-shadow:
-  0 3px 0 #0f5f24,
-  0 6px 12px rgba(0,0,0,.25);
+  box-shadow:
+    0 3px 0 #0f5f24,
+    0 6px 12px rgba(0,0,0,.25);
 }
 
+
 .add-to-cart:active{
-  transform:translateY(2px) scale(.98);
+  transform:translateY(2px);
   box-shadow:
-    0 2px 0 #166d2c,
-    0 6px 12px rgba(0,0,0,.25);
+    0 1px 0 #0f5f24,
+    0 4px 8px rgba(0,0,0,.25);
 }
 
 /* ================= CART POPUP ================= */
