@@ -263,10 +263,11 @@ button.add-to-cart{
   width:100%;
 
   padding:6px 0 !important;   /* 👈 YAHI SE HEIGHT CONTROL */
-  font-size:13px !important;  /* 👈 text chota */
+  font-size:14px !important;  /* 👈 text chota */
   line-height:1.2 !important; /* 👈 upar-neeche dab gaya */
 
-  font-weight:600;
+  font-weight:700;
+  letter-spacing:.3px;
   border-radius:999px;
   border:none;
   cursor:pointer;
