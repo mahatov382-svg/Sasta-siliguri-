@@ -257,10 +257,10 @@ html,body{
 }
 
 /* ================= ADD TO CART ================= */
-.add-to-cart{
-  width:auto;                 /* 👈 full width nahi */
-  padding:10px 16px;          /* 👈 SAME as View Cart */
-  font-size:14px;             /* 👈 SAME text size */
+  .add-to-cart{
+  width:auto;
+  padding:7px 12px;
+  font-size:12px;
   font-weight:700;
 
   border-radius:999px;
@@ -276,18 +276,18 @@ html,body{
 
   color:#fff;
 
-  box-shadow:
-    0 3px 0 #0f5f24,
-    0 6px 12px rgba(0,0,0,.25);
-}
+  display:block;
+  margin:8px auto 0;
 
+  box-shadow:
+    0 2px 0 #0f5f24,
+    0 4px 8px rgba(0,0,0,.22);
+}
 
 .add-to-cart:active{
-  transform:translateY(2px);
-  box-shadow:
-    0 1px 0 #0f5f24,
-    0 4px 8px rgba(0,0,0,.25);
+  transform:translateY(1px);
 }
+
 
 /* ================= CART POPUP ================= */
 #cart-popup{
