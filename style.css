@@ -257,12 +257,16 @@ html,body{
 }
 
 /* ================= ADD TO CART ================= */
-  .add-to-cart{
-  width:auto;
-  padding:7px 12px;
-  font-size:12px;
-  font-weight:700;
 
+/* 🔥 SMALL & PERFECT ADD TO CART BUTTON */
+button.add-to-cart{
+  width:100%;
+
+  padding:6px 0 !important;   /* 👈 YAHI SE HEIGHT CONTROL */
+  font-size:13px !important;  /* 👈 text chota */
+  line-height:1.2 !important; /* 👈 upar-neeche dab gaya */
+
+  font-weight:600;
   border-radius:999px;
   border:none;
   cursor:pointer;
@@ -276,17 +280,18 @@ html,body{
 
   color:#fff;
 
-  display:block;
-  margin:8px auto 0;
-
   box-shadow:
     0 2px 0 #0f5f24,
-    0 4px 8px rgba(0,0,0,.22);
+    0 5px 10px rgba(0,0,0,.25);
 }
 
-.add-to-cart:active{
-  transform:translateY(1px);
+button.add-to-cart:active{
+  transform: translateY(1px) scale(.97);
+  box-shadow:
+    0 1px 0 #0f5f24,
+    0 3px 6px rgba(0,0,0,.25);
 }
+
 
 
 /* ================= CART POPUP ================= */
