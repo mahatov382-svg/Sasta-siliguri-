@@ -15,6 +15,7 @@ const storage = firebase.storage();
 
 /******************** GLOBAL ********************/
 let products = [];
+let filteredProducts = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || [];
 let editId = null;
 let tapCount = 0;
@@ -23,6 +24,7 @@ let tapCount = 0;
 const productList = document.getElementById("product-list");
 const adminPanel = document.getElementById("admin-panel");
 const logo = document.querySelector(".logo");
+const searchInput = document.getElementById("search-input");
 
 /******************** ADMIN – 3 TAP ********************/
 logo.addEventListener("click", () => {
@@ -45,13 +47,28 @@ logo.addEventListener("click", () => {
 db.collection("products").get({ source: "cache" }).then(snap => {
   if (!snap.empty) {
     products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    render(products);
+    filteredProducts = products;
+    render(filteredProducts);
   }
 }).catch(()=>{});
 
 db.collection("products").onSnapshot(snapshot => {
   products = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-  render(products);
+  filteredProducts = products;
+  render(filteredProducts);
+});
+
+/******************** SEARCH (LIVE FILTER) ********************/
+searchInput.addEventListener("input", e => {
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) {
+    filteredProducts = products;
+  } else {
+    filteredProducts = products.filter(p =>
+      (p.Name || "").toLowerCase().includes(q)
+    );
+  }
+  render(filteredProducts);
 });
 
 /******************** RENDER PRODUCTS ********************/
@@ -94,6 +111,7 @@ function render(list){
 /******************** QTY ********************/
 function changeQty(id, d){
   const el = document.getElementById("q"+id);
+  if(!el) return;
   let v = Number(el.innerText) + d;
   if(v < 1) v = 1;
   el.innerText = v;
@@ -104,7 +122,7 @@ function addToCart(id){
   const p = products.find(x => x.id === id);
   if(!p || p.InStock === false) return;
 
-  const qty = Number(document.getElementById("q"+id).innerText);
+  const qty = Number(document.getElementById("q"+id)?.innerText || 1);
   const found = cart.find(i => i.id === id);
 
   if(found){
@@ -154,7 +172,7 @@ renderCart();
 
 /******************** IMAGE UPLOAD ********************/
 async function uploadImage(file){
-  const ref = storage.ref("products/"+Date.now());
+  const ref = storage.ref("products/" + Date.now());
   await ref.put(file);
   return await ref.getDownloadURL();
 }
