@@ -655,11 +655,12 @@ transition: transform .12s linear;
 
 
 /* ================= ADMIN LOGIN FULL HIDE ================= */
-
-#admin-login-btn,
-.admin-login-wrapper,
 .admin-btn{
-  display: none !important;
+  display:none;
+}
+
+body.admin-on .admin-btn{
+  display:inline-flex;
 }
 
 
