@@ -50,32 +50,43 @@
       </p>
     </section>
 
-    <!-- ADMIN PANEL (3 TAP LOGO SE OPEN) -->
-<section id="admin-panel" class="admin-box" style="display:none;">
-  <h2>Admin Panel (Owner Only)</h2>
+    <!-- ================= ADMIN PANEL ================= -->
+    <!-- Opens on LOGO 3 TAP -->
+    <section id="admin-panel" class="admin-box" style="display:none;">
+      <h2>Admin Panel (Owner Only)</h2>
 
-  <input id="p-id" type="hidden">
+      <!-- REQUIRED FOR UPDATE -->
+      <input type="hidden" id="p-id">
 
-  <input id="p-name" placeholder="Product name">
-  <input id="p-price" type="number" placeholder="Price ₹">
-  <input id="p-mrp" type="number" placeholder="MRP ₹">
-  <input id="p-min" type="number" placeholder="Minimum order quantity">
-  <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
+      <input id="p-name" placeholder="Product name">
+      <input id="p-price" type="number" placeholder="Price ₹">
+      <input id="p-mrp" type="number" placeholder="MRP ₹">
+      <input id="p-min" type="number" placeholder="Minimum order quantity">
+      <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
 
-  <!-- IMAGE UPLOAD -->
-  <input id="p-file" type="file" accept="image/*">
+      <!-- IMAGE UPLOAD (GALLERY) -->
+      <input id="p-file" type="file" accept="image/*">
 
-  <label class="admin-checkbox">
-    <input type="checkbox" id="p-stock" checked>
-    In stock
-  </label>
+      <label class="admin-checkbox">
+        <input type="checkbox" id="p-stock" checked>
+        In stock
+      </label>
 
-  <div class="admin-buttons">
-    <button id="admin-save" class="btn admin-btn">Save / Update</button>
-    <button id="admin-clear" class="btn admin-secondary-btn">Add New</button>
-    <button id="admin-delete" class="btn admin-danger-btn">Delete</button>
-  </div>
-</section>
+      <div class="admin-buttons">
+        <button id="admin-save" class="btn admin-btn">
+          Save / Update
+        </button>
+
+        <button id="admin-clear" class="btn admin-secondary-btn">
+          Add New Product
+        </button>
+
+        <button id="admin-delete" class="btn admin-danger-btn">
+          Delete Product
+        </button>
+      </div>
+    </section>
+    <!-- ============== ADMIN PANEL END ============== -->
 
     <!-- SEARCH -->
     <section class="controls">
@@ -97,10 +108,8 @@
     </p>
   </footer>
 
-  <!-- VIEW CART BUTTON (SINGLE ICON ONLY) -->
-  <button id="view-cart-btn">
-    View Cart
-  </button>
+  <!-- VIEW CART BUTTON -->
+  <button id="view-cart-btn">View Cart</button>
 
   <!-- CART POPUP -->
   <div id="cart-popup">
