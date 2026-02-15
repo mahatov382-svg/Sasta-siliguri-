@@ -25,6 +25,15 @@ const adminPanel = document.getElementById("admin-panel");
 const logo = document.querySelector(".logo");
 const searchInput = document.getElementById("search-input");
 
+/* ADMIN INPUTS */
+const pName   = document.getElementById("p-name");
+const pPrice  = document.getElementById("p-price");
+const pMrp    = document.getElementById("p-mrp");
+const pMin    = document.getElementById("p-min");
+const pUnit   = document.getElementById("p-unit");
+const pFile   = document.getElementById("p-file");
+const pStock  = document.getElementById("p-stock");
+
 /******************** ADMIN – 3 TAP ********************/
 logo.onclick = () => {
   tapCount++;
@@ -78,7 +87,8 @@ function render(list) {
         <button onclick="changeQty('${p.id}',1)">+</button>
       </div>
 
-      <button class="add-to-cart" onclick="event.stopPropagation();addToCart('${p.id}')">
+      <button class="add-to-cart"
+        onclick="event.stopPropagation();addToCart('${p.id}')">
         Add to Cart
       </button>
     </div>
@@ -91,12 +101,12 @@ function loadToAdmin(id){
   if(!p) return;
 
   editId = id;
-  document.getElementById("p-name").value = p.Name || "";
-  document.getElementById("p-price").value = p.Price || "";
-  document.getElementById("p-mrp").value = p.Mrp || "";
-  document.getElementById("p-min").value = p.Min || 1;
-  document.getElementById("p-unit").value = p.Unit || "";
-  document.getElementById("p-stock").checked = p.InStock !== false;
+  pName.value  = p.Name || "";
+  pPrice.value = p.Price || "";
+  pMrp.value   = p.Mrp || "";
+  pMin.value   = p.Min || 1;
+  pUnit.value  = p.Unit || "";
+  pStock.checked = p.InStock !== false;
 
   adminPanel.scrollIntoView({ behavior:"smooth" });
 }
@@ -159,29 +169,35 @@ async function uploadImage(file){
 /******************** ADMIN BUTTONS ********************/
 document.getElementById("admin-save").onclick = async ()=>{
   const data = {
-    Name: p-name.value,
-    Price:+p-price.value,
-    Mrp:+p-mrp.value,
-    Min:+p-min.value||1,
-    Unit:p-unit.value,
-    InStock:p-stock.checked
+    Name: pName.value,
+    Price: +pPrice.value,
+    Mrp: +pMrp.value,
+    Min: +pMin.value || 1,
+    Unit: pUnit.value,
+    InStock: pStock.checked
   };
 
-  const file = p-file.files[0];
-  if(file) data.Image = await uploadImage(file);
+  if(pFile.files[0]){
+    data.Image = await uploadImage(pFile.files[0]);
+  }
 
   editId
     ? db.collection("products").doc(editId).update(data)
     : db.collection("products").add(data);
 
-  alert("Saved Successfully");
+  alert("Saved / Updated Successfully");
   editId = null;
 };
 
-document.getElementById("admin-add").onclick = ()=>{
+document.getElementById("admin-clear").onclick = ()=>{
   editId = null;
-  adminPanel.querySelectorAll("input").forEach(i=>i.value="");
-  p-stock.checked = true;
+  pName.value = "";
+  pPrice.value = "";
+  pMrp.value = "";
+  pMin.value = "";
+  pUnit.value = "";
+  pFile.value = "";
+  pStock.checked = true;
 };
 
 document.getElementById("admin-delete").onclick = ()=>{
@@ -193,9 +209,9 @@ document.getElementById("admin-delete").onclick = ()=>{
 };
 
 /******************** CART POPUP ********************/
-view-cart-btn.onclick = ()=>{
-  cart-popup.classList.add("show");
+document.getElementById("view-cart-btn").onclick = ()=>{
+  document.getElementById("cart-popup").classList.add("show");
 };
-cart-close.onclick = ()=>{
-  cart-popup.classList.remove("show");
+document.getElementById("cart-close").onclick = ()=>{
+  document.getElementById("cart-popup").classList.remove("show");
 };
