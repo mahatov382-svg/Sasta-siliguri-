@@ -51,13 +51,11 @@ db.collection("products").onSnapshot(snapshot => {
 /******************** SEARCH ********************/
 searchInput.addEventListener("input", e => {
   const q = e.target.value.toLowerCase().trim();
-  if (!q) {
-    render(products);
-  } else {
-    render(products.filter(p =>
-      (p.Name || "").toLowerCase().includes(q)
-    ));
-  }
+  render(
+    q
+      ? products.filter(p => (p.Name || "").toLowerCase().includes(q))
+      : products
+  );
 });
 
 /******************** RENDER PRODUCTS ********************/
@@ -69,9 +67,22 @@ function render(list) {
 
       <h3>${p.Name || "Item"}</h3>
 
+      <!-- PRICE BLOCK WITH LABELS -->
       <div class="price-row">
-        <span class="mrp">${p.Mrp ? "₹" + p.Mrp : ""}</span>
-        <span class="offer-price">₹${p.Price || 0}</span>
+        <div>
+          <div style="font-size:11px;color:#777">Market price</div>
+          <div class="mrp">${p.Mrp ? "₹" + p.Mrp : "-"}</div>
+        </div>
+
+        <div style="text-align:right">
+          <div style="font-size:11px;color:#777">Offer price</div>
+          <div class="offer-price">₹${p.Price || 0}</div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700">
+        <span>Min order</span>
+        <span>${p.Min || 1} ${p.Unit || ""}</span>
       </div>
 
       <div class="tag">${p.InStock === false ? "Out of stock ❌" : "In stock ✅"}</div>
@@ -98,12 +109,12 @@ function loadToAdmin(id) {
 
   editId = id;
 
-  document.getElementById("p-name").value = p.Name || "";
-  document.getElementById("p-price").value = p.Price || "";
-  document.getElementById("p-mrp").value = p.Mrp || "";
-  document.getElementById("p-min").value = p.Min || 1;
-  document.getElementById("p-unit").value = p.Unit || "";
-  document.getElementById("p-stock").checked = p.InStock !== false;
+  p-name.value = p.Name || "";
+  p-price.value = p.Price || "";
+  p-mrp.value = p.Mrp || "";
+  p-min.value = p.Min || 1;
+  p-unit.value = p.Unit || "";
+  p-stock.checked = p.InStock !== false;
 
   adminPanel.scrollIntoView({ behavior: "smooth" });
 }
@@ -111,7 +122,6 @@ function loadToAdmin(id) {
 /******************** QTY ********************/
 function changeQty(id, d) {
   const el = document.getElementById("q" + id);
-  if (!el) return;
   let v = Number(el.innerText) + d;
   if (v < 1) v = 1;
   el.innerText = v;
@@ -123,30 +133,23 @@ function addToCart(id) {
   if (!p || p.InStock === false) return;
 
   const qty = Number(document.getElementById("q" + id).innerText);
-  const found = cart.find(i => i.id === id);
+  const f = cart.find(i => i.id === id);
 
-  if (found) {
-    found.qty += qty;
-  } else {
-    cart.push({
-      id: p.id,
-      name: p.Name,
-      price: p.Price,
-      unit: p.Unit || "",
-      qty
-    });
-  }
+  f ? f.qty += qty : cart.push({
+    id: p.id,
+    name: p.Name,
+    price: p.Price,
+    unit: p.Unit || "",
+    qty
+  });
 
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
   renderCart();
 }
 
-/******************** RENDER CART ********************/
 function renderCart() {
   const box = document.getElementById("cart-items");
   const totalBox = document.getElementById("cart-total");
-  if (!box) return;
-
   let total = 0;
   box.innerHTML = "";
 
@@ -156,19 +159,18 @@ function renderCart() {
       <div class="cart-row">
         ${i.name} (${i.qty} ${i.unit}) – ₹${i.price * i.qty}
         <button onclick="removeFromCart('${i.id}')">❌</button>
-      </div>
-    `;
+      </div>`;
   });
 
   totalBox.innerText = "Total: ₹" + total;
 }
+renderCart();
 
 function removeFromCart(id) {
   cart = cart.filter(i => i.id !== id);
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
   renderCart();
 }
-renderCart();
 
 /******************** IMAGE UPLOAD ********************/
 async function uploadImage(file) {
@@ -180,36 +182,32 @@ async function uploadImage(file) {
 /******************** ADMIN SAVE / UPDATE ********************/
 document.getElementById("admin-save").onclick = async () => {
   const data = {
-    Name: document.getElementById("p-name").value.trim(),
-    Price: +document.getElementById("p-price").value,
-    Mrp: +document.getElementById("p-mrp").value,
-    Min: +document.getElementById("p-min").value || 1,
-    Unit: document.getElementById("p-unit").value,
-    InStock: document.getElementById("p-stock").checked
+    Name: p-name.value.trim(),
+    Price: +p-price.value,
+    Mrp: +p-mrp.value,
+    Min: +p-min.value || 1,
+    Unit: p-unit.value,
+    InStock: p-stock.checked
   };
 
-  const file = document.getElementById("p-file").files[0];
-  if (file) {
-    data.Image = await uploadImage(file);
-  }
+  const file = p-file.files[0];
+  if (file) data.Image = await uploadImage(file);
 
-  if (editId) {
-    await db.collection("products").doc(editId).update(data);
-  } else {
-    await db.collection("products").add(data);
-  }
+  editId
+    ? await db.collection("products").doc(editId).update(data)
+    : await db.collection("products").add(data);
 
-  alert("Product saved successfully");
-  editId = null;
+  alert("Saved successfully");
+  document.getElementById("admin-clear").click();
 };
 
 /******************** ADMIN ADD NEW ********************/
 document.getElementById("admin-clear").onclick = () => {
   editId = null;
   adminPanel.querySelectorAll("input").forEach(i => {
-    if (i.type !== "checkbox" && i.type !== "file") i.value = "";
+    if (i.type !== "checkbox") i.value = "";
   });
-  document.getElementById("p-stock").checked = true;
+  p-stock.checked = true;
 };
 
 /******************** ADMIN DELETE ********************/
@@ -217,44 +215,10 @@ document.getElementById("admin-delete").onclick = async () => {
   if (!editId) return alert("Select product first");
   if (confirm("Delete this product?")) {
     await db.collection("products").doc(editId).delete();
-    editId = null;
+    document.getElementById("admin-clear").click();
   }
-};
-
-/******************** WHATSAPP ORDER ********************/
-document.getElementById("order-btn").onclick = () => {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
-
-  if (!name || !phone || !address) {
-    alert("Please fill Name, Phone & Address first");
-    return;
-  }
-  if (cart.length === 0) {
-    alert("Cart is empty");
-    return;
-  }
-
-  let msg = "*SASTA SILIGURI – ORDER*\n\n";
-  let total = 0;
-
-  cart.forEach(i => {
-    msg += `${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
-    total += i.price * i.qty;
-  });
-
-  msg += `\nTOTAL: ₹${total}\n\n`;
-  msg += `Name: ${name}\nPhone: ${phone}\nAddress: ${address}`;
-
-  window.location.href =
-    `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 };
 
 /******************** CART POPUP ********************/
-document.getElementById("view-cart-btn").onclick = () => {
-  document.getElementById("cart-popup").classList.add("show");
-};
-document.getElementById("cart-close").onclick = () => {
-  document.getElementById("cart-popup").classList.remove("show");
-};
+view-cart-btn.onclick = () => cart-popup.classList.add("show");
+cart-close.onclick = () => cart-popup.classList.remove("show");
