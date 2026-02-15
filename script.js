@@ -17,7 +17,7 @@ const storage = firebase.storage();
 let products = [];
 let cart = JSON.parse(localStorage.getItem("sasta_cart")) || [];
 let editId = null;
-let tapCount = 0;
+let tap = 0;
 
 /******************** DOM ********************/
 const productList = document.getElementById("product-list");
@@ -25,21 +25,12 @@ const adminPanel = document.getElementById("admin-panel");
 const logo = document.querySelector(".logo");
 const searchInput = document.getElementById("search-input");
 
-/* ADMIN INPUTS */
-const pName   = document.getElementById("p-name");
-const pPrice  = document.getElementById("p-price");
-const pMrp    = document.getElementById("p-mrp");
-const pMin    = document.getElementById("p-min");
-const pUnit   = document.getElementById("p-unit");
-const pFile   = document.getElementById("p-file");
-const pStock  = document.getElementById("p-stock");
-
 /******************** ADMIN – 3 TAP ********************/
 logo.onclick = () => {
-  tapCount++;
-  setTimeout(() => (tapCount = 0), 600);
+  tap++;
+  setTimeout(() => (tap = 0), 600);
 
-  if (tapCount === 3) {
+  if (tap === 3) {
     const pass = prompt("Enter Admin Password");
     if (pass === ADMIN_PASS) {
       document.body.classList.add("admin-on");
@@ -51,35 +42,39 @@ logo.onclick = () => {
   }
 };
 
-/******************** LOAD PRODUCTS ********************/
-db.collection("products").onSnapshot(snap => {
-  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+/******************** LOAD PRODUCTS (REALTIME) ********************/
+db.collection("products").onSnapshot(snapshot => {
+  products = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
   render(products);
 });
 
 /******************** SEARCH ********************/
 searchInput.addEventListener("input", e => {
   const q = e.target.value.toLowerCase().trim();
-  render(
-    q
-      ? products.filter(p => (p.Name || "").toLowerCase().includes(q))
-      : products
-  );
+  if (!q) {
+    render(products);
+  } else {
+    render(products.filter(p =>
+      (p.Name || "").toLowerCase().includes(q)
+    ));
+  }
 });
 
 /******************** RENDER PRODUCTS ********************/
 function render(list) {
   productList.innerHTML = list.map(p => `
     <div class="product" onclick="loadToAdmin('${p.id}')">
-      <img src="${p.Image || 'https://via.placeholder.com/300'}">
-      <h3>${p.Name}</h3>
+
+      <img src="${p.Image || 'https://via.placeholder.com/300'}" loading="lazy">
+
+      <h3>${p.Name || "Item"}</h3>
 
       <div class="price-row">
-        <span class="mrp">${p.Mrp ? "₹"+p.Mrp : ""}</span>
-        <span class="offer-price">₹${p.Price}</span>
+        <span class="mrp">${p.Mrp ? "₹" + p.Mrp : ""}</span>
+        <span class="offer-price">₹${p.Price || 0}</span>
       </div>
 
-      <div class="tag">${p.InStock ? "In stock ✅" : "Out of stock ❌"}</div>
+      <div class="tag">${p.InStock === false ? "Out of stock ❌" : "In stock ✅"}</div>
 
       <div class="qty" onclick="event.stopPropagation()">
         <button onclick="changeQty('${p.id}',-1)">-</button>
@@ -91,127 +86,175 @@ function render(list) {
         onclick="event.stopPropagation();addToCart('${p.id}')">
         Add to Cart
       </button>
+
     </div>
   `).join("");
 }
 
-/******************** LOAD PRODUCT TO ADMIN ********************/
-function loadToAdmin(id){
+/******************** LOAD PRODUCT → ADMIN ********************/
+function loadToAdmin(id) {
   const p = products.find(x => x.id === id);
-  if(!p) return;
+  if (!p) return;
 
   editId = id;
-  pName.value  = p.Name || "";
-  pPrice.value = p.Price || "";
-  pMrp.value   = p.Mrp || "";
-  pMin.value   = p.Min || 1;
-  pUnit.value  = p.Unit || "";
-  pStock.checked = p.InStock !== false;
 
-  adminPanel.scrollIntoView({ behavior:"smooth" });
+  document.getElementById("p-name").value = p.Name || "";
+  document.getElementById("p-price").value = p.Price || "";
+  document.getElementById("p-mrp").value = p.Mrp || "";
+  document.getElementById("p-min").value = p.Min || 1;
+  document.getElementById("p-unit").value = p.Unit || "";
+  document.getElementById("p-stock").checked = p.InStock !== false;
+
+  adminPanel.scrollIntoView({ behavior: "smooth" });
 }
 
 /******************** QTY ********************/
-function changeQty(id,d){
-  const el = document.getElementById("q"+id);
+function changeQty(id, d) {
+  const el = document.getElementById("q" + id);
+  if (!el) return;
   let v = Number(el.innerText) + d;
-  if(v < 1) v = 1;
+  if (v < 1) v = 1;
   el.innerText = v;
 }
 
 /******************** CART ********************/
-function addToCart(id){
+function addToCart(id) {
   const p = products.find(x => x.id === id);
-  if(!p || p.InStock === false) return;
+  if (!p || p.InStock === false) return;
 
-  const qty = Number(document.getElementById("q"+id).innerText);
-  const f = cart.find(i => i.id === id);
+  const qty = Number(document.getElementById("q" + id).innerText);
+  const found = cart.find(i => i.id === id);
 
-  f ? f.qty += qty : cart.push({
-    id:p.id, name:p.Name, price:p.Price, unit:p.Unit||"", qty
-  });
+  if (found) {
+    found.qty += qty;
+  } else {
+    cart.push({
+      id: p.id,
+      name: p.Name,
+      price: p.Price,
+      unit: p.Unit || "",
+      qty
+    });
+  }
 
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
   renderCart();
 }
 
-function renderCart(){
+/******************** RENDER CART ********************/
+function renderCart() {
   const box = document.getElementById("cart-items");
   const totalBox = document.getElementById("cart-total");
+  if (!box) return;
+
   let total = 0;
   box.innerHTML = "";
 
-  cart.forEach(i=>{
-    total += i.price*i.qty;
+  cart.forEach(i => {
+    total += i.price * i.qty;
     box.innerHTML += `
       <div class="cart-row">
-        ${i.name} (${i.qty} ${i.unit}) – ₹${i.price*i.qty}
+        ${i.name} (${i.qty} ${i.unit}) – ₹${i.price * i.qty}
         <button onclick="removeFromCart('${i.id}')">❌</button>
-      </div>`;
+      </div>
+    `;
   });
 
-  totalBox.innerText = "Total: ₹"+total;
+  totalBox.innerText = "Total: ₹" + total;
 }
-function removeFromCart(id){
-  cart = cart.filter(i=>i.id!==id);
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
   localStorage.setItem("sasta_cart", JSON.stringify(cart));
   renderCart();
 }
 renderCart();
 
 /******************** IMAGE UPLOAD ********************/
-async function uploadImage(file){
-  const ref = storage.ref("products/"+Date.now());
+async function uploadImage(file) {
+  const ref = storage.ref("products/" + Date.now());
   await ref.put(file);
   return await ref.getDownloadURL();
 }
 
-/******************** ADMIN BUTTONS ********************/
-document.getElementById("admin-save").onclick = async ()=>{
+/******************** ADMIN SAVE / UPDATE ********************/
+document.getElementById("admin-save").onclick = async () => {
   const data = {
-    Name: pName.value,
-    Price: +pPrice.value,
-    Mrp: +pMrp.value,
-    Min: +pMin.value || 1,
-    Unit: pUnit.value,
-    InStock: pStock.checked
+    Name: document.getElementById("p-name").value.trim(),
+    Price: +document.getElementById("p-price").value,
+    Mrp: +document.getElementById("p-mrp").value,
+    Min: +document.getElementById("p-min").value || 1,
+    Unit: document.getElementById("p-unit").value,
+    InStock: document.getElementById("p-stock").checked
   };
 
-  if(pFile.files[0]){
-    data.Image = await uploadImage(pFile.files[0]);
+  const file = document.getElementById("p-file").files[0];
+  if (file) {
+    data.Image = await uploadImage(file);
   }
 
-  editId
-    ? db.collection("products").doc(editId).update(data)
-    : db.collection("products").add(data);
+  if (editId) {
+    await db.collection("products").doc(editId).update(data);
+  } else {
+    await db.collection("products").add(data);
+  }
 
-  alert("Saved / Updated Successfully");
+  alert("Product saved successfully");
   editId = null;
 };
 
-document.getElementById("admin-clear").onclick = ()=>{
+/******************** ADMIN ADD NEW ********************/
+document.getElementById("admin-clear").onclick = () => {
   editId = null;
-  pName.value = "";
-  pPrice.value = "";
-  pMrp.value = "";
-  pMin.value = "";
-  pUnit.value = "";
-  pFile.value = "";
-  pStock.checked = true;
+  adminPanel.querySelectorAll("input").forEach(i => {
+    if (i.type !== "checkbox" && i.type !== "file") i.value = "";
+  });
+  document.getElementById("p-stock").checked = true;
 };
 
-document.getElementById("admin-delete").onclick = ()=>{
-  if(!editId) return alert("Select product first");
-  if(confirm("Delete this product?")){
-    db.collection("products").doc(editId).delete();
+/******************** ADMIN DELETE ********************/
+document.getElementById("admin-delete").onclick = async () => {
+  if (!editId) return alert("Select product first");
+  if (confirm("Delete this product?")) {
+    await db.collection("products").doc(editId).delete();
     editId = null;
   }
 };
 
+/******************** WHATSAPP ORDER ********************/
+document.getElementById("order-btn").onclick = () => {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+
+  if (!name || !phone || !address) {
+    alert("Please fill Name, Phone & Address first");
+    return;
+  }
+  if (cart.length === 0) {
+    alert("Cart is empty");
+    return;
+  }
+
+  let msg = "*SASTA SILIGURI – ORDER*\n\n";
+  let total = 0;
+
+  cart.forEach(i => {
+    msg += `${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
+    total += i.price * i.qty;
+  });
+
+  msg += `\nTOTAL: ₹${total}\n\n`;
+  msg += `Name: ${name}\nPhone: ${phone}\nAddress: ${address}`;
+
+  window.location.href =
+    `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+};
+
 /******************** CART POPUP ********************/
-document.getElementById("view-cart-btn").onclick = ()=>{
+document.getElementById("view-cart-btn").onclick = () => {
   document.getElementById("cart-popup").classList.add("show");
 };
-document.getElementById("cart-close").onclick = ()=>{
+document.getElementById("cart-close").onclick = () => {
   document.getElementById("cart-popup").classList.remove("show");
 };
