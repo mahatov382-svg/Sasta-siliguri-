@@ -247,3 +247,91 @@ cartClose.onclick = () => {
   cartPopup.classList.remove("show");
   document.body.style.overflow = "";
 };
+
+/******************** ADMIN HELPERS ********************/
+function clearAdminForm(){
+  editId = null;
+  document.getElementById("p-id").value = "";
+  document.getElementById("p-name").value = "";
+  document.getElementById("p-price").value = "";
+  document.getElementById("p-mrp").value = "";
+  document.getElementById("p-min").value = "";
+  document.getElementById("p-unit").value = "";
+  document.getElementById("p-file").value = "";
+  document.getElementById("p-stock").checked = true;
+}
+
+/******************** CLICK PRODUCT TO EDIT ********************/
+function loadForEdit(p){
+  editId = p.id;
+  document.getElementById("p-name").value = p.Name || "";
+  document.getElementById("p-price").value = p.Price || "";
+  document.getElementById("p-mrp").value = p.Mrp || "";
+  document.getElementById("p-min").value = p.Min || 1;
+  document.getElementById("p-unit").value = p.Unit || "";
+  document.getElementById("p-stock").checked = p.InStock !== false;
+
+  adminPanel.scrollIntoView({behavior:"smooth"});
+}
+
+/* modify render() product div */
+const oldRender = render;
+render = function(list){
+  productList.innerHTML = list.map(p=>`
+    <div class="product" onclick="loadForEdit(${JSON.stringify(p).replace(/"/g,'&quot;')})">
+      <img src="${p.Image || 'https://via.placeholder.com/300'}">
+      <h3>${p.Name}</h3>
+      <div class="price-row">
+        <span class="mrp">${p.Mrp ? "₹"+p.Mrp : ""}</span>
+        <span class="offer-price">₹${p.Price}</span>
+      </div>
+      <div class="tag">${p.InStock ? "In stock ✅" : "Out of stock ❌"}</div>
+      <div class="qty">
+        <button>-</button>
+        <span>${p.Min || 1}</span>
+        <button>+</button>
+      </div>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+  `).join("");
+};
+
+/******************** SAVE / UPDATE ********************/
+document.getElementById("admin-save").onclick = async ()=>{
+  const data={
+    Name:pName.value,
+    Price:+pPrice.value,
+    Mrp:+pMrp.value,
+    Min:+pMin.value||1,
+    Unit:pUnit.value,
+    InStock:pStock.checked
+  };
+
+  const file=pFile.files[0];
+  if(file) data.Image=await uploadImage(file);
+
+  if(editId){
+    await db.collection("products").doc(editId).update(data);
+    alert("Product updated");
+  }else{
+    await db.collection("products").add(data);
+    alert("Product added");
+  }
+  clearAdminForm();
+};
+
+/******************** DELETE ********************/
+document.getElementById("admin-delete").onclick = async ()=>{
+  if(!editId){
+    alert("Select product to delete");
+    return;
+  }
+  if(confirm("Delete this product?")){
+    await db.collection("products").doc(editId).delete();
+    clearAdminForm();
+    alert("Product deleted");
+  }
+};
+
+/******************** ADD NEW ********************/
+document.getElementById("admin-clear").onclick = clearAdminForm;
