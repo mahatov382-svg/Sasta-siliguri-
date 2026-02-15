@@ -26,7 +26,7 @@ const logo = document.querySelector(".logo");
 const searchInput = document.getElementById("search-input");
 
 /******************** ADMIN – 3 TAP ********************/
-logo.addEventListener("click", () => {
+logo.onclick = () => {
   tapCount++;
   setTimeout(() => (tapCount = 0), 600);
 
@@ -40,230 +40,57 @@ logo.addEventListener("click", () => {
       alert("Wrong Password");
     }
   }
-});
+};
 
-/******************** LOAD PRODUCTS (FAST + REALTIME) ********************/
-db.collection("products")
-  .get({ source: "cache" })
-  .then(snap => {
-    if (!snap.empty) {
-      products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      render(products);
-    }
-  })
-  .catch(() => {});
-
-db.collection("products").onSnapshot(snapshot => {
-  products = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+/******************** LOAD PRODUCTS ********************/
+db.collection("products").onSnapshot(snap => {
+  products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   render(products);
 });
 
-/******************** SEARCH (LIVE FILTER) ********************/
+/******************** SEARCH ********************/
 searchInput.addEventListener("input", e => {
   const q = e.target.value.toLowerCase().trim();
-  if (!q) {
-    render(products);
-  } else {
-    render(
-      products.filter(p =>
-        (p.Name || "").toLowerCase().includes(q)
-      )
-    );
-  }
+  render(
+    q
+      ? products.filter(p => (p.Name || "").toLowerCase().includes(q))
+      : products
+  );
 });
 
 /******************** RENDER PRODUCTS ********************/
 function render(list) {
-  productList.innerHTML = list
-    .map(p => {
-      const name = p.Name || "Item";
-      const price = p.Price || 0;
-      const mrp = p.Mrp || "";
-      const img = p.Image || "https://via.placeholder.com/300";
-      const min = p.Min || 1;
-      const unit = p.Unit || "";
-      const stock = p.InStock !== false;
+  productList.innerHTML = list.map(p => `
+    <div class="product" onclick="loadToAdmin('${p.id}')">
+      <img src="${p.Image || 'https://via.placeholder.com/300'}">
+      <h3>${p.Name}</h3>
 
-      return `
-        <div class="product">
-          <img src="${img}" loading="lazy">
-          <h3>${name}</h3>
-
-          <div class="price-row">
-            <span class="mrp">${mrp ? "₹" + mrp : ""}</span>
-            <span class="offer-price">₹${price}</span>
-          </div>
-
-          <div class="tag">${stock ? "In stock ✅" : "Out of stock ❌"}</div>
-
-          <div class="qty">
-            <button onclick="changeQty('${p.id}',-1)">-</button>
-            <span id="q${p.id}">${min}</span>
-            <button onclick="changeQty('${p.id}',1)">+</button>
-          </div>
-
-          <button class="add-to-cart" onclick="addToCart('${p.id}')">
-            Add to Cart
-          </button>
-        </div>
-      `;
-    })
-    .join("");
-}
-
-/******************** QTY ********************/
-function changeQty(id, d) {
-  const el = document.getElementById("q" + id);
-  if (!el) return;
-  let v = Number(el.innerText) + d;
-  if (v < 1) v = 1;
-  el.innerText = v;
-}
-
-/******************** CART ********************/
-function addToCart(id) {
-  const p = products.find(x => x.id === id);
-  if (!p || p.InStock === false) return;
-
-  const qty = Number(document.getElementById("q" + id)?.innerText || 1);
-  const found = cart.find(i => i.id === id);
-
-  if (found) {
-    found.qty += qty;
-  } else {
-    cart.push({
-      id: p.id,
-      name: p.Name,
-      price: p.Price,
-      unit: p.Unit || "",
-      qty
-    });
-  }
-
-  localStorage.setItem("sasta_cart", JSON.stringify(cart));
-  renderCart();
-}
-
-/******************** RENDER CART ********************/
-function renderCart() {
-  const box = document.getElementById("cart-items");
-  const totalBox = document.getElementById("cart-total");
-  if (!box) return;
-
-  let total = 0;
-  box.innerHTML = "";
-
-  cart.forEach(i => {
-    total += i.price * i.qty;
-    box.innerHTML += `
-      <div class="cart-row">
-        ${i.name} (${i.qty} ${i.unit}) – ₹${i.price * i.qty}
-        <button onclick="removeFromCart('${i.id}')">❌</button>
+      <div class="price-row">
+        <span class="mrp">${p.Mrp ? "₹"+p.Mrp : ""}</span>
+        <span class="offer-price">₹${p.Price}</span>
       </div>
-    `;
-  });
 
-  totalBox.innerText = "Total: ₹" + total;
+      <div class="tag">${p.InStock ? "In stock ✅" : "Out of stock ❌"}</div>
+
+      <div class="qty" onclick="event.stopPropagation()">
+        <button onclick="changeQty('${p.id}',-1)">-</button>
+        <span id="q${p.id}">${p.Min || 1}</span>
+        <button onclick="changeQty('${p.id}',1)">+</button>
+      </div>
+
+      <button class="add-to-cart" onclick="event.stopPropagation();addToCart('${p.id}')">
+        Add to Cart
+      </button>
+    </div>
+  `).join("");
 }
 
-function removeFromCart(id) {
-  cart = cart.filter(i => i.id !== id);
-  localStorage.setItem("sasta_cart", JSON.stringify(cart));
-  renderCart();
-}
+/******************** LOAD PRODUCT TO ADMIN ********************/
+function loadToAdmin(id){
+  const p = products.find(x => x.id === id);
+  if(!p) return;
 
-renderCart();
-
-/******************** IMAGE UPLOAD ********************/
-async function uploadImage(file) {
-  const ref = storage.ref("products/" + Date.now());
-  await ref.put(file);
-  return await ref.getDownloadURL();
-}
-
-/******************** ADMIN SAVE / UPDATE ********************/
-document.getElementById("admin-save").onclick = async () => {
-  const data = {
-    Name: document.getElementById("p-name").value,
-    Price: +document.getElementById("p-price").value,
-    Mrp: +document.getElementById("p-mrp").value,
-    Min: +document.getElementById("p-min").value || 1,
-    Unit: document.getElementById("p-unit").value,
-    InStock: document.getElementById("p-stock").checked
-  };
-
-  const file = document.getElementById("p-file").files[0];
-  if (file) data.Image = await uploadImage(file);
-
-  editId
-    ? db.collection("products").doc(editId).update(data)
-    : db.collection("products").add(data);
-
-  editId = null;
-  alert("Product saved / updated");
-};
-
-/******************** WHATSAPP ORDER ********************/
-document.getElementById("order-btn").onclick = () => {
-  const name = document.getElementById("cust-name").value.trim();
-  const phone = document.getElementById("cust-phone").value.trim();
-  const address = document.getElementById("cust-address").value.trim();
-
-  if (!name || !phone || !address) {
-    alert("Please fill Name, Phone & Address first");
-    return;
-  }
-  if (cart.length === 0) {
-    alert("Cart is empty");
-    return;
-  }
-
-  let msg = "*SASTA SILIGURI – ORDER*\n\n";
-  let total = 0;
-
-  cart.forEach(i => {
-    msg += `${i.name} (${i.qty} ${i.unit}) = ₹${i.price * i.qty}\n`;
-    total += i.price * i.qty;
-  });
-
-  msg += `\nTOTAL: ₹${total}\n\n`;
-  msg += `Name: ${name}\nPhone: ${phone}\nAddress: ${address}`;
-
-  window.location.href =
-    `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-};
-
-/******************** CART POPUP ********************/
-const viewCartBtn = document.getElementById("view-cart-btn");
-const cartPopup = document.getElementById("cart-popup");
-const cartClose = document.getElementById("cart-close");
-
-viewCartBtn.onclick = () => {
-  cartPopup.classList.add("show");
-  document.body.style.overflow = "hidden";
-};
-
-cartClose.onclick = () => {
-  cartPopup.classList.remove("show");
-  document.body.style.overflow = "";
-};
-
-/******************** ADMIN HELPERS ********************/
-function clearAdminForm(){
-  editId = null;
-  document.getElementById("p-id").value = "";
-  document.getElementById("p-name").value = "";
-  document.getElementById("p-price").value = "";
-  document.getElementById("p-mrp").value = "";
-  document.getElementById("p-min").value = "";
-  document.getElementById("p-unit").value = "";
-  document.getElementById("p-file").value = "";
-  document.getElementById("p-stock").checked = true;
-}
-
-/******************** CLICK PRODUCT TO EDIT ********************/
-function loadForEdit(p){
-  editId = p.id;
+  editId = id;
   document.getElementById("p-name").value = p.Name || "";
   document.getElementById("p-price").value = p.Price || "";
   document.getElementById("p-mrp").value = p.Mrp || "";
@@ -271,67 +98,104 @@ function loadForEdit(p){
   document.getElementById("p-unit").value = p.Unit || "";
   document.getElementById("p-stock").checked = p.InStock !== false;
 
-  adminPanel.scrollIntoView({behavior:"smooth"});
+  adminPanel.scrollIntoView({ behavior:"smooth" });
 }
 
-/* modify render() product div */
-const oldRender = render;
-render = function(list){
-  productList.innerHTML = list.map(p=>`
-    <div class="product" onclick="loadForEdit(${JSON.stringify(p).replace(/"/g,'&quot;')})">
-      <img src="${p.Image || 'https://via.placeholder.com/300'}">
-      <h3>${p.Name}</h3>
-      <div class="price-row">
-        <span class="mrp">${p.Mrp ? "₹"+p.Mrp : ""}</span>
-        <span class="offer-price">₹${p.Price}</span>
-      </div>
-      <div class="tag">${p.InStock ? "In stock ✅" : "Out of stock ❌"}</div>
-      <div class="qty">
-        <button>-</button>
-        <span>${p.Min || 1}</span>
-        <button>+</button>
-      </div>
-      <button class="add-to-cart">Add to Cart</button>
-    </div>
-  `).join("");
-};
+/******************** QTY ********************/
+function changeQty(id,d){
+  const el = document.getElementById("q"+id);
+  let v = Number(el.innerText) + d;
+  if(v < 1) v = 1;
+  el.innerText = v;
+}
 
-/******************** SAVE / UPDATE ********************/
+/******************** CART ********************/
+function addToCart(id){
+  const p = products.find(x => x.id === id);
+  if(!p || p.InStock === false) return;
+
+  const qty = Number(document.getElementById("q"+id).innerText);
+  const f = cart.find(i => i.id === id);
+
+  f ? f.qty += qty : cart.push({
+    id:p.id, name:p.Name, price:p.Price, unit:p.Unit||"", qty
+  });
+
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+  renderCart();
+}
+
+function renderCart(){
+  const box = document.getElementById("cart-items");
+  const totalBox = document.getElementById("cart-total");
+  let total = 0;
+  box.innerHTML = "";
+
+  cart.forEach(i=>{
+    total += i.price*i.qty;
+    box.innerHTML += `
+      <div class="cart-row">
+        ${i.name} (${i.qty} ${i.unit}) – ₹${i.price*i.qty}
+        <button onclick="removeFromCart('${i.id}')">❌</button>
+      </div>`;
+  });
+
+  totalBox.innerText = "Total: ₹"+total;
+}
+function removeFromCart(id){
+  cart = cart.filter(i=>i.id!==id);
+  localStorage.setItem("sasta_cart", JSON.stringify(cart));
+  renderCart();
+}
+renderCart();
+
+/******************** IMAGE UPLOAD ********************/
+async function uploadImage(file){
+  const ref = storage.ref("products/"+Date.now());
+  await ref.put(file);
+  return await ref.getDownloadURL();
+}
+
+/******************** ADMIN BUTTONS ********************/
 document.getElementById("admin-save").onclick = async ()=>{
-  const data={
-    Name:pName.value,
-    Price:+pPrice.value,
-    Mrp:+pMrp.value,
-    Min:+pMin.value||1,
-    Unit:pUnit.value,
-    InStock:pStock.checked
+  const data = {
+    Name: p-name.value,
+    Price:+p-price.value,
+    Mrp:+p-mrp.value,
+    Min:+p-min.value||1,
+    Unit:p-unit.value,
+    InStock:p-stock.checked
   };
 
-  const file=pFile.files[0];
-  if(file) data.Image=await uploadImage(file);
+  const file = p-file.files[0];
+  if(file) data.Image = await uploadImage(file);
 
-  if(editId){
-    await db.collection("products").doc(editId).update(data);
-    alert("Product updated");
-  }else{
-    await db.collection("products").add(data);
-    alert("Product added");
-  }
-  clearAdminForm();
+  editId
+    ? db.collection("products").doc(editId).update(data)
+    : db.collection("products").add(data);
+
+  alert("Saved Successfully");
+  editId = null;
 };
 
-/******************** DELETE ********************/
-document.getElementById("admin-delete").onclick = async ()=>{
-  if(!editId){
-    alert("Select product to delete");
-    return;
-  }
+document.getElementById("admin-add").onclick = ()=>{
+  editId = null;
+  adminPanel.querySelectorAll("input").forEach(i=>i.value="");
+  p-stock.checked = true;
+};
+
+document.getElementById("admin-delete").onclick = ()=>{
+  if(!editId) return alert("Select product first");
   if(confirm("Delete this product?")){
-    await db.collection("products").doc(editId).delete();
-    clearAdminForm();
-    alert("Product deleted");
+    db.collection("products").doc(editId).delete();
+    editId = null;
   }
 };
 
-/******************** ADD NEW ********************/
-document.getElementById("admin-clear").onclick = clearAdminForm;
+/******************** CART POPUP ********************/
+view-cart-btn.onclick = ()=>{
+  cart-popup.classList.add("show");
+};
+cart-close.onclick = ()=>{
+  cart-popup.classList.remove("show");
+};
