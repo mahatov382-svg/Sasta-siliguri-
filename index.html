@@ -51,27 +51,31 @@
     </section>
 
     <!-- ADMIN PANEL (3 TAP LOGO SE OPEN) -->
-    <section id="admin-panel" class="admin-box" style="display:none;">
-      <h2>Admin Panel (Owner Only)</h2>
+<section id="admin-panel" class="admin-box" style="display:none;">
+  <h2>Admin Panel (Owner Only)</h2>
 
-      <input id="p-name" placeholder="Product name">
-      <input id="p-price" type="number" placeholder="Price ₹">
-      <input id="p-mrp" type="number" placeholder="MRP ₹">
-      <input id="p-min" type="number" placeholder="Minimum order quantity">
-      <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
+  <input id="p-id" type="hidden">
 
-      <!-- DIRECT GALLERY UPLOAD -->
-      <input id="p-file" type="file" accept="image/*">
+  <input id="p-name" placeholder="Product name">
+  <input id="p-price" type="number" placeholder="Price ₹">
+  <input id="p-mrp" type="number" placeholder="MRP ₹">
+  <input id="p-min" type="number" placeholder="Minimum order quantity">
+  <input id="p-unit" placeholder="Unit (kg, pcs, box, gram etc)">
 
-      <label class="admin-checkbox">
-        <input type="checkbox" id="p-stock" checked>
-        In stock
-      </label>
+  <!-- IMAGE UPLOAD -->
+  <input id="p-file" type="file" accept="image/*">
 
-      <div class="admin-buttons">
-        <button id="admin-save" class="btn admin-btn">Save / Update</button>
-      </div>
-    </section>
+  <label class="admin-checkbox">
+    <input type="checkbox" id="p-stock" checked>
+    In stock
+  </label>
+
+  <div class="admin-buttons">
+    <button id="admin-save" class="btn admin-btn">Save / Update</button>
+    <button id="admin-clear" class="btn admin-secondary-btn">Add New</button>
+    <button id="admin-delete" class="btn admin-danger-btn">Delete</button>
+  </div>
+</section>
 
     <!-- SEARCH -->
     <section class="controls">
